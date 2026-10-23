@@ -215,6 +215,80 @@ body.contact-open nav.menu [data-go]{display:none}
  .modal.side .mv.ct{gap:16px}
  .modal.side .mh-title:not(:last-child){margin-bottom:-16px}}
 
+/* ===== 배너 세트 (Mobile · PC · In-Event, 원본 그대로) ===== */
+.bn-set{display:flex;flex-direction:column;gap:28px;padding:20px;border-radius:16px;background:var(--bg-elevated);border:1px solid var(--border-default)}
+.bn-grp{display:flex;flex-direction:column;gap:12px}
+.bn-row{display:grid;align-items:start;gap:12px}
+.bn-col{display:flex;flex-direction:column;gap:12px;min-width:0}
+.bn-item{position:relative;border-radius:6px;overflow:hidden;background:var(--bg-placeholder)}
+.bn-item>img{display:block;width:100%;height:100%;object-fit:cover}
+.bn-set .bn-item .ph{width:100%;height:100%;border-radius:6px}   /* .sl-free .ph(16)보다 우선 */
+@media (max-width:767px){.bn-set{padding:16px;gap:24px}.bn-row,.bn-col{gap:8px}}
+/* ===== 다이어그램 (코드로 그림 · 사이트 토큰) ===== */
+.fig.diag{padding:20px;border-radius:16px;background:var(--bg-elevated);border:1px solid var(--border-default);container-type:inline-size}
+.dg{display:flex;flex-direction:column;gap:12px}
+.dg-hd{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.dg-lb{margin:0;font-family:var(--f-en);font-weight:700;font-size:13px;line-height:1.3;letter-spacing:.02em;color:var(--text-tertiary)}
+.dg-lb.on{color:var(--accent)}
+.dg-legend{display:flex;gap:12px;font-size:12px;line-height:1;color:var(--text-tertiary)}
+.dg-legend span{display:inline-flex;align-items:center;gap:6px}
+.dg-legend i{width:12px;height:12px;border-radius:3px;background:var(--bg-placeholder);border:1px solid var(--border-default)}
+.dg-legend i.dash{background:none;border:1px dashed var(--border-dashed)}
+.dg-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;border-radius:12px;border:1px solid var(--border-default);background:var(--bg-surface)}
+.dg-tile{display:flex;flex-direction:column;justify-content:center;gap:6px;height:44px;padding:0 12px;border-radius:8px;background:var(--bg-placeholder);border:1px solid var(--border-default)}
+.dg-tile.dash{background:none;border:1px dashed var(--border-dashed)}
+.dg-tile b,.dg-tile i{display:block;height:5px;border-radius:3px;background:var(--border-dashed)}
+.dg-tile b{width:56%}.dg-tile i{width:34%;opacity:.6}
+.dg-notes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dg-note{display:flex;flex-direction:column;gap:4px;min-width:0}
+.dg-note h5{margin:0;font-size:14px;font-weight:700;line-height:1.4;color:var(--text-primary)}
+.dg-note h5.on{color:var(--accent)}
+.dg-note p{margin:0;font-size:13px;line-height:1.55;color:var(--text-secondary)}
+.dg-arrow{display:flex;justify-content:center;color:var(--text-tertiary)}
+.dg-arrow svg{width:20px;height:20px}
+.dg-ia{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:8px}
+/* 다이어그램은 본문 전체 폭(글 아래) — media_default 자리에서 {diag} 이면 세로 배치 */
+.media.media-diag{flex-direction:column;gap:20px}
+.media.media-diag .fig.diag{flex:none;width:100%}
+/* Energy IA: 넓을 때 가로 흐름(Requirements → IA), 좁을 때 세로 */
+.dg-flow{display:flex;flex-direction:column;gap:12px}
+.dg-col{display:flex;flex-direction:column;gap:12px;min-width:0}
+.dg-arrow .h{display:none}
+@container (min-width:720px){
+ .dg-flow{flex-direction:row;align-items:stretch;gap:16px}
+ .dg-flow>.dg-col:first-child{flex:0 0 34%}
+ .dg-flow>.dg-col:last-child{flex:1 1 0}
+ .dg-flow>.dg-arrow{align-items:center;padding-top:20px}
+ .dg-flow>.dg-arrow .v{display:none}.dg-flow>.dg-arrow .h{display:block}
+ .dg-flow .dg-tile{height:40px;padding:0 10px}
+}
+/* PayAppCafe UI 유형 4종 */
+.dg-types{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.dg-type{display:flex;flex-direction:column;gap:12px;min-width:0}
+.dg-type .dg-vis{height:120px;padding:14px;align-items:stretch;justify-content:stretch;background:var(--bg-surface);border:1px solid var(--border-default);border-radius:12px}
+.dg-type .dg-vis svg{height:100%}
+.dg-type .act{margin:0;font-size:13px;line-height:1.4;color:var(--text-tertiary)}
+@container (max-width:719.98px){.dg-types{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:20px}}   /* 2×2일 때 위아래 줄 간격 +8 */
+/* Event & Banner 이벤트 페이지 공통 구조 */
+/* 한 줄(행)마다 왼쪽 블록 + 오른쪽 설명 → 설명이 길어져도 블록과 높이가 함께 맞춰짐 */
+.dg-page{position:relative;display:grid;grid-template-columns:132px 1fr;column-gap:30px;row-gap:6px;padding-block:10px}
+.dg-phonebg{grid-column:1;grid-row:1 / span 5;margin:-10px 0;border-radius:18px;background:var(--bg-surface);border:1px solid var(--border-default)}
+.dg-blk{grid-column:1;margin-inline:10px;border-radius:8px;background:var(--bg-placeholder);border:1px solid var(--border-default)}
+.dg-blk.on{background:rgba(79,209,192,.12);border-color:var(--accent)}
+.dg-sec{grid-column:2;display:flex;align-items:center;gap:12px;min-width:0;padding-block:4px}
+.dg-sec b{flex:none;width:22px;font-family:var(--f-en);font-weight:700;font-size:12px;color:var(--text-tertiary)}
+.dg-sec.on b{color:var(--accent)}
+.dg-sec .dg-note h5{font-size:14px}
+@container (max-width:419.98px){.dg-page{grid-template-columns:96px 1fr;column-gap:16px}}
+.dg-card{display:flex;flex-direction:column;gap:10px;min-width:0;padding:10px;border-radius:12px;background:var(--bg-surface);border:1px solid var(--border-default)}
+.dg-card.on{border-color:var(--accent)}
+.dg-vis{height:72px;border-radius:8px;background:var(--bg-placeholder);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.dg-card.on .dg-vis{background:rgba(79,209,192,.12)}
+.dg-vis svg{width:100%;height:100%;display:block}
+@container (max-width:479.98px){
+ .dg-ia{grid-template-columns:1fr 1fr}
+ .dg-notes{grid-template-columns:1fr}
+}
 /* ===== 아래는 와이어프레임 화면 스타일 (화면 시안 반영 전 임시, 다크 토큰만 적용) ===== */
 .notes-toggle{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:45;font-family:var(--f-mono);font-size:12px;padding:8px 12px;border-radius:999px;border:1px solid var(--note);color:var(--note);background:var(--note-bg)}
 .note{display:none;font-family:var(--f-mono);font-size:11.5px;line-height:1.5;color:var(--note);background:var(--note-bg);border:1px dashed var(--note);border-radius:4px;padding:6px 8px;margin-block:8px}
@@ -476,6 +550,21 @@ td.role{font-weight:700;white-space:nowrap}
 .slider[data-frame="wide"] .sl-view{aspect-ratio:16/10;max-height:none}
 .sl-shot{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
 .sl-shot>img{display:block;width:100%;height:100%;object-fit:contain}
+/* 슬라이드 안 다이어그램 (wide 패널 16:10 안에 맞춤) */
+.sl-dg{width:100%;height:100%;padding:24px;display:flex;align-items:center;justify-content:center;container-type:inline-size}
+.dgo{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}   /* 좌우 2열: 카드 위 · 설명 아래 */
+.dgo-row{display:flex;flex-direction:column;gap:14px;min-width:0}
+.dgo-card{position:relative;aspect-ratio:16/10;border-radius:12px;background:var(--bg-surface);border:1px solid var(--border-default)}
+.dgo-card svg{position:absolute;inset:14% 12%;width:76%;height:72%;display:block}
+.dgo .dg-note h5{font-size:15px}.dgo .dg-note p{font-size:14px;word-break:keep-all}   /* 한 글자만 다음 줄로 넘어가지 않게 */
+@media (max-width:767px){.sl-dg{padding:16px}}
+@container (max-width:439.98px){
+ .dgo{gap:12px}
+ .dgo-row{gap:10px}
+ .dgo-card{aspect-ratio:2/1;border-radius:10px}
+ .dgo-card svg{inset:12% 14%;width:72%;height:76%}
+ .dgo .dg-note h5{font-size:13px}.dgo .dg-note p{font-size:12px;line-height:1.5}
+}
 .sl-shot .ph{width:100%;height:100%;border:0;border-radius:0}
 .slider[data-frame="free"] .sl-view{aspect-ratio:auto;max-height:none;background:none;transition:height .3s var(--ease)}
 .slider[data-frame="free"] .sl-track{align-items:flex-start}
@@ -720,7 +809,7 @@ const FULL = [
  overview:"클라이언트의 기능·데이터 요구사항을 분석해 정보 구조부터 와이어프레임, 반응형 UI까지 설계한 프리랜서 프로젝트입니다.",
  problem:"발전량, 수익, 운영 정보처럼 성격이 다른 데이터가 같은 비중으로 노출되고 있었습니다. 현재 상태를 빠르게 파악해야 하는 서비스인데, 실시간으로 변하는 정보와 필요할 때만 조회하는 정보가 섞여 있어 핵심을 찾는 데 시간이 걸렸습니다.",
  decisions:[
-  ["모든 정보를 같은 중요도로 보여주지 않는다","KPI는 첫 화면 히어로 영역에, 주요 데이터는 단독 섹션에, 보조 정보는 탭으로 묶었습니다. 전체 스크롤은 줄이고 필요한 정보에는 계속 접근할 수 있게 했습니다.","IA 다이어그램: KPI · Revenue · Information · Utility"],
+  ["모든 정보를 같은 중요도로 보여주지 않는다","KPI는 첫 화면 히어로 영역에, 주요 데이터는 단독 섹션에, 보조 정보는 탭으로 묶었습니다. 전체 스크롤은 줄이고 필요한 정보에는 계속 접근할 수 있게 했습니다.",{diag:"energyIA"}],
   ["일반 정보와 실시간 데이터를 섹션으로 분리","확인 목적이 다른 두 종류의 데이터를 나누고, 수익 정보는 핵심 수치와 3개월 추이를 함께 보도록 위계를 강화했습니다.","와이어프레임 → Hi-fi 비교"],
   ["반복되는 데이터는 하나의 카드 규칙으로","Data Level 1(핵심 지표) · Level 2(주요 지표) · Level 3(상세 데이터)로 카드 모듈을 정의해, 데이터가 늘어나도 같은 규칙으로 대응하게 했습니다.","카드 컴포넌트"],
   ["화면 크기마다 배치를 다르게","넓은 화면에서는 주요 정보를 병렬로 배치하고, 정보량이 적은 페이지는 읽기 폭을 제한했습니다. 공통 시각 기준은 Figma 베리어블(Primitive → Semantic Token)로 관리했습니다.","반응형 비교 + 베리어블 구조",SL("wide",[["반응형 비교","","반응형"],["베리어블 Primitive","","Primitive"],["베리어블 Semantic","","Semantic"]])]],
@@ -777,9 +866,9 @@ const FULL = [
  overview:"결제 대행 서비스 PayAppCafe의 가입과 계약 관련 정보를 안내하는 반응형 웹을 디자인했습니다.",
  problem:"설명할 내용이 많은 웹인데, 디자인 시점에 일부 콘텐츠(영상 등)가 확정되지 않은 상태였습니다.",
  decisions:[
-  ["콘텐츠가 확정되지 않았다면, 두 가지를 준비","영상 콘텐츠가 있을 때는 탭으로 콘텐츠를 나누고 맞는 영상을 노출하는 안, 영상이 없을 때는 텍스트만으로 구성하는 안을 함께 제공했습니다.","영상 버전 ↔ 텍스트 버전",SL("wide",[["영상 있음","","영상"],["영상 없음","","텍스트"]])],
-  ["읽는 방식에 맞춰 UI를 고른다","보고 따라 해야 하는 내용은 이미지와 텍스트, 순서대로 읽어야 하는 정보는 단계형 리스트, 비교가 필요한 데이터는 테이블, 찾는 내용이 분명한 사용자에게는 아코디언을 적용했습니다.","UI 유형 4종",SL("wide",[["이미지+텍스트","","이미지"],["단계형 리스트","","단계"],["테이블","","표"],["아코디언","","접기"]])],
-  ["영향이 큰 항목부터 검수","디자인 전달 → 구현 확인 → 우선순위 검수 순으로 QA를 진행했습니다. 픽셀이나 간격보다 정보 구조와 공통 UI 기준(패턴 불일치, 컴포넌트 variant 미적용)에 영향을 주는 오류를 먼저 고쳤습니다.","QA 프로세스"]],
+  ["실제 운영 상황을 고려한 화면 설계","디자인 시점에 영상 등 일부 콘텐츠가 확정되지 않아, 콘텐츠 확정 여부에 따라 고를 수 있는 두 가지 옵션을 함께 제공했습니다. 영상이 있을 때는 탭으로 콘텐츠를 구분하고 그에 맞는 영상을 노출하고, 영상이 없을 때는 텍스트로만 구성된 UI로 대응합니다. 페이지는 PC와 모바일에서 레이아웃이 달라지는 반응형 구조로 설계했습니다.","콘텐츠 옵션 · 반응형",SL("wide",[["콘텐츠 미확정 옵션",{diag:"contentOptions"},"옵션"],["반응형 구조","","반응형"]])],
+  ["읽는 방식에 맞춰 UI를 고른다","보고 따라 해야 하는 내용은 이미지와 텍스트, 순서대로 읽어야 하는 정보는 단계형 리스트, 비교가 필요한 데이터는 테이블, 찾는 내용이 분명한 사용자에게는 아코디언을 적용했습니다.",{diag:"uiTypes"}],
+  ["영향이 큰 항목부터 검수","디자인 전달 → 구현 확인 → 우선순위 검수 순으로 QA를 진행했습니다. 픽셀이나 간격보다 정보 구조와 공통 UI 기준(패턴 불일치, 컴포넌트 variant 미적용)에 영향을 주는 오류를 먼저 고쳤습니다.",null]],   /* D3: 이미지 없이 텍스트만 (사용자 결정 2026-10-23) */
  screens:["메인 (PC)","서비스 흐름","FAQ · Q&A (Mobile)"],
  result:"2023년에 서비스가 런칭되었습니다. 운영 상황이 바뀔 수 있다는 전제로 화면을 준비하는 것도 설계의 일부라는 것을 배웠습니다."},
 {id:"jibsarang", name:"Jibsarang", desc:"가구 구성원과 함께 관리하는 집안일 앱", cat:"Lifestyle", year:"2026", type:"App",
@@ -806,7 +895,7 @@ const SIDE = [
  lead:"회차마다 새롭지만 같은 서비스로 보이도록, 구조를 고정한 이벤트 페이지와 배너",
  body:"서비스 운영 중 정기적으로 열린 이벤트의 페이지와 배너를 디자인했습니다.",
  points:["Thursday Market 시리즈는 로고타입과 페이지 구조를 고정하고, 회차별 테마만 바꿨습니다.","이벤트 키비주얼 하나를 모바일 3곳, PC 4곳의 노출 위치 규격에 맞게 변주했습니다.","키비주얼 → 혜택 → 참여 방법 → CTA → 유의사항의 공통 구조로 이벤트 페이지를 빠르게 제작했습니다."],
- imgs:[SL("free",[["3rd","","","3/4"],["4th","","","3/4"],["6th","","","3/4"]]),"배너 7종 변주","이벤트 페이지 공통 구조"]},
+ imgs:[SL("free",[["3rd","","","3/4"],["4th","","","3/4"],["6th","","","3/4"]]),{banners:"events"},{diag:"eventStructure"}]},
 {id:"bookgwedo", name:"Bookgwedo", cat:"Lifestyle", year:"2025", type:"App", meta:"Personal · Mobile App · 2025 (2주)",
  lead:"독서의 목적에 따라 기록의 깊이를 고르는 독서 기록 앱",
  body:"독서 '수준'이 아니라 독서의 목적과 태도에 따라 서로 다른 기록 경험을 제공하는 독서 기록 앱입니다.",
@@ -837,7 +926,7 @@ const CONTENT_THUMBS=new Set([]);   /* 예: new Set(["c6"]) */
 const contentThumb=c=>CONTENT_THUMBS.has(c.id)?c.id+"-thumb":((c.slides&&c.slides.items[0][1])||c.id);
 /* Content 슬라이드: 카드뉴스 · 연재 인포그래픽 · 포스터 시리즈 (장 수는 원본에 맞춰 조정) */
 /* c1~c5: 페이지 + 배너 변주 콜라주 (키비주얼 하나 → 페이지 · 노출 위치별 배너) */
-[["이벤트 페이지"],["이벤트 페이지"],["이벤트 페이지"],["모집 페이지"],["콘텐츠 페이지"]].forEach((x,i)=>{CONTENT[i].slides=SL("free",[[x[0],"","","3/8"],["배너","","","4/5"]])});
+[["이벤트 페이지"],["이벤트 페이지"],["이벤트 페이지"],["모집 페이지"],["콘텐츠 페이지"]].forEach((x,i)=>{CONTENT[i].slides=SL("free",[[x[0],"","","3/8"],["배너",{banners:"c"+(i+1)}]])});
 CONTENT[5].slides=SL("free",Array.from({length:11},()=>["","","","1/1"]));   /* 카드뉴스 11장 */
 CONTENT[6].slides=SL("free",[["2차","","","3/8"],["4차","","","3/8"],["6차","","","3/8"]]);
 CONTENT[7].slides=SL("free",[1,2,3].map(()=>["","","","1/1.414"]));
@@ -988,6 +1077,9 @@ const body=t=>`<p class="ci-body">${esc(t)}</p>`;
 /* 단계 슬라이더: slides = [[라벨, 이미지 id(없으면 자리표시)], ...] */
 /* slides = SL(형태, [[이름, 이미지 id(없으면 자리표시), 짧은 이름(좁을 때), 자리표시 비율(free)], ...]) · 배열만 주면 phone */
 const slSlide=(f,s,i,n)=>{const nm=s[0]||`${i+1}`, alt=esc(s[0]||`${i+1}번째`);
+ const dg=s[1]&&typeof s[1]==="object"&&s[1].diag;   /* 슬라이드 한 장을 다이어그램으로 */
+ if(s[1]&&s[1].banners)return `<div class="sl-slide" role="group" aria-roledescription="slide" aria-label="${i+1} / ${n}${s[0]?" "+esc(s[0]):""}"><div class="sl-free">${bannerSet(s[1].banners)}</div></div>`;
+ if(dg)return `<div class="sl-slide" role="group" aria-roledescription="slide" aria-label="${i+1} / ${n}${s[0]?" "+esc(s[0]):""}"><div class="sl-dg">${DIAGRAMS[dg]()}</div></div>`;
  const img=s[1]?`<img src="img/${s[1]}.jpg" alt="${alt}" loading="lazy" decoding="async">`:"";
  const inner=f==="phone"?`<div class="sl-phone">${img||ph(nm)}</div>`
   :f==="wide"?`<div class="sl-shot">${img||ph(nm)}</div>`
@@ -1000,10 +1092,96 @@ const slider=(title,data)=>{const f=Array.isArray(data)?"phone":data.frame, slid
    <div class="sl-arrows"><button class="icon-btn" data-sl-move="-1" aria-label="이전" disabled>${ICON.left}</button><button class="icon-btn" data-sl-move="1" aria-label="다음">${ICON.right}</button></div></div>
  </div>`};
 const mediaCopy=d=>`<div class="copy"><h4>${esc(d[0])}</h4><p>${esc(d[1])}</p>${d[4]?`<button class="btn-ghost" data-swap="${d[4][0]}"><span>${esc(d[4][1])}</span>${ICON.narrow}</button>`:""}</div>`;   /* d[4] = [모달 토큰, 문구] → 다른 모달로 이동 */
-const mediaDefault=d=>`<div class="media media-default">${mediaCopy(d)}${fig(d[2])}</div>`;
+/* ===== 다이어그램: decisions 3번째 항목에 {diag:"이름"} → 이미지 대신 코드로 그린 다이어그램 ===== */
+/* ===== 배너 세트 템플릿: 원본 파일을 그대로 받아 한 화면에 배치 (Mobile · PC · In-Event) =====
+   그룹 안에서는 실제 크기 비율 유지(그룹마다 기준 폭이 100%). 위치 이름은 표시하지 않음.
+   파일명: <키>-b-<자리>.jpg (예: c1-b-mo-home) → 파일을 넣으면 BANNER_FILES에 추가. 없는 배너는 BANNER_SKIP으로 숨김. */
+const BANNER_GROUPS=[   /* [그룹, 줄들] · 줄 = 열들 · 열 = [[자리, 원본 폭, 원본 높이], ...] · 배너는 자기 열의 폭에 맞춤 */
+ ["Mobile",[[[["mo-home",1500,640],["mo-mypage",1500,320],["mo-list",1500,230]]]]],
+ ["PC",[[[["pc-list",1480,172]]],[[["pc-side",636,890]],[["pc-profile",636,590]]]]],   /* 목록 전체 폭 → 아래 2열: 왼쪽 우측 배너 · 오른쪽 프로필 하단 */
+ ["In-Event",[[[["mid",750,310]]]]]];
+const BANNER_FILES=new Set([]);   /* 예: new Set(["c1-b-mo-home","c1-b-mid"]) */
+const BANNER_SKIP={};             /* 예: {c4:["mid"]} → c4는 중간 배너 자리 숨김 (그룹이 비면 그룹째 숨김) */
+const bannerSet=key=>{const skip=BANNER_SKIP[key]||[];
+ const item=([sl,w,h],g)=>{const f=`${key}-b-${sl}`;
+  return `<div class="bn-item" style="aspect-ratio:${w}/${h}">${BANNER_FILES.has(f)?`<img src="img/${f}.jpg" width="${w}" height="${h}" alt="${g} 배너" loading="lazy" decoding="async">`:`<div class="ph"><span>${w}×${h}</span></div>`}</div>`};
+ return `<div class="bn-set">${BANNER_GROUPS.map(([g,rows])=>{
+  const rs=rows.map(cols=>cols.map(c=>c.filter(x=>!skip.includes(x[0]))).filter(c=>c.length)).filter(cs=>cs.length); if(!rs.length)return "";
+  return `<div class="bn-grp"><p class="dg-lb">${g}</p>${rs.map(cs=>`<div class="bn-row" style="grid-template-columns:repeat(${cs.length},minmax(0,1fr))">${cs.map(c=>`<div class="bn-col">${c.map(x=>item(x,g)).join("")}</div>`).join("")}</div>`).join("")}</div>`}).join("")}</div>`};
+const DIAGRAMS={
+ /* Energy D1 · Requirements → Information Architecture */
+ energyIA:()=>{
+  const T=["","dash","","dash","","","dash","","dash"].map(c=>`<div class="dg-tile${c?" "+c:""}"><b></b><i></i></div>`).join("");
+  const sv=(inner)=>`<svg viewBox="0 0 120 72" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${inner}</svg>`;
+  const kpi=sv(`<rect x="14" y="12" width="40" height="4" rx="2" fill="#F4F5F6" opacity=".45"/><rect x="14" y="22" width="62" height="10" rx="5" fill="#F4F5F6" opacity=".9"/><polyline points="14,60 34,55 52,58 74,49 104,52" fill="none" stroke="#4FD1C0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>`);
+  const rev=sv([22,14,18,26,16,38,24].map((h,i)=>`<rect x="${24+i*11}" y="${62-h}" width="6" height="${h}" rx="3" fill="${i===5?"#C9CDD3":"#3A3E45"}"/>`).join(""));
+  const inf=sv(`<rect x="20" y="18" width="56" height="5" rx="2.5" fill="#C9CDD3"/><rect x="20" y="31" width="76" height="4" rx="2" fill="#3A3E45"/><rect x="20" y="42" width="48" height="4" rx="2" fill="#3A3E45"/><rect x="20" y="53" width="66" height="4" rx="2" fill="#3A3E45"/>`);
+  const utl=sv([0,1,2,3].map(i=>`<rect x="34" y="${10+i*14}" width="52" height="9" rx="4.5" fill="none" stroke="${i===3?"#4FD1C0":"#3A3E45"}" stroke-width="1"/>`).join(""));
+  const card=(on,vis,t,d)=>`<div class="dg-card${on?" on":""}"><div class="dg-vis">${vis}</div><div class="dg-note"><h5${on?' class="on"':""}>${t}</h5><p>${d}</p></div></div>`;
+  return `<div class="dg" role="img" aria-label="요구사항(일반 정보·실시간 데이터)을 KPI, Revenue, Information, Utility 네 영역의 정보 구조로 정리한 다이어그램">
+   <div class="dg-flow"><div class="dg-col">
+   <div class="dg-hd"><p class="dg-lb">Requirements</p><div class="dg-legend"><span><i></i>일반 정보</span><span><i class="dash"></i>실시간 데이터</span></div></div>
+   <div class="dg-tiles">${T}</div>
+   <div class="dg-notes">
+    <div class="dg-note"><h5>다양한 데이터 유형</h5><p>발전량, 수익, 운영 정보 등 성격이 다른 데이터가 함께 요구</p></div>
+    <div class="dg-note"><h5>정보 우선순위 정의 필요</h5><p>데이터의 중요도와 확인 목적에 따른 정보 위계 설정 필요</p></div>
+   </div>
+   </div>
+   <div class="dg-arrow"><svg class="v" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5V19M5 12L12 19L19 12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="h" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12H19M12 5L19 12L12 19" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+   <div class="dg-col">
+   <p class="dg-lb on">Information Architecture</p>
+   <div class="dg-ia">
+    ${card(1,kpi,"KPI","메인 화면에서 우선 확인하도록 설계한 핵심 지표")}
+    ${card(0,rev,"Revenue","핵심 수치와 3개월 추이를 확인하는 수익 데이터")}
+    ${card(0,inf,"Information","발전소의 운영 현황과 발전/경보 등의 알림 정보")}
+    ${card(0,utl,"Utility","보고서/캘린더 등 후속 기능에 진입")}
+   </div>
+   </div></div>
+  </div>`},
+ /* PayAppCafe D2 · 읽는 방식에 맞춘 UI 유형 4종 */
+ uiTypes:()=>{
+  const sv=(inner)=>`<svg viewBox="0 0 140 92" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${inner}</svg>`;
+  const L="#3A3E45", M="#C9CDD3", A="#4FD1C0";
+  const media=sv(`<rect x="0" y="0" width="52" height="92" rx="8" fill="rgba(79,209,192,.12)"/><circle cx="17" cy="38" r="3" fill="${A}"/><polyline points="10,58 20,46 28,54 34,48 42,58" fill="none" stroke="${A}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><rect x="64" y="30" width="62" height="6" rx="3" fill="${M}"/><rect x="64" y="44" width="70" height="4" rx="2" fill="${L}"/><rect x="64" y="54" width="62" height="4" rx="2" fill="${L}"/><rect x="64" y="64" width="40" height="4" rx="2" fill="${L}"/>`);
+  const list=sv([0,1,2].map(i=>`<rect x="0" y="${i*32}" width="140" height="26" rx="8" fill="#1E2024"/><circle cx="12" cy="${i*32+10}" r="2.5" fill="${A}"/><rect x="22" y="${i*32+8}" width="72" height="4" rx="2" fill="${M}"/><rect x="22" y="${i*32+16}" width="44" height="3" rx="1.5" fill="${L}"/>`).join(""));
+  const table=sv(`<rect x="0" y="0" width="140" height="18" rx="6" fill="#1E2024"/>${[14,62,108].map(x=>`<rect x="${x}" y="7" width="26" height="4" rx="2" fill="${A}"/>`).join("")}${[0,1,2,3].map(r=>`<rect x="14" y="${30+r*17}" width="26" height="3.5" rx="1.75" fill="${M}"/><rect x="66" y="${30+r*17}" width="18" height="3.5" rx="1.75" fill="${L}"/><rect x="110" y="${30+r*17}" width="18" height="3.5" rx="1.75" fill="${L}"/>${r<3?`<rect x="0" y="${39+r*17}" width="140" height="1" fill="#2D3036"/>`:""}`).join("")}`);
+  const acc=sv(`<rect x="2" y="4" width="76" height="4" rx="2" fill="${M}"/><path d="M128 6H136" stroke="${A}" stroke-width="1.4" stroke-linecap="round"/><rect x="2" y="14" width="116" height="3" rx="1.5" fill="${L}"/><rect x="2" y="22" width="92" height="3" rx="1.5" fill="${L}"/><rect x="0" y="33" width="140" height="1" fill="#2D3036"/>${[0,1,2].map(i=>`<rect x="2" y="${42+i*18}" width="76" height="4" rx="2" fill="${M}"/><path d="M128 ${44+i*18}H136M132 ${40+i*18}V${48+i*18}" stroke="${A}" stroke-width="1.4" stroke-linecap="round"/>${i<2?`<rect x="0" y="${51+i*18}" width="140" height="1" fill="#2D3036"/>`:""}`).join("")}`);
+  const ty=(lb,vis,act,t,d)=>`<div class="dg-type"><p class="dg-lb on">${lb}</p><div class="dg-vis">${vis}</div><div class="dg-note"><p class="act">${act}</p><h5>${t}</h5><p>${d}</p></div></div>`;
+  return `<div class="dg" role="img" aria-label="읽는 방식에 따라 고른 UI 유형 4종: Media & Text, List, Table, Accordion">
+   <div class="dg-types">
+    ${ty("Media &amp; Text",media,"보고 따라하기","사용자의 행동을 안내하는 콘텐츠","보조 이미지를 함께 두어서 무엇을 해야 할지 시각적으로 안내")}
+    ${ty("List",list,"순서대로 읽기","세부 내용까지 읽어야 하는 정보","단계를 분명히 나눠서 현재 위치와 다음 항목을 쉽게 인지")}
+    ${ty("Table",table,"항목 비교하기","정보가 많거나 비교가 필요한 데이터","항목별로 그룹핑하여 한 화면에서 각기 다른 데이터를 비교할 수 있게 정리")}
+    ${ty("Accordion",acc,"즉시 찾아보기","찾고 싶은 내용이 정확한 사용자","필요한 아이템만 펼쳐 볼 수 있고 항목이 늘어나도 간략하게 확인함")}
+   </div>
+  </div>`},
+ /* PayAppCafe D1 슬라이드 1 · 콘텐츠 미확정 옵션 (영상 / 텍스트 버전) */
+ contentOptions:()=>{
+  const A="#4FD1C0", M="#C9CDD3", L="#3A3E45";
+  const sv=(inner)=>`<svg viewBox="0 0 200 124" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${inner}</svg>`;
+  const video=sv(`<rect x="0" y="0" width="38" height="13" rx="6.5" fill="${A}"/><rect x="44.5" y=".5" width="37" height="12" rx="6" fill="none" stroke="${L}"/><rect x="88.5" y=".5" width="37" height="12" rx="6" fill="none" stroke="${L}"/><rect x="0" y="22" width="200" height="88" rx="10" fill="#111214"/><path d="M93 56L111 66L93 76Z" fill="${A}"/><rect x="0" y="118" width="64" height="4" rx="2" fill="${L}"/>`);
+  const text=sv(`<rect x="0" y="4" width="84" height="7" rx="3.5" fill="${M}"/>${[22,34,46].map((y,i)=>`<rect x="0" y="${y}" width="${[200,200,132][i]}" height="4" rx="2" fill="${L}"/>`).join("")}<rect x="0" y="70" width="60" height="7" rx="3.5" fill="${M}"/>${[88,100].map((y,i)=>`<rect x="0" y="${y}" width="${[200,110][i]}" height="4" rx="2" fill="${L}"/>`).join("")}`);
+  const opt=(vis,t,d)=>`<div class="dgo-row"><div class="dgo-card">${vis}</div><div class="dg-note"><h5>${t}</h5><p>${d}</p></div></div>`;
+  return `<div class="dg dgo" role="img" aria-label="콘텐츠 확정 여부에 따른 두 가지 옵션: 영상 콘텐츠 버전, 텍스트 콘텐츠 버전">
+   ${opt(video,"영상 콘텐츠 버전","탭으로 콘텐츠를 구분하고 그에 맞는 영상 노출")}
+   ${opt(text,"텍스트 콘텐츠 버전","영상이 없는 경우 텍스트로만 구성된 UI 구성")}
+  </div>`},
+ /* Event & Banner · 이벤트 페이지 공통 구조 */
+ eventStructure:()=>{
+  const S=[["키비주얼","이벤트 주제와 기간",88,1],["혜택","받을 수 있는 혜택",56],["참여 방법","단계별 참여 안내",56],["CTA","참여 버튼",40],["유의사항","기간 · 조건 안내",48]];
+  return `<div class="dg" role="img" aria-label="이벤트 페이지 공통 구조: 키비주얼, 혜택, 참여 방법, CTA, 유의사항">
+   <p class="dg-lb on">Event Page Structure</p>
+   <div class="dg-page">
+    <div class="dg-phonebg"></div>
+    ${S.map((x,i)=>`<div class="dg-blk${x[3]?" on":""}" style="grid-row:${i+1};min-height:${x[2]}px"></div><div class="dg-sec${x[3]?" on":""}" style="grid-row:${i+1}"><b>0${i+1}</b><div class="dg-note"><h5${x[3]?' class="on"':""}>${x[0]}</h5><p>${x[1]}</p></div></div>`).join("")}
+   </div>
+  </div>`}
+};
+const figOrDiag=x=>x&&typeof x==="object"&&x.diag?`<div class="fig diag">${DIAGRAMS[x.diag]()}</div>`:fig(x);
+const mediaDefault=d=>`<div class="media media-default${d[2]&&d[2].diag?" media-diag":""}">${mediaCopy(d)}${figOrDiag(d[2])}</div>`;   /* 다이어그램은 글 아래 본문 전체 폭 */
 const mediaSlide=(slides,d)=>d?`<div class="media media-slide">${mediaCopy(d)}${slider(d[0],slides)}</div>`:`<div class="media-slide">${slider("",slides)}</div>`;
-const media=d=>d[3]?mediaSlide(d[3],d):mediaDefault(d);
-const screen=x=>typeof x==="string"?mediaImgonly(x):mediaSlide(x);   /* screens · imgs: 문자열 = imgonly, 배열 = slide(텍스트 없음) */
+const media=d=>d[3]?mediaSlide(d[3],d):d[2]===null?`<div class="media media-text">${mediaCopy(d)}</div>`:mediaDefault(d);   /* 3번째가 null이면 텍스트만 */
+const screen=x=>typeof x==="string"?mediaImgonly(x):x.diag?figOrDiag(x):x.banners?bannerSet(x.banners):mediaSlide(x);   /* screens · imgs: 문자열 = imgonly, 배열 = slide(텍스트 없음) */
 const table=(head,rows)=>`<table class="ttable"><thead><tr>${head.map(h=>`<th scope="col">${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td data-th="${esc(head[i])}">${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
 const SECS=[["s-overview","Overview"],["s-problem","Problem"],["s-decisions","Decisions"],["s-screens","Screens"],["s-result","Result"]];
 /* 모달 히어로: 제목 · 한 줄 소개 · 대표 이미지 · 정보 */
@@ -1165,7 +1343,7 @@ function setupSliders(root){
  });
 }
 function skel(root){
- root.querySelectorAll(".thumb>img,.fig>img,.sl-phone>img,.sl-shot>img,.sl-free>img").forEach(img=>{
+ root.querySelectorAll(".thumb>img,.fig>img,.sl-phone>img,.sl-shot>img,.sl-free>img,.bn-item>img").forEach(img=>{
   const box=img.parentElement;
   if(img.complete&&img.naturalWidth) return;
   box.classList.add("sk"); if(box.classList.contains("fig")&&!img.getAttribute("width")) box.classList.add("noratio");
