@@ -207,7 +207,7 @@ body.contact-open nav.menu [data-go]{display:none}
   .m-ttl{gap:8px}.m-ttl h2{font-size:17px;line-height:24px}
   .m-btns{gap:6px}
 }
-.m-body{flex:1;overflow-y:auto;overscroll-behavior:contain;transition:opacity .18s}
+.m-body{flex:1;overflow-y:auto;scrollbar-gutter:stable;overscroll-behavior:contain;transition:opacity .18s}
 .m-body.swap{opacity:0}
 .m-inner{padding:24px max(16px,env(safe-area-inset-right,0px)) calc(40px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 @media(min-width:768px){.m-inner{padding:36px 40px 60px}.modal.side .m-inner{padding:8px 24px 60px}
@@ -313,6 +313,7 @@ body.show-notes .work-grid .card.big .thumb::after,body.show-notes .home-grid .t
 .ab-copy{position:relative;z-index:1;max-width:662px;padding-top:190px;display:flex;flex-direction:column;gap:8px}
 .ab-copy h1{margin:0;font-size:24px;font-weight:700;line-height:1.6;letter-spacing:-.03em;color:var(--text-primary)}
 .ab-copy p{margin:0;font-size:18px;line-height:1.8;color:var(--text-primary)}
+@media (max-width:767px){.ab-copy p br{display:none}}   /* 모바일: 줄바꿈 해제, 자연스럽게 흐름 */
 .ab-visual{position:absolute;top:0;right:var(--gutter);width:420px}
 .ab-visual .about-art{max-width:none;width:100%}
 .ab-core,.ab-how,.ab-exp{padding-block:80px}
@@ -333,6 +334,14 @@ body.show-notes .work-grid .card.big .thumb::after,body.show-notes .home-grid .t
 .hw-item .btn{gap:4px}
 .hw-item .btn .ico{width:16px;height:16px;transition:transform .2s var(--ease)}
 @media (hover:hover){.hw-item .btn:hover .ico{transform:translateX(2px)}}
+/* ===== Ghost 버튼 (컴포넌트): 면 · 테두리 · 좌우 패딩 없음 · 높이 44 · 글자 15 Medium primary · 글자↔아이콘 4(버튼 기본) ===== */
+.btn-ghost{display:inline-flex;align-items:center;gap:4px;height:44px;padding:0;border:0;background:none;font-family:var(--f-kr);font-weight:500;font-size:15px;line-height:1;white-space:nowrap;color:var(--text-primary);text-decoration:none;cursor:pointer;transition:color .2s}
+.btn-ghost .ico{width:16px;height:16px;transition:transform .2s var(--ease)}
+.btn-ghost .ico{color:var(--accent)}   /* 화살표만 청록 (2026-10-23 확정 · B안) */
+@media (hover:hover){.btn-ghost:hover .ico{transform:translateX(2px)}}
+.btn-ghost:focus-visible .ico{transform:translateX(2px)}
+@media (prefers-reduced-motion:reduce){.btn-ghost .ico{transition:none;transform:none!important}}
+.media .btn-ghost{align-self:flex-start}   /* 위 카피와 간격 8 (copy의 gap) */
 .ab-exp{display:flex;flex-direction:column;gap:16px}
 .xtable{width:100%;min-width:0;border-collapse:collapse;table-layout:fixed}
 .xtable th{padding:10px 12px;background:var(--bg-elevated);font-size:14px;font-weight:600;line-height:1.5;color:var(--text-tertiary);text-align:left;border:0}
@@ -456,6 +465,63 @@ td.role{font-weight:700;white-space:nowrap}
 .media .copy p{margin:0;font-size:16px;line-height:1.65;color:var(--text-secondary)}
 @media(max-width:767px){.media .copy p{font-size:15px}.media .copy h4{font-size:20px}}
 .media .fig{flex:0 0 560px;max-width:100%}
+/* 단계 슬라이더 (Design Decisions 이미지 자리): 1:1 패널 안에서 앱 화면을 한 장씩 · 아래 단계 라벨 + 화살표 · 모바일은 스와이프 */
+.slider{display:flex;flex-direction:column;gap:12px}
+.sl-view{position:relative;aspect-ratio:1/1;max-height:560px;border-radius:16px;background:var(--bg-elevated);overflow:hidden}
+.sl-track{display:flex;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-x:contain;scrollbar-width:none}
+.sl-track::-webkit-scrollbar{display:none}
+.sl-track:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:16px}
+.sl-slide{flex:0 0 100%;height:100%;display:flex;align-items:center;justify-content:center;scroll-snap-align:center;scroll-snap-stop:always}
+/* 슬라이드 이미지 형태 3종: phone(앱 화면 · 기본) / wide(PC 화면 · 16:10 패널) / free(카드뉴스 · 포스터 · 인포그래픽 · 원본 비율, 패널 높이가 현재 장에 맞춰짐) */
+.slider[data-frame="wide"] .sl-view{aspect-ratio:16/10;max-height:none}
+.sl-shot{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.sl-shot>img{display:block;width:100%;height:100%;object-fit:contain}
+.sl-shot .ph{width:100%;height:100%;border:0;border-radius:0}
+.slider[data-frame="free"] .sl-view{aspect-ratio:auto;max-height:none;background:none;transition:height .3s var(--ease)}
+.slider[data-frame="free"] .sl-track{align-items:flex-start}
+.slider[data-frame="free"] .sl-slide{height:auto;align-items:flex-start}
+.sl-free{width:100%}
+.sl-free>img{display:block;width:100%;height:auto;border-radius:16px}
+.sl-free .ph{width:100%;border-radius:16px}
+.slider[data-frame="free"]{flex-direction:column-reverse}   /* 세로로 긴 원본: 단계 탭을 이미지 위에 */
+@media (prefers-reduced-motion:reduce){.slider[data-frame="free"] .sl-view{transition:none}}
+.sl-phone{position:relative;height:88%;aspect-ratio:1170/2532;border-radius:20px;overflow:hidden;background:var(--bg-placeholder)}   /* 앱 화면 캡처 원본 비율 (iPhone 1170×2532) */
+.sl-phone>img{display:block;width:100%;height:100%;object-fit:cover}
+.sl-phone .ph{width:100%;height:100%;border-radius:20px}
+.sl-ctl{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.sl-steps{display:flex;flex-wrap:nowrap;gap:16px;min-width:0;overflow:hidden}   /* 한 줄 고정 · 넘치면 compact */
+.sl-step{display:inline-flex;align-items:baseline;gap:6px;min-width:0;padding:6px 0;font-size:14px;font-weight:600;line-height:1.4;color:var(--text-tertiary);white-space:nowrap;transition:color .2s}
+.sl-step span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+/* 단계 탭: 폭은 라벨로 고정, 상태는 on/off(색)만 → 넘겨도 위치가 움직이지 않음 */
+.sl-step{flex:none}
+.sl-step .sh{display:none}
+/* compact: 한 줄에 다 안 들어가면 모든 단계를 짧은 이름으로 (1 추가 · 2 입력 · 3 설정) */
+.slider.compact .sl-step .fl{display:none}
+.slider.compact .sl-step .sh{display:inline}
+/* nums: 짧은 이름도 넘치면 번호만 (같은 폭 32) · 이름 없는 단계(카드뉴스 등)는 항상 번호만 */
+.slider.nums .sl-step span{display:none}
+.slider.nums .sl-step,.sl-step.num{min-width:32px;justify-content:center}
+.slider.nums .sl-steps{gap:0}
+/* count: 번호도 한 줄에 다 안 들어가면(장 수가 많을 때) 단계 탭 대신 "3 / 11" */
+.sl-count{display:none;font-family:var(--f-en);font-size:14px;font-weight:600;line-height:1.4;color:var(--text-tertiary);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sl-count b{color:var(--accent);font-weight:700}
+.slider.count .sl-steps{display:none}
+.slider.count .sl-count{display:block}
+.sl-step b{font-family:var(--f-en);font-weight:700;font-size:12px}
+.sl-step:hover{color:var(--text-primary)}
+.sl-step[aria-current="step"]{color:var(--text-primary)}
+.sl-step[aria-current="step"] b{color:var(--accent)}
+.sl-arrows{display:flex;gap:8px;flex:none}
+.sl-arrows .icon-btn{width:36px;height:36px}
+.sl-arrows .icon-btn .ico{width:20px;height:20px}
+@media (prefers-reduced-motion:reduce){.sl-track{scroll-behavior:auto}.sl-step{transition:none}}
+@media (max-width:767px){.sl-view{aspect-ratio:3/4}}
+/* 터치 기기: 누르는 영역 44 (번호 칩 최소 폭 32 · 화살표는 모달 상단 버튼과 같은 44) */
+@media (pointer:coarse){
+ .sl-step{min-height:44px;align-items:center;justify-content:center}
+ .sl-arrows .icon-btn{width:44px;height:44px}
+ .sl-arrows .icon-btn .ico{width:24px;height:24px}
+}   /* 모바일: 폰 화면이 너무 작아지지 않게 세로로 긴 패널 */
 .fig img{display:block;width:100%;height:auto;border-radius:16px}       /* 폭만 맞추고 원본 비율 */
 /* 이미지 스켈레톤: 받는 동안 bg-elevated ↔ bg-placeholder로 은은하게 깜빡임 → 준비되면 효과 없이 한 번에 표시 */
 @keyframes skPulse{0%,100%{background-color:var(--bg-elevated)}50%{background-color:var(--bg-placeholder)}}
@@ -644,6 +710,8 @@ td.role{font-weight:700;white-space:nowrap}
 
 <script>
 /* ---------- DATA ---------- */
+/* media_slide 데이터: SL(형태, [[이름, 이미지 id, 짧은 이름, 자리표시 비율(free)], ...]) · 형태 = phone | wide | free */
+const SL=(frame,items)=>({frame,items});
 const FULL = [
 {id:"energy", name:"Energy Dashboard", desc:"발전소 운영 데이터를 한눈에 확인하는 반응형 대시보드", cat:"Energy", year:"2026", type:"Responsive",
  thumb:"대표 이미지 — 다크 배경 + KPI 카드",
@@ -655,10 +723,9 @@ const FULL = [
   ["모든 정보를 같은 중요도로 보여주지 않는다","KPI는 첫 화면 히어로 영역에, 주요 데이터는 단독 섹션에, 보조 정보는 탭으로 묶었습니다. 전체 스크롤은 줄이고 필요한 정보에는 계속 접근할 수 있게 했습니다.","IA 다이어그램: KPI · Revenue · Information · Utility"],
   ["일반 정보와 실시간 데이터를 섹션으로 분리","확인 목적이 다른 두 종류의 데이터를 나누고, 수익 정보는 핵심 수치와 3개월 추이를 함께 보도록 위계를 강화했습니다.","와이어프레임 → Hi-fi 비교"],
   ["반복되는 데이터는 하나의 카드 규칙으로","Data Level 1(핵심 지표) · Level 2(주요 지표) · Level 3(상세 데이터)로 카드 모듈을 정의해, 데이터가 늘어나도 같은 규칙으로 대응하게 했습니다.","카드 컴포넌트"],
-  ["화면 크기마다 배치를 다르게","넓은 화면에서는 주요 정보를 병렬로 배치하고, 정보량이 적은 페이지는 읽기 폭을 제한했습니다. 공통 시각 기준은 Figma 베리어블(Primitive → Semantic Token)로 관리했습니다.","반응형 비교 + 베리어블 구조"]],
+  ["화면 크기마다 배치를 다르게","넓은 화면에서는 주요 정보를 병렬로 배치하고, 정보량이 적은 페이지는 읽기 폭을 제한했습니다. 공통 시각 기준은 Figma 베리어블(Primitive → Semantic Token)로 관리했습니다.","반응형 비교 + 베리어블 구조",SL("wide",[["반응형 비교","","반응형"],["베리어블 Primitive","","Primitive"],["베리어블 Semantic","","Semantic"]])]],
  screens:["메인 대시보드 (Desktop)","메인 대시보드 (Mobile)","수익 상세"],
- result:"첫 화면에서 핵심 지표를 바로 확인하는 구조를 만들고, 반복 데이터의 표현 기준을 하나로 통일했습니다. 화면을 그리기 전에 '사용자가 무엇을 가장 먼저 판단해야 하는가'를 정하는 것이 대시보드 설계의 출발점이라는 것을 다시 확인한 프로젝트입니다.",
- related:["goodcare","Related — GOODCARE (2021, 의료 관리자 대시보드)"]},
+ result:"첫 화면에서 핵심 지표를 바로 확인하는 구조를 만들고, 반복 데이터의 표현 기준을 하나로 통일했습니다. 화면을 그리기 전에 '사용자가 무엇을 가장 먼저 판단해야 하는가'를 정하는 것이 대시보드 설계의 출발점이라는 것을 다시 확인한 프로젝트입니다."},
 {id:"counselling", name:"Counselling Service", desc:"B2B 화상 상담에서 B2C 심리상담 앱까지", cat:"Healthcare", year:"2022–2023", type:"Web · App",
  thumb:"대표 이미지 — B2B 상담사 화면 ↔ B2C 영상 화면",
  lead:"운영된 B2B 상담 서비스를 바탕으로, B2C 심리상담 앱을 다시 설계하다",
@@ -669,9 +736,9 @@ const FULL = [
  problem:"한 서비스 안에 상담사와 내담자, 실시간 상담과 쪽지 상담, 영상·음성·채팅이라는 서로 다른 조건이 겹쳐 있었습니다. 같은 기능이라도 누가, 어떤 상담 방식으로 쓰는지에 따라 필요한 정보가 달랐습니다.",
  decisions:[
   ["@Part 1. reil (B2B)"],
-  ["상담 유형마다 신청 흐름을 다르게","실시간 상담과 쪽지 상담을 유형별로 다르게 신청하도록 하고, 상담 동의 → 사전 질문 → 예약 완료로 단계를 나눴습니다. 상담사마다 다른 질문지에 맞춰 질문별 답변 서식(예/아니요, 추가 설명 입력, 필수 항목 오류 표시)을 정의했습니다.","신청 단계 화면"],
+  ["상담 유형마다 신청 흐름을 다르게","실시간 상담과 쪽지 상담을 유형별로 다르게 신청하도록 하고, 상담 동의 → 사전 질문 → 예약 완료로 단계를 나눴습니다. 상담사마다 다른 질문지에 맞춰 질문별 답변 서식(예/아니요, 추가 설명 입력, 필수 항목 오류 표시)을 정의했습니다.","신청 단계 화면",SL("wide",[["상담 동의","","동의"],["사전 질문","","질문"],["예약 완료","","완료"]])],
   ["상담사는 '오늘 무엇을 해야 하는지'부터","상담사 첫 화면은 내담자별 항목을 가장 가까운 예약순으로 정렬하고, 상담일이 오늘이면 '오늘' 태그를 붙였습니다. 주력인 실시간 상담과 보조인 쪽지 상담은 비대칭으로 나눠 비중을 구분했습니다.","상담사 메인 리스트"],
-  ["예외 상황을 먼저 화면으로","예약 없음·완료 없음·전체 없음의 빈 상태, 카메라 off, 프로필 이미지 없음, 상담 시간 임박, 상담사 대기 화면을 각각 설계했습니다. 알림은 상황의 무게에 따라 Alert · Layer · Toast로 나눠 PC와 모바일에 공통 적용했습니다.","상태별 화면 그리드"],
+  ["예외 상황을 먼저 화면으로","예약 없음·완료 없음·전체 없음의 빈 상태, 카메라 off, 프로필 이미지 없음, 상담 시간 임박, 상담사 대기 화면을 각각 설계했습니다. 알림은 상황의 무게에 따라 Alert · Layer · Toast로 나눠 PC와 모바일에 공통 적용했습니다.","상태별 화면 그리드",SL("wide",[["빈 상태","","빈 상태"],["카메라 off","","카메라"],["시간 임박","","임박"],["상담사 대기","","대기"]])],
   ["@Part 2. Good Listener (B2C)"],
   ["사용자의 역할이 바뀌었는데, 필요한 기능도 같을까?","B2B 상담사 화면은 내담자 노트, 상담 일지, 상담 내용 기록, 채팅이 한 화면에 모인 복합 화면이었습니다. B2C 내담자에게 필요한 것은 오직 상담이라고 판단해, 영상 중심의 단일 화면으로 바꾸고 채팅 알림은 필요한 것만 가볍게, 컨트롤은 필수 기능만 하단에 두고 기본은 숨겼습니다.","B2B 상담사 화면 ↔ B2C 영상 화면"],
   ["감성으로 선택하고, 결정은 이성적으로","상담사 목록에서는 실제 프로필 사진, 이력 대신 마음을 여는 소개 한마디, 최소한의 평점만 보여주고, 상세 화면에서 경력·자격과 이용자 후기로 판단 근거를 제공했습니다.","목록 → 프로필 상세"]],
@@ -684,11 +751,11 @@ const FULL = [
  overview:"interMD 플랫폼에 새로 도입된 결제 기능, 공동구매의 PC 화면을 설계했습니다. 생활용품·가전·상품권을 회원 포인트와 함께 구매하는 서비스로, 상품 목록부터 주문·결제, 마이페이지의 주문 관리와 알림 메일까지가 범위였습니다.",
  problem:"결제가 처음 도입되는 서비스라, 결제 완료 이후에 생기는 상황 — 배송 중, 배송 완료, 배송지 변경, 취소·교환·반품 — 을 사용자가 스스로 처리할 수 있는 화면이 함께 필요했습니다.",
  decisions:[
-  ["구매 흐름을 끊지 않게","상품 상세 위에서 주문·결제를 레이어로 진행하고, 결제 완료 후 바로 확인 알림을 띄웠습니다. 문의가 필요할 때는 1:1 문의에 해당 상품 정보가 자동으로 붙도록 했습니다.","상세 → 주문/결제 → 완료"],
-  ["결제 이후의 상태를 모두 화면으로","주문 내역은 결제 완료·배송 중·배송 완료·취소/교환/반품 완료의 4가지 상태로 나누고, 상태에 따라 버튼과 안내를 바꿨습니다. 취소·교환·반품 요청 창은 기본 / 내역 없음 / 최대 높이(스크롤) / 처리 완료 후 입력 불가의 4가지 경우를 설계했습니다.","상태별 화면"],
+  ["구매 흐름을 끊지 않게","상품 상세 위에서 주문·결제를 레이어로 진행하고, 결제 완료 후 바로 확인 알림을 띄웠습니다. 문의가 필요할 때는 1:1 문의에 해당 상품 정보가 자동으로 붙도록 했습니다.","상세 → 주문/결제 → 완료",SL("wide",[["상품 상세","","상세"],["주문/결제","","결제"],["결제 완료","","완료"]])],
+  ["결제 이후의 상태를 모두 화면으로","주문 내역은 결제 완료·배송 중·배송 완료·취소/교환/반품 완료의 4가지 상태로 나누고, 상태에 따라 버튼과 안내를 바꿨습니다. 취소·교환·반품 요청 창은 기본 / 내역 없음 / 최대 높이(스크롤) / 처리 완료 후 입력 불가의 4가지 경우를 설계했습니다.","상태별 화면",SL("wide",[["결제 완료","","결제"],["배송 중","","배송"],["배송 완료","","완료"],["취소/반품 요청","","요청"]])],
   ["선택 전과 후, 길어질 때까지","옵션을 고르기 전에는 구매 버튼을 비활성화하고, 옵션을 여러 개 담거나 상품명이 두 줄을 넘는 경우의 줄바꿈 규칙을 화면에 주석으로 남겨 개발에 전달했습니다. 종료된 공동구매는 목록에서 별도 상태로 구분했습니다.","주석이 포함된 상세 화면"],
-  ["출시 이후의 운영까지","공동구매를 알리는 'Thursday Market' 타임딜 이벤트를 회차마다 디자인했습니다. 로고타입과 페이지 구조는 고정하고 회차별 테마만 바꿔, 매번 새롭지만 같은 서비스로 보이게 했습니다.","3rd · 4th · 6th 이벤트 페이지"]],
- screens:["공동구매 목록","주문 내역 (상태 4종)","Push 이메일 3종"],
+  ["출시 이후의 운영까지","공동구매를 알리는 'Thursday Market' 타임딜 이벤트를 회차마다 디자인했습니다. 로고타입과 페이지 구조는 고정하고 회차별 테마만 바꿔, 매번 새롭지만 같은 서비스로 보이게 했습니다.","Thursday Market 대표 회차",null,["o-events","Event & Banner에서 전체 회차 보기"]]],
+ screens:["공동구매 목록","주문 내역 (상태 4종)",SL("free",[["주문 내역 메일","","주문","3/4"],["발송 메일","","발송","3/4"],["취소 완료 메일","","취소","3/4"]])],
  result:"공동구매는 interMD에 적용되어 운영되었고, 신규 결제 프로세스의 UI 기준을 만들었습니다. 결제가 들어간 서비스에서는 메인 화면만큼 예외 상태의 화면이 중요하다는 것을 배웠습니다."},
 {id:"lesson365", name:"Lesson 365", desc:"강의 중에도 길을 잃지 않도록 개선한 화상교육 플랫폼", cat:"Education", year:"2021", type:"Web",
  thumb:"대표 이미지 — 발표형 강의 화면 (To-be)",
@@ -697,10 +764,10 @@ const FULL = [
  overview:"비대면 강의를 위한 웹 기반 화상교육·회의 플랫폼의 2.0 개선 작업입니다. 서비스의 톤앤매너는 유지하면서, 기능 구성과 화면 전반을 다시 설계했습니다.",
  problem:"영역이 흩어져 있고 메뉴 그룹 기준이 모호했습니다. 토글과 호버 뒤에 숨겨진 메뉴가 많아 사용성이 떨어졌고, 아이콘도 직관적이지 않았습니다. 화상 화면은 인원이 늘 때마다 그리드가 실시간으로 분할·재배치되어 레이아웃을 정할 수 없었고, 강사·발표자·학습자의 구분도 불분명했습니다.",
  decisions:[
-  ["시선 흐름대로 메뉴를 고정","헤더와 하단 메뉴를 없애고, 기능과 비중이 비슷한 메뉴끼리 묶어 고정했습니다. 사용자의 시선이 움직이는 순서(상단 → 좌측 → 우측)에 따라 상단에는 전체 메뉴·타이틀·설정, 좌측에는 화면 공유·화이트보드 같은 화면 기능, 우측에는 채팅·참석자 같은 부가 기능을 두었습니다.","초기 화면 As-is ↔ To-be"],
-  ["그리드는 사용자가 정하게","접속 인원에 따라 바뀌던 그리드 대신 그리드 우선 지정 방식을 제안해 렌더링 부담을 줄이고, 학습·회의·토의 상황에 맞게 격자형과 발표형 중 고를 수 있게 했습니다. 권한에 따라 아이콘을 구분해 혼란을 줄였습니다.","그리드 As-is ↔ To-be"],
-  ["권한과 사생활을 함께 고려","관리자가 참석자의 카메라·마이크를 요청할 때는 동의 팝업을 거치게 해 권한을 주더라도 사생활 침해가 생기지 않게 했습니다. 채팅 알림은 레이어 팝업으로 바꿔 강의 화면을 벗어나지 않고 확인하게 했습니다.","우측 메뉴 As-is ↔ To-be"],
-  ["새 창 없이, 지금 화면에서","브레이크아웃룸을 '그룹토의'로 바꾸고, 새 창을 열지 않고 현재 화면에서 그룹을 만들고 참여하게 했습니다. 화이트보드는 여러 개를 만들 수 있게 하되 생성 권한은 지정된 사용자에게만 주고, 변경 내용은 썸네일에 실시간으로 반영했습니다.","그룹토의 · 화이트보드"]],
+  ["시선 흐름대로 메뉴를 고정","헤더와 하단 메뉴를 없애고, 기능과 비중이 비슷한 메뉴끼리 묶어 고정했습니다. 사용자의 시선이 움직이는 순서(상단 → 좌측 → 우측)에 따라 상단에는 전체 메뉴·타이틀·설정, 좌측에는 화면 공유·화이트보드 같은 화면 기능, 우측에는 채팅·참석자 같은 부가 기능을 두었습니다.","초기 화면 As-is ↔ To-be",SL("wide",[["As-is",""],["To-be",""]])],
+  ["그리드는 사용자가 정하게","접속 인원에 따라 바뀌던 그리드 대신 그리드 우선 지정 방식을 제안해 렌더링 부담을 줄이고, 학습·회의·토의 상황에 맞게 격자형과 발표형 중 고를 수 있게 했습니다. 권한에 따라 아이콘을 구분해 혼란을 줄였습니다.","그리드 As-is ↔ To-be",SL("wide",[["As-is",""],["To-be",""]])],
+  ["권한과 사생활을 함께 고려","관리자가 참석자의 카메라·마이크를 요청할 때는 동의 팝업을 거치게 해 권한을 주더라도 사생활 침해가 생기지 않게 했습니다. 채팅 알림은 레이어 팝업으로 바꿔 강의 화면을 벗어나지 않고 확인하게 했습니다.","우측 메뉴 As-is ↔ To-be",SL("wide",[["As-is",""],["To-be",""]])],
+  ["새 창 없이, 지금 화면에서","브레이크아웃룸을 '그룹토의'로 바꾸고, 새 창을 열지 않고 현재 화면에서 그룹을 만들고 참여하게 했습니다. 화이트보드는 여러 개를 만들 수 있게 하되 생성 권한은 지정된 사용자에게만 주고, 변경 내용은 썸네일에 실시간으로 반영했습니다.","그룹토의 · 화이트보드",SL("wide",[["그룹토의",""],["화이트보드",""]])]],
  screens:["대기 화면 — 세션 유형 선택","그룹토의 진행","컴포넌트 가이드"],
  result:"초기 화면, 좌측·우측·하단 메뉴, 화이트보드, 그룹토의, 설문까지 개선안과 화면 디자인, 컴포넌트 가이드를 개발팀에 전달했습니다. 공통 레이어 팝업은 크기를 S·M 두 가지로 고정해 개발 이슈를 줄였습니다. 기존 서비스를 고칠 때는 새 기능보다 '왜 지금 불편한지'를 먼저 적는 것이 설득의 시작이라는 것을 배웠습니다."},
 {id:"payappcafe", name:"PayAppCafe", desc:"B2B 결제 서비스의 가입·계약을 안내하는 반응형 웹", cat:"Fintech", year:"2023", type:"Responsive",
@@ -710,8 +777,8 @@ const FULL = [
  overview:"결제 대행 서비스 PayAppCafe의 가입과 계약 관련 정보를 안내하는 반응형 웹을 디자인했습니다.",
  problem:"설명할 내용이 많은 웹인데, 디자인 시점에 일부 콘텐츠(영상 등)가 확정되지 않은 상태였습니다.",
  decisions:[
-  ["콘텐츠가 확정되지 않았다면, 두 가지를 준비","영상 콘텐츠가 있을 때는 탭으로 콘텐츠를 나누고 맞는 영상을 노출하는 안, 영상이 없을 때는 텍스트만으로 구성하는 안을 함께 제공했습니다.","영상 버전 ↔ 텍스트 버전"],
-  ["읽는 방식에 맞춰 UI를 고른다","보고 따라 해야 하는 내용은 이미지와 텍스트, 순서대로 읽어야 하는 정보는 단계형 리스트, 비교가 필요한 데이터는 테이블, 찾는 내용이 분명한 사용자에게는 아코디언을 적용했습니다.","UI 유형 4종"],
+  ["콘텐츠가 확정되지 않았다면, 두 가지를 준비","영상 콘텐츠가 있을 때는 탭으로 콘텐츠를 나누고 맞는 영상을 노출하는 안, 영상이 없을 때는 텍스트만으로 구성하는 안을 함께 제공했습니다.","영상 버전 ↔ 텍스트 버전",SL("wide",[["영상 있음","","영상"],["영상 없음","","텍스트"]])],
+  ["읽는 방식에 맞춰 UI를 고른다","보고 따라 해야 하는 내용은 이미지와 텍스트, 순서대로 읽어야 하는 정보는 단계형 리스트, 비교가 필요한 데이터는 테이블, 찾는 내용이 분명한 사용자에게는 아코디언을 적용했습니다.","UI 유형 4종",SL("wide",[["이미지+텍스트","","이미지"],["단계형 리스트","","단계"],["테이블","","표"],["아코디언","","접기"]])],
   ["영향이 큰 항목부터 검수","디자인 전달 → 구현 확인 → 우선순위 검수 순으로 QA를 진행했습니다. 픽셀이나 간격보다 정보 구조와 공통 UI 기준(패턴 불일치, 컴포넌트 variant 미적용)에 영향을 주는 오류를 먼저 고쳤습니다.","QA 프로세스"]],
  screens:["메인 (PC)","서비스 흐름","FAQ · Q&A (Mobile)"],
  result:"2023년에 서비스가 런칭되었습니다. 운영 상황이 바뀔 수 있다는 전제로 화면을 준비하는 것도 설계의 일부라는 것을 배웠습니다."},
@@ -722,8 +789,8 @@ const FULL = [
  overview:"놓치기 쉬운 집안일을 할 일 목록으로 정리하고, 가구 구성원과 함께 관리하는 생활 서비스 앱입니다.",
  hyp:[["\"오늘 뭘 해야 하는지부터 생각하면 막막해요\"","매일 해야 하는 일을 먼저 알려주면 어떨까?","No Thinking — 오늘 할 일을 먼저 제안"],["\"못 한 일이 쌓이면 죄책감이 들고 초조해요\"","어쩔 수 없는 사정으로 못 한 것이라면?","No Guilt · No Pressure — 조용한 UX, 알림 최소화"],["\"집안일을 끝내도 성취감은 없고 남은 일만 보여요\"","작더라도 성취감을 느낄 수 있다면?","Just Enough — 작은 완료에도 즉시 피드백"]],
  decisions:[
-  ["추천부터 완료까지, 하나의 흐름에서","집안일 추가 → 추천받기 또는 직접 입력 → 반복 주기 → 알림 설정까지 한 흐름에서 끝나게 했습니다. 반복 주기는 수시 · 매일 · 주기 · 정기 4가지로 정의했습니다.","Add Task Flow"],
-  ["혼자 살아도, 함께 살아도","가구 구성에 맞춰 담당자를 지정·변경하고, 못 한 집안일은 다른 구성원에게 요청할 수 있게 했습니다. 완료된 일은 별도 채팅 없이 피드로 확인합니다.","가구 설정 · 요청 · 피드"],
+  ["추천부터 완료까지, 하나의 흐름에서","집안일 추가 → 추천받기 또는 직접 입력 → 반복 주기 → 알림 설정까지 한 흐름에서 끝나게 했습니다. 반복 주기는 수시 · 매일 · 주기 · 정기 4가지로 정의했습니다.","Add Task Flow",[["집안일 추가","","추가"],["추천 또는 입력","","입력"],["주기와 알림 설정","","설정"]]],
+  ["혼자 살아도, 함께 살아도","가구 구성에 맞춰 담당자를 지정·변경하고, 못 한 집안일은 다른 구성원에게 요청할 수 있게 했습니다. 완료된 일은 별도 채팅 없이 피드로 확인합니다.","가구 설정 · 요청 · 피드",SL("phone",[["가구 설정","","가구"],["담당 요청","","요청"],["완료 피드","","피드"]])],
   ["낮에도 밤에도","기기 설정에 맞춰 라이트·다크 테마가 전환되도록 디자인 시스템을 구성했습니다.","라이트 ↔ 다크"]],
  screens:["홈 — 오늘 할 일","집안일 추가","가구 피드"],
  result:"현재 진행 중인 프로젝트로, 기획부터 디자인 시스템까지 혼자 설계하며 '사용자가 생각하지 않게 하는 것'을 화면 단위로 검증하고 있습니다."}
@@ -731,33 +798,49 @@ const FULL = [
 
 const SIDE = [
 {id:"cme", name:"interMD CME", cat:"Education", year:"2022", type:"App", meta:"interMD · Mobile App · 2022.09 (4주) · 앱 UI 100% · 개발 완료, 오픈 보류",
+ lead:"강좌 신청부터 시청·퀴즈까지, 한 화면에서 이어지는 강좌 교육 서비스",
  body:"의사 회원에게 온라인 최신지견 강좌를 무료로 제공하는 서비스입니다. 강좌 신청부터 시청까지 페이지 이탈 없이 한 화면에서 진행되도록 설계했습니다.",
  points:["등록 가능 · 등록 예정 · 등록 마감 상태를 태그로 구분하고, 등록 가능한 강좌 카드를 가장 크게 강조했습니다.","시청 가능 · 시청 전 · 시청 불가 · 재시청 가능의 버튼 상태와, 퀴즈의 정답 · 오답 · 다시 풀기 흐름을 정의했습니다.","PC와 모바일의 이미지 규격을 정리한 이미지 가이드를 만들어 협업 부서에 배포했습니다."],
  imgs:["강좌 카탈로그","강의 퀴즈 — 정답 / 오답","이미지 가이드"]},
 {id:"events", name:"Event & Banner System", cat:"Campaign", year:"2022–2023", type:"Web · App", meta:"interMD · Web/App · 2022–2023 · 이벤트 페이지 · 배너 디자인",
+ lead:"회차마다 새롭지만 같은 서비스로 보이도록, 구조를 고정한 이벤트 페이지와 배너",
  body:"서비스 운영 중 정기적으로 열린 이벤트의 페이지와 배너를 디자인했습니다.",
  points:["Thursday Market 시리즈는 로고타입과 페이지 구조를 고정하고, 회차별 테마만 바꿨습니다.","이벤트 키비주얼 하나를 모바일 3곳, PC 4곳의 노출 위치 규격에 맞게 변주했습니다.","키비주얼 → 혜택 → 참여 방법 → CTA → 유의사항의 공통 구조로 이벤트 페이지를 빠르게 제작했습니다."],
- imgs:["Thursday Market 3rd · 4th · 6th","배너 7종 변주","이벤트 페이지 공통 구조"]},
+ imgs:[SL("free",[["3rd","","","3/4"],["4th","","","3/4"],["6th","","","3/4"]]),"배너 7종 변주","이벤트 페이지 공통 구조"]},
 {id:"bookgwedo", name:"Bookgwedo", cat:"Lifestyle", year:"2025", type:"App", meta:"Personal · Mobile App · 2025 (2주)",
+ lead:"독서의 목적에 따라 기록의 깊이를 고르는 독서 기록 앱",
  body:"독서 '수준'이 아니라 독서의 목적과 태도에 따라 서로 다른 기록 경험을 제공하는 독서 기록 앱입니다.",
  points:["독서 자체의 진입 장벽 → 진행률과 캘린더 썸네일로 시각적 성취감을 주었습니다.","수동 입력의 부담 → 간단한 검색과 선택만으로 기록이 남게 했습니다.","목적이 다른 사용자에게 같은 UI → 독서 요약과 독서 노트를 분리해 기록의 깊이를 고를 수 있게 했습니다."],
  imgs:["내 서재 · 캘린더","독서 기록","다크 테마"]},
 {id:"edi", name:"EDI Cyber Academy", cat:"Public", year:"2020", type:"Responsive", meta:"한국장애인고용공단 · Responsive/Adaptive Web · 2020.05–12 · 메인 시안 30%, 서브 페이지 전체, 배너 · 운영",
- body:"40~50대 이상 고용주와 장애인 고용인이 주로 이용하는 공공기관 온라인 교육 사이트 재구축 프로젝트입니다.",
+ lead:"웹 환경이 익숙하지 않은 사용자도 망설임 없이 쓰도록 재구축한 장애인 사이버연수원",
+ body:"장애인 고용 사업주와 근로자가 이용하는 공공기관 온라인 교육 사이트 재구축 프로젝트입니다.",
  points:["시력과 인터넷 사용 환경을 고려해 글자와 구성 요소를 키우고, 단락마다 배경색을 달리해 구분을 분명히 했습니다.","터치 오류가 잦은 사용자를 위해 메인 등 일부 페이지는 적응형으로 설계하고, 모바일에서는 로그인을 우선 배치했습니다.","컬러·타이포, 탭·테이블·버튼, 레이아웃을 사전에 정의한 사용자·관리자 가이드를 배포해, 이전 프로젝트 대비 디자인 이슈를 1,000여 건에서 150여 건으로 줄였습니다."],
- imgs:["메인","교육 신청 · 집합교육 목록","디자인 가이드"], link:["about","이 경험이 일하는 방식에 준 영향 → About"]},
+ imgs:[SL("wide",[["메인 A 타입","","A"],["메인 B 타입","","B"],["메인 C 타입","","C"]]),"교육 신청 · 집합교육 목록",SL("wide",[["사용자 가이드","","사용자"],["관리자 가이드","","관리자"]])]},
 {id:"botami", name:"BotAmi Scan", cat:"Product Site", year:"2021", type:"Responsive", meta:"World Vertex · Responsive Web · 2021 · 전 페이지 디자인(캐릭터 제외) · 운영",
+ lead:"스캔 앱의 데모와 결제를 소개하는 랜딩페이지형 사이트",
  body:"스캔 앱 BotAmi Scan을 소개하고 SDK 데모·결제를 신청하는 대표 웹사이트입니다. 해외 개발자를 대상으로 영문 기준으로 제작했습니다.",
- points:["캐릭터 '봇아미'를 활용해 종이가 디지털 이미지로 바뀌는 서비스 특징을 메인 비주얼로 표현했습니다.","PC의 마우스 호버 인터랙션은 모바일에서 터치 인터랙션으로 대체했습니다.","결제 단계에서는 선택한 플랜 정보를 좌측에 고정해, 결제하는 동안에도 확인할 수 있게 했습니다."],
+ points:["종이가 디지털 이미지로 바뀌는 서비스 특징을 메인 비주얼과 스크롤 인터랙션으로 표현했습니다.","PC의 마우스 호버 인터랙션은 모바일에서 터치 인터랙션으로 대체했습니다.","결제 단계에서는 선택한 플랜 정보를 좌측에 고정해, 결제하는 동안에도 확인할 수 있게 했습니다."],
  imgs:["Home","SDK Pricing · Payment","Mobile"]},
 {id:"goodcare", name:"GOODCARE", cat:"Healthcare", year:"2021", type:"Admin", meta:"World Vertex · Admin Web · 2021.01–04 · 팀 프로젝트",
+ lead:"선별진료소 의료진이 검사 정보를 한눈에 관리하는 관리자 대시보드",
  body:"긴급 전염병 진단 플랫폼의 선별진료소 관리자 시스템입니다. 의료진이 사용하는 관리자 화면으로, 사용자 앱과 같은 톤앤매너를 유지하면서 효율적으로 관리할 수 있게 설계했습니다.",
  points:["사용자와 관리자 시스템 사이에 놓인 화면이라, 관리 효율과 사용자 경험을 함께 고려했습니다.","검색 바, 차트, 테이블 등 대시보드 요소의 스타일 가이드를 정의했습니다."],
- imgs:["관리자 대시보드","스타일 가이드"], link:["p-energy","Related — Energy Dashboard (2026)"]}
+ imgs:["관리자 대시보드","스타일 가이드"]}
 ];
 
 /* Content Design: 유형을 제목처럼(굵게), 프로젝트명을 보조로 */
 const CONTENT = [["Event Page","4월 서프라이즈 이벤트"],["Event Page","의대생 Q&A 오픈 이벤트"],["Event Page","의대생 친구 초대 이벤트"],["Recruitment Page","Poll 패널 1기 모집"],["Content Page","명절 시즌 콘텐츠"],["Card News","잠복결핵감염"],["Infographic","국립환경과학원 인포그래픽"],["Poster","국립환경과학원 정보시스템"],["Infographic","학점은행제 정보공시"]].map((c,i)=>({id:"c"+(i+1),type:c[0],title:c[1],cap:c[1]}));
+/* Content 썸네일 규칙: 썸네일 파일(c<번호>-thumb, 1200×1600)이 기본 → 없으면 원본 첫 이미지(슬라이드 1장째)의 맨 위를 3:4로 잘라 씀
+   썸네일 파일을 img/에 넣으면 아래 목록에 번호만 추가 */
+const CONTENT_THUMBS=new Set([]);   /* 예: new Set(["c6"]) */
+const contentThumb=c=>CONTENT_THUMBS.has(c.id)?c.id+"-thumb":((c.slides&&c.slides.items[0][1])||c.id);
+/* Content 슬라이드: 카드뉴스 · 연재 인포그래픽 · 포스터 시리즈 (장 수는 원본에 맞춰 조정) */
+/* c1~c5: 페이지 + 배너 변주 콜라주 (키비주얼 하나 → 페이지 · 노출 위치별 배너) */
+[["이벤트 페이지"],["이벤트 페이지"],["이벤트 페이지"],["모집 페이지"],["콘텐츠 페이지"]].forEach((x,i)=>{CONTENT[i].slides=SL("free",[[x[0],"","","3/8"],["배너","","","4/5"]])});
+CONTENT[5].slides=SL("free",Array.from({length:11},()=>["","","","1/1"]));   /* 카드뉴스 11장 */
+CONTENT[6].slides=SL("free",[["2차","","","3/8"],["4차","","","3/8"],["6차","","","3/8"]]);
+CONTENT[7].slides=SL("free",[1,2,3].map(()=>["","","","1/1.414"]));
 
 /* ---------- HELPERS ---------- */
 const $=s=>document.querySelector(s);
@@ -854,7 +937,7 @@ function viewWork(){
   :`<div class="note">3열(모바일 2열) · 간격 4px(UX/UI와 통일). 썸네일 위 = 유형(제목처럼) + 프로젝트명(보조). 클릭 → Side Modal.</div>
   <div class="content-grid">${CONTENT.map(c=>`
    <button class="card card-grid" data-open="${c.id}" aria-label="${esc(c.type+" — "+c.title)} 보기">
-    <div class="thumb">${IMG(c.id)}</div>
+    <div class="thumb">${IMG(contentThumb(c))}</div>
     <div class="cap"><span class="nm">${esc(c.type)}</span><span class="mt">${esc(c.title)}</span></div>
    </button>`).join("")}</div>`}
  </section>`;
@@ -862,7 +945,7 @@ function viewWork(){
 function viewAbout(){
  return `<div class="ab">
   <section class="ab-in ab-hero">
-   <div class="ab-copy"><h1>보기 좋은 화면에서, 쓰기 좋은 구조로.</h1><p>반응형 웹, 관리자 UI, 모바일 서비스, 대시보드를 다뤄 온 3년 차 UI 디자이너입니다. 정보의 우선순위를 나누고, 여러 사람이 같은 기준으로 이어서 작업할 수 있는 구조를 만드는 일을 가장 잘합니다.</p></div>
+   <div class="ab-copy"><h1>보기 좋은 화면에서, 쓰기 좋은 구조로.</h1><p>반응형 웹, 관리자 화면, 모바일 앱, 대시보드를 설계해 온 3년 차 UI 디자이너입니다.<br>정보의 우선순위를 나눠 무엇을 먼저 보여줄지 정하고,<br>여러 사람이 같은 기준으로 이어서 작업할 수 있는 규칙을 만듭니다.</p></div>
    <div class="ab-visual"><svg class="about-art" viewBox="0 0 420 380" role="img" aria-label="화면이 그리드와 컴포넌트 층으로 나뉘는 구조 일러스트"><g class="ai-cs"><line x1="176.0" y1="80.0" x2="176.0" y2="150.0" class="ai-c" pathLength="1"/><line x1="401.2" y1="210.0" x2="401.2" y2="280.0" class="ai-c" pathLength="1"/><line x1="20.1" y1="170.0" x2="20.1" y2="240.0" class="ai-c" pathLength="1"/><line x1="245.3" y1="300.0" x2="245.3" y2="370.0" class="ai-c" pathLength="1"/><line x1="176.0" y1="10.0" x2="176.0" y2="80.0" class="ai-c" pathLength="1"/><line x1="401.2" y1="140.0" x2="401.2" y2="210.0" class="ai-c" pathLength="1"/><line x1="20.1" y1="100.0" x2="20.1" y2="170.0" class="ai-c" pathLength="1"/><line x1="245.3" y1="230.0" x2="245.3" y2="300.0" class="ai-c" pathLength="1"/></g><g class="ly ly-1"><g transform="matrix(.866 .5 -.866 .5 176 150)"><rect x="0" y="0" width="260" height="180" rx="10" class="ai-p ai-d" pathLength="1"/><rect x="14" y="14" width="232" height="14" rx="3" class="ai-l ai-d" pathLength="1"/><rect x="14" y="38" width="232" height="54" rx="5" class="ai-l ai-d" pathLength="1"/><rect x="14" y="102" width="72" height="64" rx="5" class="ai-l ai-d" pathLength="1"/><rect x="94" y="102" width="72" height="64" rx="5" class="ai-l ai-d" pathLength="1"/><rect x="174" y="102" width="72" height="64" rx="5" class="ai-l ai-d" pathLength="1"/></g></g><g class="ly ly-2"><g transform="matrix(.866 .5 -.866 .5 176 80)"><rect x="0" y="0" width="260" height="180" rx="10" class="ai-p dash"/><rect x="14.0" y="14" width="30" height="152" rx="3" class="ai-g"/><rect x="53.5" y="14" width="30" height="152" rx="3" class="ai-g"/><rect x="93.0" y="14" width="30" height="152" rx="3" class="ai-g"/><rect x="132.5" y="14" width="30" height="152" rx="3" class="ai-g"/><rect x="172.0" y="14" width="30" height="152" rx="3" class="ai-g"/><rect x="211.5" y="14" width="30" height="152" rx="3" class="ai-g"/></g></g><g class="ly ly-3"><g transform="matrix(.866 .5 -.866 .5 176 10)"><rect x="0" y="0" width="260" height="180" rx="10" class="ai-p"/><g class="ai-cp" style="--i:0"><rect x="20" y="64" width="120" height="96" rx="8" class="ai-l"/><rect x="32" y="76" width="96" height="40" rx="4" class="ai-l"/><line x1="32" y1="128" x2="110" y2="128" class="ai-l"/><line x1="32" y1="142" x2="88" y2="142" class="ai-l"/></g><g class="ai-cp" style="--i:1"><rect x="160" y="22" width="40" height="22" rx="11" class="ai-l"/><circle cx="189" cy="33" r="7" class="ai-l"/></g><g class="ai-cp" style="--i:2"><rect x="160" y="64" width="80" height="22" rx="4" class="ai-l"/></g><g class="ai-cp" style="--i:3"><rect x="160" y="96" width="80" height="22" rx="4" class="ai-l"/></g><g class="ai-cp" style="--i:4"><rect x="160" y="128" width="52" height="22" rx="11" class="ai-l"/></g><g class="ai-btn"><rect x="20" y="22" width="84" height="26" rx="13" class="ai-a"/></g></g></g></svg></div>
   </section>
   <hr class="ab-line">
@@ -892,10 +975,35 @@ function findModal(token){
 /* property-item: 정보 라벨은 영문 */
 const PROP_EN={"기간":"Period","플랫폼":"Platform","역할":"Role","팀":"Team","툴":"Tool","상태":"Status"};
 const props=rows=>`<dl class="props">${rows.map(r=>`<div class="prop"><dt>${esc(PROP_EN[r[0]]||r[0])}</dt><dd>${esc(r[1])}</dd></div>`).join("")}</dl>`;
-const fig=label=>`<div class="fig">${ph(label)}</div>`;            /* 실제 이미지가 들어오면 <img> — 원본 비율 */
+/* ===== media 컴포넌트 3종 =====
+   media_default : 텍스트 + 이미지 2열 (본문 880 미만이면 세로로 쌓임)
+   media_imgonly : 이미지만 (Final Screens · Side 모달 Screens)
+   media_slide   : 이미지 슬라이드 — 텍스트가 있으면 default와 같은 2열 자리, 없으면 슬라이드만
+   데이터: decisions 항목 [제목, 설명, 이미지 라벨] → default / [제목, 설명, 라벨, slides] → slide(텍스트 있음)
+           screens · imgs 항목 "라벨" → imgonly / [slides] (배열) → slide(텍스트 없음) */
+const fig=label=>`<div class="fig">${ph(label)}</div>`;            /* media_imgonly · 실제 이미지가 들어오면 <img> — 원본 비율 */
+const mediaImgonly=fig;
 const ci=(id,label,inner,grp)=>`<section class="ci${grp?" grp":""}" id="${id}" data-sec><h3 class="lbl-sec">${label}</h3>${inner}</section>`;
 const body=t=>`<p class="ci-body">${esc(t)}</p>`;
-const media=d=>`<div class="media"><div class="copy"><h4>${esc(d[0])}</h4><p>${esc(d[1])}</p></div>${fig(d[2])}</div>`;
+/* 단계 슬라이더: slides = [[라벨, 이미지 id(없으면 자리표시)], ...] */
+/* slides = SL(형태, [[이름, 이미지 id(없으면 자리표시), 짧은 이름(좁을 때), 자리표시 비율(free)], ...]) · 배열만 주면 phone */
+const slSlide=(f,s,i,n)=>{const nm=s[0]||`${i+1}`, alt=esc(s[0]||`${i+1}번째`);
+ const img=s[1]?`<img src="img/${s[1]}.jpg" alt="${alt}" loading="lazy" decoding="async">`:"";
+ const inner=f==="phone"?`<div class="sl-phone">${img||ph(nm)}</div>`
+  :f==="wide"?`<div class="sl-shot">${img||ph(nm)}</div>`
+  :`<div class="sl-free">${img||`<div class="ph" style="aspect-ratio:${s[3]||"3/4"}"><span>${esc(nm)}</span></div>`}</div>`;
+ return `<div class="sl-slide" role="group" aria-roledescription="slide" aria-label="${i+1} / ${n}${s[0]?" "+esc(s[0]):""}">${inner}</div>`};
+const slider=(title,data)=>{const f=Array.isArray(data)?"phone":data.frame, slides=Array.isArray(data)?data:data.items, n=slides.length;
+ return `<div class="fig slider" data-slider data-frame="${f}">
+  <div class="sl-view"><div class="sl-track" tabindex="0" aria-roledescription="carousel" aria-label="${esc(title||"이미지")} 슬라이드">${slides.map((s,i)=>slSlide(f,s,i,n)).join("")}</div></div>
+  <div class="sl-ctl"><span class="sl-count" aria-hidden="true"><b>1</b> / ${n}</span><div class="sl-steps">${slides.map((s,i)=>`<button class="sl-step${s[0]?"":" num"}" data-sl="${i}"${i?"":' aria-current="step"'} aria-label="${i+1}${s[0]?". "+esc(s[0]):"번째"}"><b>${i+1}</b>${s[0]?`<span class="fl">${esc(s[0])}</span><span class="sh">${esc(s[2]||s[0])}</span>`:""}</button>`).join("")}</div>
+   <div class="sl-arrows"><button class="icon-btn" data-sl-move="-1" aria-label="이전" disabled>${ICON.left}</button><button class="icon-btn" data-sl-move="1" aria-label="다음">${ICON.right}</button></div></div>
+ </div>`};
+const mediaCopy=d=>`<div class="copy"><h4>${esc(d[0])}</h4><p>${esc(d[1])}</p>${d[4]?`<button class="btn-ghost" data-swap="${d[4][0]}"><span>${esc(d[4][1])}</span>${ICON.narrow}</button>`:""}</div>`;   /* d[4] = [모달 토큰, 문구] → 다른 모달로 이동 */
+const mediaDefault=d=>`<div class="media media-default">${mediaCopy(d)}${fig(d[2])}</div>`;
+const mediaSlide=(slides,d)=>d?`<div class="media media-slide">${mediaCopy(d)}${slider(d[0],slides)}</div>`:`<div class="media-slide">${slider("",slides)}</div>`;
+const media=d=>d[3]?mediaSlide(d[3],d):mediaDefault(d);
+const screen=x=>typeof x==="string"?mediaImgonly(x):mediaSlide(x);   /* screens · imgs: 문자열 = imgonly, 배열 = slide(텍스트 없음) */
 const table=(head,rows)=>`<table class="ttable"><thead><tr>${head.map(h=>`<th scope="col">${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td data-th="${esc(head[i])}">${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
 const SECS=[["s-overview","Overview"],["s-problem","Problem"],["s-decisions","Decisions"],["s-screens","Screens"],["s-result","Result"]];
 /* 모달 히어로: 제목 · 한 줄 소개 · 대표 이미지 · 정보 */
@@ -928,20 +1036,20 @@ function fullHTML(p){
     ${ci("s-overview","Overview",body(p.overview))}
     ${prob}
     ${ci("s-decisions",`Design Decisions${p.id==="lesson365"?" (As-is → To-be)":""}`,`<div class="ci-stack">${decs}</div>`,1)}
-    ${ci("s-screens","Final Screens",`<div class="imgs">${p.screens.map(fig).join("")}</div>`,1)}
+    ${ci("s-screens","Final Screens",`<div class="imgs">${p.screens.map(screen).join("")}</div>`,1)}
     ${ci("s-result","Result &amp; Retrospective",body(p.result))}
    </div>
   </div></div>`;
 }
 function sideHTML(o){
  return `<div class="mv sd">
-  <div class="note">Side Modal: Full과 같은 컴포넌트 · 폭 640 · media는 세로로 쌓임. 한 줄 소개 데이터 없음.</div>
-  ${hero(o.name,"",o.id,props(SIDE_INFO[o.id]||[]))}
+  <div class="note">Side Modal: Full과 같은 컴포넌트 · 폭 640 · media는 세로로 쌓임.</div>
+  ${hero(o.name,o.lead,o.id,props(SIDE_INFO[o.id]||[]))}
   <hr class="mv-line">
   <div class="mc"><div class="mc-body">
    ${ci("o-overview","Overview",body(o.body))}
    ${ci("o-points","Design Points",`<ul class="blist">${o.points.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`,1)}
-   ${ci("o-screens","Screens",`<div class="imgs">${o.imgs.map(fig).join("")}</div>`,1)}
+   ${ci("o-screens","Screens",`<div class="imgs">${o.imgs.map(screen).join("")}</div>`,1)}
   </div></div>
  </div>`;
 }
@@ -1011,7 +1119,7 @@ function contentHTML(c){
  return `<div class="mv sd ct">
   <div class="note">Content Side Modal: 유형(타이틀) · 프로젝트명(캡션) + 원본 이미지 세로 스크롤.</div>
   ${hero(c.type,c.title,"","")}
-  <div class="fig">${ph("원본 이미지 (세로로 긴 이벤트 페이지 / 카드뉴스)","tall")}</div>
+  ${c.slides?mediaSlide(c.slides):`<div class="fig">${ph("원본 이미지 (세로로 긴 이벤트 페이지)","tall")}</div>`}
  </div>`;
 }
 /* side menu: 본문 스크롤에 따라 현재 섹션 표시 */
@@ -1035,8 +1143,29 @@ function setupSpy(){
 }
 
 /* 이미지 스켈레톤: 다 받고 그릴 준비(decode)가 끝나면 한 프레임에 교체 · 이미 받아 둔 이미지는 바로 표시 */
+/* 단계 슬라이더 동작: 화살표 · 단계 라벨 · 스와이프 · 키보드(←/→) — 현재 단계는 스크롤 위치로 계산 */
+function setupSliders(root){
+ root.querySelectorAll("[data-slider]").forEach(sl=>{
+  const tr=sl.querySelector(".sl-track"), steps=[...sl.querySelectorAll(".sl-step")], prev=sl.querySelector('[data-sl-move="-1"]'), next=sl.querySelector('[data-sl-move="1"]'), n=steps.length;
+  const cur=()=>Math.round(tr.scrollLeft/Math.max(1,tr.clientWidth));
+  const view=sl.querySelector(".sl-view"), slides=[...sl.querySelectorAll(".sl-slide")], free=sl.dataset.frame==="free";
+  const fitH=i=>{if(!free) return; const h=slides[i].offsetHeight; if(h) view.style.height=h+"px"};   /* 숨겨진 상태(높이 0)에서는 재지 않음 */   /* free: 패널 높이 = 현재 장 높이 */
+  const cnt=sl.querySelector(".sl-count b");
+  const mark=()=>{const i=Math.min(n-1,Math.max(0,cur())); fitH(i); cnt.textContent=i+1; steps.forEach((b,j)=>j===i?b.setAttribute("aria-current","step"):b.removeAttribute("aria-current")); prev.disabled=i===0; next.disabled=i===n-1};
+  const go=i=>tr.scrollTo({left:Math.min(n-1,Math.max(0,i))*tr.clientWidth,behavior:RM()?"auto":"smooth"});
+  let raf=0; tr.addEventListener("scroll",()=>{if(!raf) raf=requestAnimationFrame(()=>{raf=0;mark()})},{passive:true});
+  steps.forEach((b,j)=>b.addEventListener("click",()=>go(j)));
+  prev.addEventListener("click",()=>go(cur()-1)); next.addEventListener("click",()=>go(cur()+1));
+  tr.addEventListener("keydown",e=>{if(e.key==="ArrowRight"){e.preventDefault();go(cur()+1)} else if(e.key==="ArrowLeft"){e.preventDefault();go(cur()-1)}});
+  /* 한 줄에 라벨이 다 안 들어가면 compact (폭이 바뀔 때마다 다시 계산) */
+  const box=sl.querySelector(".sl-steps"), unnamed=steps.every(b=>b.classList.contains("num")), over=()=>box.scrollWidth>box.clientWidth+1, fit=()=>{sl.classList.remove("compact","nums","count"); if(unnamed){sl.classList.add("count"); fitH(Math.min(n-1,Math.max(0,cur()))); return} if(over()) sl.classList.add("compact"); if(over()) sl.classList.add("nums"); if(over()) sl.classList.add("count"); fitH(Math.min(n-1,Math.max(0,cur())))};
+  if("ResizeObserver" in window){const ro=new ResizeObserver(fit); ro.observe(sl.querySelector(".sl-ctl")); if(free) slides.forEach(x=>ro.observe(x))} else fit();
+  if(free) sl.querySelectorAll(".sl-free>img").forEach(im=>im.addEventListener("load",()=>fitH(Math.min(n-1,Math.max(0,cur()))),{once:true}));
+  mark(); fit();
+ });
+}
 function skel(root){
- root.querySelectorAll(".thumb>img,.fig>img").forEach(img=>{
+ root.querySelectorAll(".thumb>img,.fig>img,.sl-phone>img,.sl-shot>img,.sl-free>img").forEach(img=>{
   const box=img.parentElement;
   if(img.complete&&img.naturalWidth) return;
   box.classList.add("sk"); if(box.classList.contains("fig")&&!img.getAttribute("width")) box.classList.add("noratio");
@@ -1156,7 +1285,7 @@ function renderModal(){
  const fill=()=>{
   $("#mTag").textContent=info.k?"How I Work":info.c?"Content":"UI/UX";
   $("#mTitle").textContent=info.title; mod.classList.toggle("is-content",!!(info.c||info.k));
-  $("#mInner").innerHTML = info.p ? (info.kind==="full"?fullHTML(info.p):sideHTML(info.p)) : info.k ? caseHTML(info.k) : contentHTML(info.c); skel($("#mInner"));
+  $("#mInner").innerHTML = info.p ? (info.kind==="full"?fullHTML(info.p):sideHTML(info.p)) : info.k ? caseHTML(info.k) : contentHTML(info.c); skel($("#mInner")); setupSliders($("#mInner"));
   const g=info.group; $("#mPrev").disabled=info.i===0; $("#mNext").disabled=info.i===g.length-1;
   $("#mBody").scrollTop=0;
   setupSpy();
