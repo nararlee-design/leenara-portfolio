@@ -13,3 +13,7 @@
 - `index.html`의 `<meta name="robots" content="noindex, nofollow">` 삭제
 - `robots.txt`의 `Disallow: /` → `Allow: /`
 - 기획 주석 버튼 · 자리표시 제거
+
+## 작업 메모
+- `tools/`는 사이트에서 쓰지 않는 보조 도구 (대표 이미지 합성 스크립트)
+- 작업 규칙 · 결정 사항은 Claude 프로젝트 문서 `claude/작업_인수인계.md` 참고
