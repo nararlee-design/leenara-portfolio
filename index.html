@@ -599,6 +599,10 @@ td.role{font-weight:700;white-space:nowrap}
 .sl-phone{position:relative;height:88%;aspect-ratio:1170/2532;border-radius:20px;overflow:hidden;background:var(--bg-placeholder)}   /* 앱 화면 캡처 원본 비율 (iPhone 1170×2532) */
 .sl-phone>img{display:block;width:100%;height:100%;object-fit:cover}
 .sl-phone .ph{width:100%;height:100%;border-radius:20px}
+/* 실제 이미지가 들어오면 틀을 이미지 비율에 맞춤 (앱바를 잘라 원본 비율과 달라도 잘리지 않게) — 패널 높이의 88% 안에서 */
+.slider[data-frame="phone"] .sl-view{container-type:size}
+.sl-phone.has-img{height:auto;aspect-ratio:auto;width:auto;max-height:88cqh;background:none}
+.sl-phone.has-img>img{width:auto;height:auto;max-width:100cqw;max-height:88cqh;object-fit:contain}
 .sl-ctl{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .sl-steps{display:flex;flex-wrap:nowrap;gap:16px;min-width:0;overflow:hidden}   /* 한 줄 고정 · 넘치면 compact */
 .sl-step{display:inline-flex;align-items:baseline;gap:6px;min-width:0;padding:6px 0;font-size:14px;font-weight:600;line-height:1.4;color:var(--text-tertiary);white-space:nowrap;transition:color .2s}
@@ -845,7 +849,7 @@ const FULL = [
  stages:[
   ["reil (B2B)",[["기간","2022.04 · 8주"],["플랫폼","PC Web · 화상 상담(PC/Mobile)"],["역할","웹 서브 페이지, 화상 상담 화면 UI (기여도 80%)"],["팀","기획·개발 협업"],["툴","Adobe XD"],["상태","운영"]]],
   ["Good Listener (B2C)",[["기간","2023.02–03 · 2주"],["플랫폼","Mobile App · 상담사 Web"],["역할","User Flow, Mobile UI, 화상 상담 UI (기여도 100%)"],["팀","기획 2 · 프론트엔드 1 · UI 1"],["툴","Adobe XD"],["상태","컨셉 제안"]]]],
- overview:"의사 커뮤니티 interMD 안에서 운영된 정신건강 상담 서비스 reil과, 이를 일반 사용자 대상으로 확장한 Good Listener의 UI를 설계했습니다. 계정 권한에 따라 상담사와 내담자의 화면이 다르고, 상담 신청부터 실제 화상 상담까지 이어지는 서비스입니다.",
+ overview:"의사 커뮤니티 플랫폼 안에서 운영된 정신건강 상담 서비스 reil과, 이를 일반 사용자 대상으로 확장한 Good Listener의 UI를 설계했습니다. 계정 권한에 따라 상담사와 내담자의 화면이 다르고, 상담 신청부터 실제 화상 상담까지 이어지는 서비스입니다.",
  problem:"한 서비스 안에 상담사와 내담자, 실시간 상담과 쪽지 상담, 영상·음성·채팅이라는 서로 다른 조건이 겹쳐 있었습니다. 같은 기능이라도 누가, 어떤 상담 방식으로 쓰는지에 따라 필요한 정보가 달랐습니다.",
  decisions:[
   ["@Part 1. reil (B2B)"],
@@ -856,12 +860,12 @@ const FULL = [
   ["사용자의 역할이 바뀌었는데, 필요한 기능도 같을까?","B2B 상담사 화면은 내담자 노트, 상담 일지, 상담 내용 기록, 채팅이 한 화면에 모인 복합 화면이었습니다. B2C 내담자에게 필요한 것은 오직 상담이라고 판단해, 영상 중심의 단일 화면으로 바꾸고 채팅 알림은 필요한 것만 가볍게, 컨트롤은 필수 기능만 하단에 두고 기본은 숨겼습니다.","B2B 상담사 화면 ↔ B2C 영상 화면"],
   ["감성으로 선택하고, 결정은 이성적으로","상담사 목록에서는 실제 프로필 사진, 이력 대신 마음을 여는 소개 한마디, 최소한의 평점만 보여주고, 상세 화면에서 경력·자격과 이용자 후기로 판단 근거를 제공했습니다.","목록 → 프로필 상세"]],
  screens:["reil 상담사 메인 (PC)","reil 화상 상담 (Mobile)","Good Listener 홈 · 상담사 프로필"],
- result:"reil은 interMD 서비스에 실제 적용되어 운영되었고, Good Listener는 컨셉 단계에서 메인 시안 2종과 대표 페이지 3종의 hi-fi 디자인, 디자인 가이드까지 제안했습니다. 같은 경험을 다른 사용자에게 옮길 때, 기능을 그대로 가져오기보다 역할에 맞게 다시 고르는 과정이 필요하다는 것을 배웠습니다."},
+ result:"reil은 실제 서비스에 적용되어 운영되었고, Good Listener는 컨셉 단계에서 메인 시안 2종과 대표 페이지 3종의 hi-fi 디자인, 디자인 가이드까지 제안했습니다. 같은 경험을 다른 사용자에게 옮길 때, 기능을 그대로 가져오기보다 역할에 맞게 다시 고르는 과정이 필요하다는 것을 배웠습니다."},
 {id:"groupbuying", name:"Group Buying", desc:"주문부터 취소·반품까지 설계한 공동구매 커머스", cat:"Commerce", year:"2022", type:"Web",
  thumb:"대표 이미지 — 상품 상세 + 주문/결제 레이어",
  lead:"의사 회원이 포인트로 생활용품을 구매하는 공동구매, 주문 이후까지 설계하다",
  info:[["기간","2022.05"],["플랫폼","PC Web"],["역할","PC UI 디자인, 주간 이벤트 페이지 디자인 (모바일 UI는 다른 디자이너 담당)"],["팀","디자인팀 협업"],["툴","Adobe XD"],["상태","운영"]],
- overview:"interMD 플랫폼에 새로 도입된 결제 기능, 공동구매의 PC 화면을 설계했습니다. 생활용품·가전·상품권을 회원 포인트와 함께 구매하는 서비스로, 상품 목록부터 주문·결제, 마이페이지의 주문 관리와 알림 메일까지가 범위였습니다.",
+ overview:"의사 커뮤니티 플랫폼에 새로 도입된 결제 기능, 공동구매의 PC 화면을 설계했습니다. 생활용품·가전·상품권을 회원 포인트와 함께 구매하는 서비스로, 상품 목록부터 주문·결제, 마이페이지의 주문 관리와 알림 메일까지가 범위였습니다.",
  problem:"결제가 처음 도입되는 서비스라, 결제 완료 이후에 생기는 상황 — 배송 중, 배송 완료, 배송지 변경, 취소·교환·반품 — 을 사용자가 스스로 처리할 수 있는 화면이 함께 필요했습니다.",
  decisions:[
   ["구매 흐름을 끊지 않게","상품 상세 위에서 주문·결제를 레이어로 진행하고, 결제 완료 후 바로 확인 알림을 띄웠습니다. 문의가 필요할 때는 1:1 문의에 해당 상품 정보가 자동으로 붙도록 했습니다.","상세 → 주문/결제 → 완료",SL("wide",[["상품 상세","","상세"],["주문/결제","","결제"],["결제 완료","","완료"]])],
@@ -869,11 +873,11 @@ const FULL = [
   ["선택 전과 후, 길어질 때까지","옵션을 고르기 전에는 구매 버튼을 비활성화하고, 옵션을 여러 개 담거나 상품명이 두 줄을 넘는 경우의 줄바꿈 규칙을 화면에 주석으로 남겨 개발에 전달했습니다. 종료된 공동구매는 목록에서 별도 상태로 구분했습니다.","주석이 포함된 상세 화면"],
   ["출시 이후의 운영까지","공동구매를 알리는 'Thursday Market' 타임딜 이벤트를 회차마다 디자인했습니다. 로고타입과 페이지 구조는 고정하고 회차별 테마만 바꿔, 매번 새롭지만 같은 서비스로 보이게 했습니다.","Thursday Market 대표 회차",null,["c10","Thursday Market 전체 회차 보기"]]],
  screens:["공동구매 목록","주문 내역 (상태 4종)",SL("free",[["주문 내역 메일","","주문","3/4"],["발송 메일","","발송","3/4"],["취소 완료 메일","","취소","3/4"]])],
- result:"공동구매는 interMD에 적용되어 운영되었고, 신규 결제 프로세스의 UI 기준을 만들었습니다. 결제가 들어간 서비스에서는 메인 화면만큼 예외 상태의 화면이 중요하다는 것을 배웠습니다."},
+ result:"공동구매는 실제 서비스에 적용되어 운영되었고, 신규 결제 프로세스의 UI 기준을 만들었습니다. 결제가 들어간 서비스에서는 메인 화면만큼 예외 상태의 화면이 중요하다는 것을 배웠습니다."},
 {id:"lesson365", name:"Lesson 365", desc:"강의 중에도 길을 잃지 않도록 개선한 화상교육 플랫폼", cat:"Education", year:"2021", type:"Web",
  thumb:"대표 이미지 — 발표형 강의 화면 (To-be)",
  lead:"기존 화상교육 서비스를 분석해, 강의 중에도 길을 잃지 않는 화면으로 개선하다",
- info:[["기간","2021.05–07"],["플랫폼","PC Web"],["역할","기존 서비스 분석, 레퍼런스 수집, UX/UI 개선, 화면 디자인 (기여도 70%)"],["팀","월드버텍 내부 연구과제 팀"],["툴","Adobe XD · Illustrator"],["상태","디자인 전달 후 개발 진행"]],
+ info:[["기간","2021.05–07"],["플랫폼","PC Web"],["역할","기존 서비스 분석, 레퍼런스 수집, UX/UI 개선, 화면 디자인 (기여도 70%)"],["팀","사내 연구과제 팀"],["툴","Adobe XD · Illustrator"],["상태","디자인 전달 후 개발 진행"]],
  overview:"비대면 강의를 위한 웹 기반 화상교육·회의 플랫폼의 2.0 개선 작업입니다. 서비스의 톤앤매너는 유지하면서, 기능 구성과 화면 전반을 다시 설계했습니다.",
  problem:"영역이 흩어져 있고 메뉴 그룹 기준이 모호했습니다. 토글과 호버 뒤에 숨겨진 메뉴가 많아 사용성이 떨어졌고, 아이콘도 직관적이지 않았습니다. 화상 화면은 인원이 늘 때마다 그리드가 실시간으로 분할·재배치되어 레이아웃을 정할 수 없었고, 강사·발표자·학습자의 구분도 불분명했습니다.",
  decisions:[
@@ -910,7 +914,7 @@ const FULL = [
 ];
 
 const SIDE = [
-{id:"cme", name:"interMD CME", cat:"Education", year:"2022", type:"App", meta:"interMD · Mobile App · 2022.09 (4주) · 앱 UI 100% · 개발 완료, 오픈 보류",
+{id:"cme", name:"CME App", cat:"Education", year:"2022", type:"App", meta:"In-house · Mobile App · 2022.09 (4주) · 앱 UI 100% · 개발 완료, 오픈 보류",
  lead:"강좌 신청부터 시청·퀴즈까지, 한 화면에서 이어지는 강좌 교육 서비스",
  body:"의사 회원에게 온라인 최신지견 강좌를 무료로 제공하는 서비스입니다. 강좌 신청부터 시청까지 페이지 이탈 없이 한 화면에서 진행되도록 설계했습니다.",
  points:["등록 가능 · 등록 예정 · 등록 마감 상태를 태그로 구분하고, 등록 가능한 강좌 카드를 가장 크게 강조했습니다.","시청 가능 · 시청 전 · 시청 불가 · 재시청 가능의 버튼 상태와, 퀴즈의 정답 · 오답 · 다시 풀기 흐름을 정의했습니다.","PC와 모바일의 이미지 규격을 정리한 이미지 가이드를 만들어 협업 부서에 배포했습니다."],
@@ -925,7 +929,7 @@ const SIDE = [
  body:"장애인 고용 사업주와 근로자가 이용하는 공공기관 온라인 교육 사이트 재구축 프로젝트입니다.",
  points:["시력과 인터넷 사용 환경을 고려해 글자와 구성 요소를 키우고, 단락마다 배경색을 달리해 구분을 분명히 했습니다.","터치 오류가 잦은 사용자를 위해 메인 등 일부 페이지는 적응형으로 설계하고, 모바일에서는 로그인을 우선 배치했습니다.","컬러·타이포, 탭·테이블·버튼, 레이아웃을 사전에 정의한 사용자·관리자 가이드를 배포해, 이전 프로젝트 대비 디자인 이슈를 1,000여 건에서 150여 건으로 줄였습니다."],
  imgs:[SL("wide",[["메인 A 타입","","A"],["메인 B 타입","","B"],["메인 C 타입","","C"]]),"교육 신청 · 집합교육 목록",SL("wide",[["사용자 가이드","","사용자"],["관리자 가이드","","관리자"]])]},
-{id:"botami", name:"BotAmi Scan", cat:"Product Site", year:"2021", type:"Responsive", meta:"World Vertex · Responsive Web · 2021 · 전 페이지 디자인(캐릭터 제외) · 운영",
+{id:"botami", name:"BotAmi Scan", cat:"Product Site", year:"2021", type:"Responsive", meta:"SI · SM · Agency · Responsive Web · 2021 · 전 페이지 디자인(캐릭터 제외) · 운영",
  lead:"스캔 앱의 데모와 결제를 소개하는 랜딩페이지형 사이트",
  body:"스캔 앱 BotAmi Scan을 소개하고 SDK 데모·결제를 신청하는 대표 웹사이트입니다. 해외 개발자를 대상으로 영문 기준으로 제작했습니다.",
  points:["종이가 디지털 이미지로 바뀌는 서비스 특징을 메인 비주얼과 스크롤 인터랙션으로 표현했습니다.","PC의 마우스 호버 인터랙션은 모바일에서 터치 인터랙션으로 대체했습니다.","결제 단계에서는 선택한 플랜 정보를 좌측에 고정해, 결제하는 동안에도 확인할 수 있게 했습니다."],
@@ -965,7 +969,9 @@ const ICON={
  google:`<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23.7695 9.77372H12.2556V14.3873H18.8716C18.7652 15.0403 18.5264 15.6826 18.1767 16.2683C17.776 16.9393 17.2807 17.4502 16.7729 17.8392C15.2521 19.0046 13.479 19.2429 12.2476 19.2429C9.13691 19.2429 6.47903 17.2325 5.45011 14.5006C5.40859 14.4014 5.38102 14.299 5.34745 14.1978C5.12007 13.5025 4.99584 12.7661 4.99584 12.0008C4.99584 11.2042 5.13037 10.4417 5.37566 9.7216C6.34319 6.88141 9.06099 4.76006 12.2498 4.76006C12.8912 4.76006 13.5089 4.83641 14.0946 4.98869C15.4333 5.3367 16.3801 6.02212 16.9603 6.56428L20.4613 3.13576C18.3317 1.18317 15.5555 0 12.244 0C9.59665 0 7.1525 0.824781 5.1496 2.21878C3.52531 3.34928 2.19316 4.86288 1.29412 6.62075C0.457891 8.25066 0 10.0569 0 11.999C0 13.9411 0.458591 15.7661 1.29483 17.381V17.3918C2.1781 19.1062 3.46975 20.5823 5.0396 21.7076C6.41104 22.6907 8.87017 24 12.244 24C14.1842 24 15.9038 23.6502 17.4203 22.9946C18.5142 22.5217 19.4835 21.9049 20.3611 21.1122C21.5206 20.0647 22.4288 18.7691 23.0486 17.2785C23.6684 15.7878 24 14.1022 24 12.2747C24 11.4236 23.9145 10.5592 23.7695 9.77363V9.77372Z"/></svg>`,
  naver:`<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M16.3886 0V12.8362L7.64324 0H0V23.9832H7.59459V11.147L16.34 23.9832H23.9832V19.4178V0H16.3886Z"/></svg>`
 };
-const IMG=id=>`<img src="img/${id}.jpg" alt="" loading="lazy" decoding="async">`;
+/* 이미지 파일: 확장자를 안 쓰면 .webp (본문 · Content · 슬라이드 공통, 2026-10-26 WebP로 전환) */
+const SRC=id=>/\.\w+$/.test(id)?id:id+".webp";
+const IMG=id=>`<img src="img/${SRC(id)}" alt="" loading="lazy" decoding="async">`;
 /* ===== 대표 이미지 =====
    Works · 메인 외 모달 히어로: 기본 배경(thumb-bg-v1~v4.webp, 무작위) + UI 레이어(투명)
      <id>-ui.webp (2560×1440) · Works 작은 카드(PC 1:1)는 <id>-ui-sq.webp (1440×1440)
@@ -1027,8 +1033,9 @@ function viewHome(){
 }
 const mailBtns=()=>`<button class="btn" data-copy="vlffkqhtm96@gmail.com"><span class="brand">${ICON.google}</span><span class="lbl">Gmail</span></button>
     <button class="btn" data-copy="vlffkqhtm@naver.com"><span class="brand">${ICON.naver}</span><span class="lbl">NaverMail</span></button>`;
-const resumeBtns=()=>`<button class="btn" data-resume="view">${ICON.ext}<span class="lbl">Web View</span></button>
-    <button class="btn" data-resume="down">${ICON.down}<span class="lbl">Download</span></button>`;
+const RESUME="files/LeeNara_Resume.pdf";   /* 이력서 PDF — 파일만 교체하면 됨 */
+const resumeBtns=()=>`<a class="btn" data-resume="view" href="${RESUME}" target="_blank" rel="noopener">${ICON.ext}<span class="lbl">Web View</span></a>
+    <a class="btn" data-resume="down" href="${RESUME}" download="LeeNara_Resume.pdf">${ICON.down}<span class="lbl">Download</span></a>`;
 /* Contact 블록: 헤더 드롭 패널과 홈 섹션이 같은 컴포넌트를 씀 */
 function contactBox(){
  return `<div class="contact-box">
@@ -1103,7 +1110,8 @@ const props=rows=>`<dl class="props">${rows.map(r=>`<div class="prop"><dt>${esc(
    media_slide   : 이미지 슬라이드 — 텍스트가 있으면 default와 같은 2열 자리, 없으면 슬라이드만
    데이터: decisions 항목 [제목, 설명, 이미지 라벨] → default / [제목, 설명, 라벨, slides] → slide(텍스트 있음)
            screens · imgs 항목 "라벨" → imgonly / [slides] (배열) → slide(텍스트 없음) */
-const fig=label=>`<div class="fig">${ph(label)}</div>`;            /* media_imgonly · 실제 이미지가 들어오면 <img> — 원본 비율 */
+/* 이미지 자리: 문자열 = 자리표시(라벨), {src,w,h,alt} = 실제 이미지(원본 비율, 크기를 주면 로딩 중 자리가 정확히 잡힘) */
+const fig=x=>x&&typeof x==="object"&&x.src?`<div class="fig"><img src="img/${SRC(x.src)}"${x.w?` width="${x.w}" height="${x.h}"`:""} alt="${esc(x.alt||"")}" loading="lazy" decoding="async"></div>`:`<div class="fig">${ph(x)}</div>`;            /* media_imgonly · 실제 이미지가 들어오면 <img> — 원본 비율 */
 const mediaImgonly=fig;
 const ci=(id,label,inner,grp)=>`<section class="ci${grp?" grp":""}" id="${id}" data-sec><h3 class="lbl-sec">${label}</h3>${inner}</section>`;
 const body=t=>`<p class="ci-body">${esc(t)}</p>`;
@@ -1113,8 +1121,8 @@ const slSlide=(f,s,i,n)=>{const nm=s[0]||`${i+1}`, alt=esc(s[0]||`${i+1}번째`)
  const dg=s[1]&&typeof s[1]==="object"&&s[1].diag;   /* 슬라이드 한 장을 다이어그램으로 */
  if(s[1]&&s[1].banners)return `<div class="sl-slide" role="group" aria-roledescription="slide" aria-label="${i+1} / ${n}${s[0]?" "+esc(s[0]):""}"><div class="sl-free">${bannerSet(s[1].banners)}</div></div>`;
  if(dg)return `<div class="sl-slide" role="group" aria-roledescription="slide" aria-label="${i+1} / ${n}${s[0]?" "+esc(s[0]):""}"><div class="sl-dg">${DIAGRAMS[dg]()}</div></div>`;
- const img=s[1]?`<img src="img/${s[1]}.jpg" alt="${alt}" loading="lazy" decoding="async">`:"";
- const inner=f==="phone"?`<div class="sl-phone">${img||ph(nm)}</div>`
+ const img=s[1]?`<img src="img/${SRC(s[1])}" alt="${alt}" loading="lazy" decoding="async">`:"";
+ const inner=f==="phone"?`<div class="sl-phone${img?" has-img":""}">${img||ph(nm)}</div>`
   :f==="wide"?`<div class="sl-shot">${img||ph(nm)}</div>`
   :`<div class="sl-free">${img||`<div class="ph" style="aspect-ratio:${s[3]||"3/4"}"><span>${esc(nm)}</span></div>`}</div>`;
  return `<div class="sl-slide" role="group" aria-roledescription="slide" aria-label="${i+1} / ${n}${s[0]?" "+esc(s[0]):""}">${inner}</div>`};
@@ -1128,7 +1136,7 @@ const mediaCopy=d=>`<div class="copy"><h4>${esc(d[0])}</h4><p>${esc(d[1])}</p>${
 /* ===== 다이어그램: decisions 3번째 항목에 {diag:"이름"} → 이미지 대신 코드로 그린 다이어그램 ===== */
 /* ===== 배너 세트 템플릿: 원본 파일을 그대로 받아 한 화면에 배치 (Mobile · PC · In-Event) =====
    그룹 안에서는 실제 크기 비율 유지(그룹마다 기준 폭이 100%). 위치 이름은 표시하지 않음.
-   파일명: <키>-b-<자리>.jpg (예: c1-b-mo-home) → 파일을 넣으면 BANNER_FILES에 추가. 없는 배너는 BANNER_SKIP으로 숨김. */
+   파일명: <키>-b-<자리>.webp (예: c1-b-mo-home) → 파일을 넣으면 BANNER_FILES에 추가. 없는 배너는 BANNER_SKIP으로 숨김. */
 const BANNER_GROUPS=[   /* [그룹, 줄들] · 줄 = 열들 · 열 = [[자리, 원본 폭, 원본 높이], ...] · 배너는 자기 열의 폭에 맞춤 */
  ["Mobile",[[[["mo-home",1500,640],["mo-mypage",1500,320],["mo-list",1500,230]]]]],
  ["PC",[[[["pc-list",1480,172]]],[[["pc-side",636,890]],[["pc-profile",636,590]]]]],   /* 목록 전체 폭 → 아래 2열: 왼쪽 우측 배너 · 오른쪽 프로필 하단 */
@@ -1137,7 +1145,7 @@ const BANNER_FILES=new Set([]);   /* 예: new Set(["c1-b-mo-home","c1-b-mid"]) *
 const BANNER_SKIP={};             /* 예: {c4:["mid"]} → c4는 중간 배너 자리 숨김 (그룹이 비면 그룹째 숨김) */
 const bannerSet=key=>{const skip=BANNER_SKIP[key]||[];
  const item=([sl,w,h],g)=>{const f=`${key}-b-${sl}`;
-  return `<div class="bn-item" style="aspect-ratio:${w}/${h}">${BANNER_FILES.has(f)?`<img src="img/${f}.jpg" width="${w}" height="${h}" alt="${g} 배너" loading="lazy" decoding="async">`:`<div class="ph"><span>${w}×${h}</span></div>`}</div>`};
+  return `<div class="bn-item" style="aspect-ratio:${w}/${h}">${BANNER_FILES.has(f)?`<img src="img/${SRC(f)}" width="${w}" height="${h}" alt="${g} 배너" loading="lazy" decoding="async">`:`<div class="ph"><span>${w}×${h}</span></div>`}</div>`};
  return `<div class="bn-set">${BANNER_GROUPS.map(([g,rows])=>{
   const rs=rows.map(cols=>cols.map(c=>c.filter(x=>!skip.includes(x[0]))).filter(c=>c.length)).filter(cs=>cs.length); if(!rs.length)return "";
   return `<div class="bn-grp"><p class="dg-lb">${g}</p>${rs.map(cs=>`<div class="bn-row" style="grid-template-columns:repeat(${cs.length},minmax(0,1fr))">${cs.map(c=>`<div class="bn-col">${c.map(x=>item(x,g)).join("")}</div>`).join("")}</div>`).join("")}</div>`}).join("")}</div>`};
@@ -1204,7 +1212,7 @@ const DIAGRAMS={
     이미지는 상태바~HEVA LOGO를 잘라냄(둘 다 위 약 93pt) → viewport = (844pt − 93pt) 지점 */
  energyCompare:()=>{
   const col=(key,lb,img,w,h,vp)=>`<figure class="cmp-col" data-col="${key}"><figcaption class="dg-lb${key==="design"?" on":""}">${lb}</figcaption>
-   <div class="cmp-shot" style="aspect-ratio:${w}/${h}"><div class="cmp-img"><img src="img/${img}.jpg" width="${w}" height="${h}" alt="${lb} 화면" loading="lazy" decoding="async"></div>
+   <div class="cmp-shot" style="aspect-ratio:${w}/${h}"><div class="cmp-img"><img src="img/${SRC(img)}" width="${w}" height="${h}" alt="${lb} 화면" loading="lazy" decoding="async"></div>
     <div class="cmp-vp" style="top:${vp}%"><span>Viewport</span></div>
    </div></figure>`;
   return `<div class="dg cmp" data-show="wire" role="group" aria-label="와이어프레임과 디자인 비교">
@@ -1220,7 +1228,7 @@ const figOrDiag=x=>x&&typeof x==="object"&&x.diag?`<div class="fig diag">${DIAGR
 const mediaDefault=d=>`<div class="media media-default${d[2]&&d[2].diag?" media-diag":""}">${mediaCopy(d)}${figOrDiag(d[2])}</div>`;   /* 다이어그램은 글 아래 본문 전체 폭 */
 const mediaSlide=(slides,d)=>d?`<div class="media media-slide">${mediaCopy(d)}${slider(d[0],slides)}</div>`:`<div class="media-slide">${slider("",slides)}</div>`;
 const media=d=>d[3]?mediaSlide(d[3],d):d[2]===null?`<div class="media media-text">${mediaCopy(d)}</div>`:mediaDefault(d);   /* 3번째가 null이면 텍스트만 */
-const screen=x=>typeof x==="string"?mediaImgonly(x):x.diag?figOrDiag(x):x.banners?bannerSet(x.banners):mediaSlide(x);   /* screens · imgs: 문자열 = imgonly, 배열 = slide(텍스트 없음) */
+const screen=x=>typeof x==="string"||x.src?mediaImgonly(x):x.diag?figOrDiag(x):x.banners?bannerSet(x.banners):mediaSlide(x);   /* screens · imgs: 문자열 = imgonly, 배열 = slide(텍스트 없음) */
 const table=(head,rows)=>`<table class="ttable"><thead><tr>${head.map(h=>`<th scope="col">${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td data-th="${esc(head[i])}">${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
 const SECS=[["s-overview","Overview"],["s-problem","Problem"],["s-decisions","Decisions"],["s-screens","Screens"],["s-result","Result"]];
 /* 모달 히어로: 제목 · 한 줄 소개 · 대표 이미지 · 정보 */
@@ -1231,10 +1239,10 @@ const hero=(title,lead,imgId,propsHTML)=>`<div class="mh">
  </div>`;
 /* Side 프로젝트 정보 (meta 문자열을 항목으로 나눔) */
 const SIDE_INFO={
- cme:[["Client","interMD"],["Platform","Mobile App"],["Period","2022.09 (4주)"],["Role","앱 UI 100%"],["Status","개발 완료, 오픈 보류"]],
+ cme:[["Client","In-house"],["Platform","Mobile App"],["Period","2022.09 (4주)"],["Role","앱 UI 100%"],["Status","개발 완료, 오픈 보류"]],
  bookorbit:[["Client","Personal Project"],["Platform","Mobile App"],["Period","2025 (2주)"]],
  edi:[["Client","한국장애인고용공단"],["Platform","Responsive / Adaptive Web"],["Period","2020.05–12"],["Role","메인 시안 30%, 서브 페이지 전체, 배너 · 운영"]],
- botami:[["Client","World Vertex"],["Platform","Responsive Web"],["Period","2021"],["Role","전 페이지 디자인(캐릭터 제외) · 운영"]]
+ botami:[["Client","SI · SM · Agency"],["Platform","Responsive Web"],["Period","2021"],["Role","전 페이지 디자인(캐릭터 제외) · 운영"]]
 };
 function fullHTML(p){
  const decs=p.decisions.map(d=>d.length===1?`<p class="ci-part">${esc(d[0].slice(1))}</p>`:media(d)).join("");
@@ -1567,7 +1575,7 @@ document.addEventListener("click",e=>{
  else if(t.dataset.copy){const v=t.dataset.copy;
    const msg=v.includes("gmail")?"Gmail 주소가 복사되었습니다.":"Naver 메일 주소가 복사되었습니다.";
    navigator.clipboard?.writeText(v).then(()=>toast(msg),()=>toast(v)) ?? toast(v)}
- else if(t.dataset.resume){toast(t.dataset.resume==="view"?"이력서 PDF가 새 탭에서 열립니다 (연결 예정)":"이력서 PDF가 다운로드됩니다 (연결 예정)")}
+ else if(t.dataset.resume==="down"){toast("이력서 PDF를 다운로드합니다")}   /* 링크 기본 동작(새 탭 · 다운로드)은 막지 않음 */
 });
 $("#mClose").onclick=closeModal;
 $("#scrim").onclick=()=>{ if($("#modal").classList.contains("side")) closeModal(); };
