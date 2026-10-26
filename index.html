@@ -18,7 +18,7 @@
   --bg-base:#111214; --bg-surface:#17181B; --bg-elevated:#1A1B1E; --bg-placeholder:#1E2024;
   --text-primary:#F4F5F6; --text-secondary:#C9CDD3; --text-tertiary:#9AA0AA; --text-disabled:#6E747E; --text-on-accent:#111214;
   --border-default:#2D3036; --border-strong:#F4F5F6; --border-dashed:#3A3E45;
-  --accent:#4FD1C0; --accent-hover:#56DECC;
+  --accent:#4FD1C0; --accent-hover:#56DECC; --glow:#1F8F84;
   --overlay-dim:rgba(5,6,7,.72); --overlay-bar:rgba(23,24,27,.92); --caption-start:rgba(17,18,20,.7744);
   --f-en:"Archivo", "Pretendard Variable", system-ui, sans-serif;
   --f-kr:"Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
@@ -116,6 +116,11 @@ nav.menu{display:flex;align-items:center;gap:20px}
 /* ===== Thumbnail cards ===== */
 .card{position:relative;display:block;width:100%;text-align:left;cursor:pointer;color:inherit;text-decoration:none}
 .thumb{position:relative;overflow:hidden;isolation:isolate;-webkit-mask-image:-webkit-radial-gradient(white,black);background:var(--bg-elevated)}
+.thumb picture{position:absolute;inset:0}
+/* 대표 이미지 레이어: 배경 + UI (같은 크기로 겹침 · hover 확대도 함께) */
+@media (min-width:768px){.work-grid .card:not(.big) .tl-bg{object-position:right center}}   /* 정방형: 배경 조명(오른쪽)을 살림 */
+.fig.tl-hero{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:var(--bg-elevated)}
+.fig.tl-hero img,.fig.tl-hero picture{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:0}
 .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s var(--ease)}
 .card:hover .thumb img,.card:focus-visible .thumb img{transform:scale(1.06)}
 @media (prefers-reduced-motion:reduce){.thumb img{transition:none}.card:hover .thumb img,.card:focus-visible .thumb img{transform:none}}
@@ -174,7 +179,8 @@ body.contact-open nav.menu [data-go]{display:none}
 .cgroup p{margin:0;font-size:14px;line-height:1.65;color:var(--text-tertiary)}
 .cgroup .row{display:flex;gap:12px;flex-wrap:wrap}
 .contact-msg{margin:0 0 40px;font-size:18px;line-height:1.6;color:var(--text-secondary)}
-@media (max-width:1023px){.contact-box{flex-direction:column;align-items:flex-start}.contacts{justify-content:flex-start}}
+/* 오른쪽 배치에서 두 그룹이 한 줄에 안 들어가면(1199 이하) 제목 아래로 내려 왼쪽 정렬 → Email · Resume 제목 줄이 항상 맞음 */
+@media (max-width:1199px){.contact-box{flex-direction:column;align-items:flex-start}.contacts{justify-content:flex-start}}
 @media (max-width:767px){
   .contact-box{gap:32px;padding-block:40px 32px}
   .contact-title{font-size:56px}
@@ -225,6 +231,31 @@ body.contact-open nav.menu [data-go]{display:none}
 .bn-set .bn-item .ph{width:100%;height:100%;border-radius:6px}   /* .sl-free .ph(16)보다 우선 */
 @media (max-width:767px){.bn-set{padding:16px;gap:24px}.bn-row,.bn-col{gap:8px}}
 /* ===== 다이어그램 (코드로 그림 · 사이트 토큰) ===== */
+/* Wireframe ↔ Design 비교 (Energy D2) */
+.cmp{gap:20px}
+.cmp-tabs{display:none;gap:4px;padding:4px;border-radius:999px;background:var(--bg-surface);border:1px solid var(--border-default);align-self:flex-start}
+.cmp-tabs button{height:36px;padding:0 16px;border:0;border-radius:999px;background:none;font:600 14px/1 var(--f-en);color:var(--text-tertiary);cursor:pointer}
+.cmp-tabs button[aria-selected="true"]{background:var(--bg-placeholder);color:var(--text-primary)}
+.cmp-cols{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;container-type:inline-size}
+/* PC: 가운데 화살표 (이름 줄 높이) · viewport는 한 줄로 두 화면을 가로질러, 태그는 왼쪽 하나만 */
+.cmp-arrow{position:absolute;left:50%;top:0;width:72px;height:16px;transform:translateX(-50%);color:var(--text-tertiary)}
+.cmp-col figcaption{height:16px;display:flex;align-items:center}
+[data-col="wire"] .cmp-vp{right:calc(-1 * ((100cqw - 24px) / 2 + 24px + 12px))}
+[data-col="design"] .cmp-vp{display:none}
+.cmp-col{margin:0;display:flex;flex-direction:column;align-items:center;gap:12px;min-width:0}
+.cmp-shot{position:relative;width:100%;max-width:280px}
+.cmp-img{position:absolute;inset:0;border-radius:12px;overflow:hidden;background:var(--bg-placeholder)}
+.cmp-img>img{display:block;width:100%;height:100%;object-fit:cover}
+/* viewport: 화면 밖까지 이어지는 점선 + 라벨(넓을 때 화면 왼쪽 바깥) — 흰 화면 · 어두운 패널 모두에서 보이는 색 */
+.cmp-vp{position:absolute;left:-12px;right:-12px;z-index:2;border-top:1.5px dashed var(--accent);pointer-events:none}
+.cmp-vp span{position:absolute;left:0;top:-9px;transform:translateX(-100%);padding:2px 6px;border-radius:4px;background:var(--accent);font:700 11px/1.3 var(--f-en);color:#000}
+@container (max-width:559.98px){
+ .cmp-tabs{display:inline-flex}
+ .cmp-cols{grid-template-columns:1fr}
+ .cmp[data-show="wire"] [data-col="design"],.cmp[data-show="design"] [data-col="wire"]{display:none}
+ .cmp-col figcaption,.cmp-arrow{display:none}
+ [data-col] .cmp-vp{display:block;left:-6px;right:-6px}.cmp-vp span{left:auto;right:6px;top:4px;transform:none}
+}
 .fig.diag{padding:20px;border-radius:16px;background:var(--bg-elevated);border:1px solid var(--border-default);container-type:inline-size}
 .dg{display:flex;flex-direction:column;gap:12px}
 .dg-hd{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -271,15 +302,6 @@ body.contact-open nav.menu [data-go]{display:none}
 @container (max-width:719.98px){.dg-types{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:20px}}   /* 2×2일 때 위아래 줄 간격 +8 */
 /* Event & Banner 이벤트 페이지 공통 구조 */
 /* 한 줄(행)마다 왼쪽 블록 + 오른쪽 설명 → 설명이 길어져도 블록과 높이가 함께 맞춰짐 */
-.dg-page{position:relative;display:grid;grid-template-columns:132px 1fr;column-gap:30px;row-gap:6px;padding-block:10px}
-.dg-phonebg{grid-column:1;grid-row:1 / span 5;margin:-10px 0;border-radius:18px;background:var(--bg-surface);border:1px solid var(--border-default)}
-.dg-blk{grid-column:1;margin-inline:10px;border-radius:8px;background:var(--bg-placeholder);border:1px solid var(--border-default)}
-.dg-blk.on{background:rgba(79,209,192,.12);border-color:var(--accent)}
-.dg-sec{grid-column:2;display:flex;align-items:center;gap:12px;min-width:0;padding-block:4px}
-.dg-sec b{flex:none;width:22px;font-family:var(--f-en);font-weight:700;font-size:12px;color:var(--text-tertiary)}
-.dg-sec.on b{color:var(--accent)}
-.dg-sec .dg-note h5{font-size:14px}
-@container (max-width:419.98px){.dg-page{grid-template-columns:96px 1fr;column-gap:16px}}
 .dg-card{display:flex;flex-direction:column;gap:10px;min-width:0;padding:10px;border-radius:12px;background:var(--bg-surface);border:1px solid var(--border-default)}
 .dg-card.on{border-color:var(--accent)}
 .dg-vis{height:72px;border-radius:8px;background:var(--bg-placeholder);display:flex;align-items:center;justify-content:center;overflow:hidden}
@@ -801,6 +823,8 @@ td.role{font-weight:700;white-space:nowrap}
 /* ---------- DATA ---------- */
 /* media_slide 데이터: SL(형태, [[이름, 이미지 id, 짧은 이름, 자리표시 비율(free)], ...]) · 형태 = phone | wide | free */
 const SL=(frame,items)=>({frame,items});
+/* 홈에 노출할 대표 프로젝트 (순서 = 노출 순서) */
+const HOME_IDS=["energy","counselling","payappcafe","jibsarang"];
 const FULL = [
 {id:"energy", name:"Energy Dashboard", desc:"발전소 운영 데이터를 한눈에 확인하는 반응형 대시보드", cat:"Energy", year:"2026", type:"Responsive",
  thumb:"대표 이미지 — 다크 배경 + KPI 카드",
@@ -810,7 +834,7 @@ const FULL = [
  problem:"발전량, 수익, 운영 정보처럼 성격이 다른 데이터가 같은 비중으로 노출되고 있었습니다. 현재 상태를 빠르게 파악해야 하는 서비스인데, 실시간으로 변하는 정보와 필요할 때만 조회하는 정보가 섞여 있어 핵심을 찾는 데 시간이 걸렸습니다.",
  decisions:[
   ["모든 정보를 같은 중요도로 보여주지 않는다","KPI는 첫 화면 히어로 영역에, 주요 데이터는 단독 섹션에, 보조 정보는 탭으로 묶었습니다. 전체 스크롤은 줄이고 필요한 정보에는 계속 접근할 수 있게 했습니다.",{diag:"energyIA"}],
-  ["일반 정보와 실시간 데이터를 섹션으로 분리","확인 목적이 다른 두 종류의 데이터를 나누고, 수익 정보는 핵심 수치와 3개월 추이를 함께 보도록 위계를 강화했습니다.","와이어프레임 → Hi-fi 비교"],
+  ["정보와 상태를 나눠, 첫 화면에 핵심을","발전소 정보와 실시간 상태를 나누고 핵심 지표를 상단에 올려, 첫 화면에서 수익과 발전량을 바로 확인하게 했습니다. 수익은 3개월 추이를, 보고서와 캘린더는 한 카드로 묶었습니다.",{diag:"energyCompare"}],
   ["반복되는 데이터는 하나의 카드 규칙으로","Data Level 1(핵심 지표) · Level 2(주요 지표) · Level 3(상세 데이터)로 카드 모듈을 정의해, 데이터가 늘어나도 같은 규칙으로 대응하게 했습니다.","카드 컴포넌트"],
   ["화면 크기마다 배치를 다르게","넓은 화면에서는 주요 정보를 병렬로 배치하고, 정보량이 적은 페이지는 읽기 폭을 제한했습니다. 공통 시각 기준은 Figma 베리어블(Primitive → Semantic Token)로 관리했습니다.","반응형 비교 + 베리어블 구조",SL("wide",[["반응형 비교","","반응형"],["베리어블 Primitive","","Primitive"],["베리어블 Semantic","","Semantic"]])]],
  screens:["메인 대시보드 (Desktop)","메인 대시보드 (Mobile)","수익 상세"],
@@ -843,7 +867,7 @@ const FULL = [
   ["구매 흐름을 끊지 않게","상품 상세 위에서 주문·결제를 레이어로 진행하고, 결제 완료 후 바로 확인 알림을 띄웠습니다. 문의가 필요할 때는 1:1 문의에 해당 상품 정보가 자동으로 붙도록 했습니다.","상세 → 주문/결제 → 완료",SL("wide",[["상품 상세","","상세"],["주문/결제","","결제"],["결제 완료","","완료"]])],
   ["결제 이후의 상태를 모두 화면으로","주문 내역은 결제 완료·배송 중·배송 완료·취소/교환/반품 완료의 4가지 상태로 나누고, 상태에 따라 버튼과 안내를 바꿨습니다. 취소·교환·반품 요청 창은 기본 / 내역 없음 / 최대 높이(스크롤) / 처리 완료 후 입력 불가의 4가지 경우를 설계했습니다.","상태별 화면",SL("wide",[["결제 완료","","결제"],["배송 중","","배송"],["배송 완료","","완료"],["취소/반품 요청","","요청"]])],
   ["선택 전과 후, 길어질 때까지","옵션을 고르기 전에는 구매 버튼을 비활성화하고, 옵션을 여러 개 담거나 상품명이 두 줄을 넘는 경우의 줄바꿈 규칙을 화면에 주석으로 남겨 개발에 전달했습니다. 종료된 공동구매는 목록에서 별도 상태로 구분했습니다.","주석이 포함된 상세 화면"],
-  ["출시 이후의 운영까지","공동구매를 알리는 'Thursday Market' 타임딜 이벤트를 회차마다 디자인했습니다. 로고타입과 페이지 구조는 고정하고 회차별 테마만 바꿔, 매번 새롭지만 같은 서비스로 보이게 했습니다.","Thursday Market 대표 회차",null,["o-events","Event & Banner에서 전체 회차 보기"]]],
+  ["출시 이후의 운영까지","공동구매를 알리는 'Thursday Market' 타임딜 이벤트를 회차마다 디자인했습니다. 로고타입과 페이지 구조는 고정하고 회차별 테마만 바꿔, 매번 새롭지만 같은 서비스로 보이게 했습니다.","Thursday Market 대표 회차",null,["c10","Thursday Market 전체 회차 보기"]]],
  screens:["공동구매 목록","주문 내역 (상태 4종)",SL("free",[["주문 내역 메일","","주문","3/4"],["발송 메일","","발송","3/4"],["취소 완료 메일","","취소","3/4"]])],
  result:"공동구매는 interMD에 적용되어 운영되었고, 신규 결제 프로세스의 UI 기준을 만들었습니다. 결제가 들어간 서비스에서는 메인 화면만큼 예외 상태의 화면이 중요하다는 것을 배웠습니다."},
 {id:"lesson365", name:"Lesson 365", desc:"강의 중에도 길을 잃지 않도록 개선한 화상교육 플랫폼", cat:"Education", year:"2021", type:"Web",
@@ -891,12 +915,7 @@ const SIDE = [
  body:"의사 회원에게 온라인 최신지견 강좌를 무료로 제공하는 서비스입니다. 강좌 신청부터 시청까지 페이지 이탈 없이 한 화면에서 진행되도록 설계했습니다.",
  points:["등록 가능 · 등록 예정 · 등록 마감 상태를 태그로 구분하고, 등록 가능한 강좌 카드를 가장 크게 강조했습니다.","시청 가능 · 시청 전 · 시청 불가 · 재시청 가능의 버튼 상태와, 퀴즈의 정답 · 오답 · 다시 풀기 흐름을 정의했습니다.","PC와 모바일의 이미지 규격을 정리한 이미지 가이드를 만들어 협업 부서에 배포했습니다."],
  imgs:["강좌 카탈로그","강의 퀴즈 — 정답 / 오답","이미지 가이드"]},
-{id:"events", name:"Event & Banner System", cat:"Campaign", year:"2022–2023", type:"Web · App", meta:"interMD · Web/App · 2022–2023 · 이벤트 페이지 · 배너 디자인",
- lead:"회차마다 새롭지만 같은 서비스로 보이도록, 구조를 고정한 이벤트 페이지와 배너",
- body:"서비스 운영 중 정기적으로 열린 이벤트의 페이지와 배너를 디자인했습니다.",
- points:["Thursday Market 시리즈는 로고타입과 페이지 구조를 고정하고, 회차별 테마만 바꿨습니다.","이벤트 키비주얼 하나를 모바일 3곳, PC 4곳의 노출 위치 규격에 맞게 변주했습니다.","키비주얼 → 혜택 → 참여 방법 → CTA → 유의사항의 공통 구조로 이벤트 페이지를 빠르게 제작했습니다."],
- imgs:[SL("free",[["3rd","","","3/4"],["4th","","","3/4"],["6th","","","3/4"]]),{banners:"events"},{diag:"eventStructure"}]},
-{id:"bookgwedo", name:"Bookgwedo", cat:"Lifestyle", year:"2025", type:"App", meta:"Personal · Mobile App · 2025 (2주)",
+{id:"bookorbit", name:"Book Orbit", cat:"Lifestyle", year:"2025", type:"App", meta:"Personal · Mobile App · 2025 (2주)",
  lead:"독서의 목적에 따라 기록의 깊이를 고르는 독서 기록 앱",
  body:"독서 '수준'이 아니라 독서의 목적과 태도에 따라 서로 다른 기록 경험을 제공하는 독서 기록 앱입니다.",
  points:["독서 자체의 진입 장벽 → 진행률과 캘린더 썸네일로 시각적 성취감을 주었습니다.","수동 입력의 부담 → 간단한 검색과 선택만으로 기록이 남게 했습니다.","목적이 다른 사용자에게 같은 UI → 독서 요약과 독서 노트를 분리해 기록의 깊이를 고를 수 있게 했습니다."],
@@ -910,12 +929,7 @@ const SIDE = [
  lead:"스캔 앱의 데모와 결제를 소개하는 랜딩페이지형 사이트",
  body:"스캔 앱 BotAmi Scan을 소개하고 SDK 데모·결제를 신청하는 대표 웹사이트입니다. 해외 개발자를 대상으로 영문 기준으로 제작했습니다.",
  points:["종이가 디지털 이미지로 바뀌는 서비스 특징을 메인 비주얼과 스크롤 인터랙션으로 표현했습니다.","PC의 마우스 호버 인터랙션은 모바일에서 터치 인터랙션으로 대체했습니다.","결제 단계에서는 선택한 플랜 정보를 좌측에 고정해, 결제하는 동안에도 확인할 수 있게 했습니다."],
- imgs:["Home","SDK Pricing · Payment","Mobile"]},
-{id:"goodcare", name:"GOODCARE", cat:"Healthcare", year:"2021", type:"Admin", meta:"World Vertex · Admin Web · 2021.01–04 · 팀 프로젝트",
- lead:"선별진료소 의료진이 검사 정보를 한눈에 관리하는 관리자 대시보드",
- body:"긴급 전염병 진단 플랫폼의 선별진료소 관리자 시스템입니다. 의료진이 사용하는 관리자 화면으로, 사용자 앱과 같은 톤앤매너를 유지하면서 효율적으로 관리할 수 있게 설계했습니다.",
- points:["사용자와 관리자 시스템 사이에 놓인 화면이라, 관리 효율과 사용자 경험을 함께 고려했습니다.","검색 바, 차트, 테이블 등 대시보드 요소의 스타일 가이드를 정의했습니다."],
- imgs:["관리자 대시보드","스타일 가이드"]}
+ imgs:["Home","SDK Pricing · Payment","Mobile"]}
 ];
 
 /* Content Design: 유형을 제목처럼(굵게), 프로젝트명을 보조로 */
@@ -930,6 +944,8 @@ const contentThumb=c=>CONTENT_THUMBS.has(c.id)?c.id+"-thumb":((c.slides&&c.slide
 CONTENT[5].slides=SL("free",Array.from({length:11},()=>["","","","1/1"]));   /* 카드뉴스 11장 */
 CONTENT[6].slides=SL("free",[["2차","","","3/8"],["4차","","","3/8"],["6차","","","3/8"]]);
 CONTENT[7].slides=SL("free",[1,2,3].map(()=>["","","","1/1.414"]));
+/* Thursday Market (공동구매 타임딜 이벤트 시리즈) — 예전 Works의 Event & Banner를 Content로 옮김. id는 c10(기존 번호 유지), 순서는 이벤트 페이지들 뒤 */
+CONTENT.splice(3,0,{id:"c10",type:"Event Page",title:"Thursday Market",cap:"Thursday Market",slides:SL("free",[["3rd","","","3/4"],["4th","","","3/4"],["6th","","","3/4"]])});
 
 /* ---------- HELPERS ---------- */
 const $=s=>document.querySelector(s);
@@ -950,10 +966,27 @@ const ICON={
  naver:`<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M16.3886 0V12.8362L7.64324 0H0V23.9832H7.59459V11.147L16.34 23.9832H23.9832V19.4178V0H16.3886Z"/></svg>`
 };
 const IMG=id=>`<img src="img/${id}.jpg" alt="" loading="lazy" decoding="async">`;
+/* ===== 대표 이미지 =====
+   Works · 메인 외 모달 히어로: 기본 배경(thumb-bg-v1~v4.webp, 무작위) + UI 레이어(투명)
+     <id>-ui.webp (2560×1440) · Works 작은 카드(PC 1:1)는 <id>-ui-sq.webp (1440×1440)
+   Home 메인 4개 · 그 모달 히어로: 개별 배경이 합쳐진 한 장 <id>-main.webp (2560×1440)
+   파일이 들어오면 아래 목록에 id만 추가. UI가 없으면 배경만 보임. */
+const HOME_MAIN=new Set(["energy","counselling","payappcafe","jibsarang"]);
+const UI_LAYER=new Set(["energy","counselling","payappcafe","jibsarang","cme","groupbuying","edi","botami","lesson365","bookorbit"]);
+const UI_SQ=new Set(["energy","counselling","payappcafe","jibsarang","cme","groupbuying","edi","botami","lesson365","bookorbit"]);
+/* 기본 배경 4종(thumb-bg-v1~v4.webp)을 페이지를 열 때마다 무작위 배치. Works 순서에서 바로 앞 프로젝트와 같은 배경은 피함.
+   같은 프로젝트는 카드 · 모달 히어로가 같은 배경. 고정하고 싶으면 BG_PICK에 {id: 번호}. */
+const BG_PICK={};
+let BG_MAP=null;   /* 처음 그릴 때 한 번 정함 (ORDER가 아래에 선언되어 지연 계산) */
+const BG_OF=id=>{if(!BG_MAP){BG_MAP={};let prev=0;ORDER.forEach(([,k])=>{let v=BG_PICK[k];if(!v){const c=[1,2,3,4].filter(x=>x!==prev);v=c[Math.floor(Math.random()*c.length)]}BG_MAP[k]=v;prev=v})}return BG_MAP[id]||1};
+const tlBg=id=>`<img class="tl-bg" src="img/thumb-bg-v${BG_OF(id)}.webp" alt="" loading="lazy" decoding="async">`;
+const tlUi=(id,sq)=>{const ui=UI_LAYER.has(id)?`<img class="tl-ui" src="img/${id}-ui.webp" alt="" loading="lazy" decoding="async">`:"";
+ return sq&&UI_SQ.has(id)?`<picture class="tl-ui-p"><source media="(min-width:768px)" srcset="img/${id}-ui-sq.webp">${ui||`<img class="tl-ui" src="img/${id}-ui-sq.webp" alt="" loading="lazy" decoding="async">`}</picture>`:ui};
+const THUMB=(id,ctx)=>(ctx==="home"||ctx==="hero")&&HOME_MAIN.has(id)?`<img class="tl-main" src="img/${id}-main.webp" alt="" loading="lazy" decoding="async">`:tlBg(id)+tlUi(id,ctx==="sq");   /* ctx: home · work · sq(Works 작은 카드) · hero */
 const metaLine=p=>`${p.cat} · ${p.year} · ${p.type}`;  /* 모달 정보용 (연도 포함) */
 const cardMeta=p=>`${p.cat} · ${p.type}`;               /* 썸네일용 (연도 없음) */
 /* Works 그리드 순서 = 모달 이전/다음 순서. big = 큰 카드 */
-const ORDER=[["p","energy",1],["p","payappcafe"],["p","jibsarang"],["p","counselling",1],["o","cme"],["o","events"],["p","groupbuying",1],["o","bookgwedo"],["o","edi"],["p","lesson365",1],["o","botami"],["o","goodcare"]];
+const ORDER=[["p","energy",1],["p","payappcafe"],["p","jibsarang"],["p","counselling",1],["o","cme"],["p","groupbuying"],["o","edi",1],["o","botami"],["p","lesson365"],["o","bookorbit"]];
 let state={view:"home",tab:"ui",modal:null};
 let lastFocus=null;
 
@@ -970,11 +1003,11 @@ function viewHome(){
   </div>
  </section>
  <section class="wrap home-works" aria-label="대표 작업">
-  <div class="note">홈 Works: 대표 6개(Full Modal 그룹). 썸네일만 클릭 · hover 시 썸네일 확대 + "View" 커서.</div>
-  <div class="home-grid">${FULL.map(p=>`
+  <div class="note">홈 Works: 대표 4개(Energy · Counselling · PayAppCafe · Jibsarang, HOME_IDS 순서). 썸네일만 클릭 · hover 시 썸네일 확대 + "View" 커서.</div>
+  <div class="home-grid">${HOME_IDS.map(id=>FULL.find(x=>x.id===id)).map(p=>`
    <div class="card-home">
     <span class="note-chip">Full Modal</span>
-    <button class="thumb" data-open="p-${p.id}" aria-label="${esc(p.name)} 자세히 보기">${IMG(p.id)}</button>
+    <button class="thumb" data-open="p-${p.id}" aria-label="${esc(p.name)} 자세히 보기">${THUMB(p.id,"home")}</button>
     <div class="cap"><span class="nm">${esc(p.name)}</span><span class="ds">${esc(p.desc)}</span></div>
    </div>`).join("")}</div>
   <div class="more-row pre" id="allRow"><a href="#work" class="btn-cta" data-go="work"><span class="lbl">All works</span>${ICON.narrow}</a></div>
@@ -1001,7 +1034,7 @@ function contactBox(){
  return `<div class="contact-box">
   <h2 class="contact-title">Contact</h2>
   <div class="contacts">
-   <div class="cgroup"><div class="txt"><h3>Email Copy</h3><p>버튼을 클릭하면 이메일 주소가 복사됩니다</p></div><div class="row">${mailBtns()}</div></div>
+   <div class="cgroup"><div class="txt"><h3>Email</h3><p>버튼을 클릭하면 이메일 주소가 복사됩니다</p></div><div class="row">${mailBtns()}</div></div>
    <div class="cgroup"><div class="txt"><h3>Resume</h3><p>이력서와 자기소개서가 첨부된 파일입니다</p></div><div class="row">${resumeBtns()}</div></div>
   </div>
  </div>`;
@@ -1020,7 +1053,7 @@ function viewWork(){
   <div class="work-grid">${ORDER.map(([k,id,big])=>{const p=(k==="p"?FULL:SIDE).find(x=>x.id===id);return `
    <button class="card card-grid${big?" big":""}" data-open="${k}-${p.id}" aria-label="${esc(p.name)} 자세히 보기">
     <span class="note-chip">${k==="p"?"Full Modal":"Side Modal"}</span>
-    <div class="thumb">${IMG(p.id)}</div>
+    <div class="thumb">${THUMB(p.id,big?"work":"sq")}</div>
     <div class="cap"><span class="nm">${esc(p.name)}</span><span class="mt">${esc(cardMeta(p))}</span></div>
    </button>`}).join("")}</div>`
   :`<div class="note">3열(모바일 2열) · 간격 4px(UX/UI와 통일). 썸네일 위 = 유형(제목처럼) + 프로젝트명(보조). 클릭 → Side Modal.</div>
@@ -1057,7 +1090,7 @@ function findModal(token){
  let m;
  if((m=token.match(/^p-(.+)$/))){const j=FULL.findIndex(p=>p.id===m[1]);if(j>-1)return{kind:"full",group:UIG,i:UIG.indexOf(token),p:FULL[j],title:FULL[j].name,meta:metaLine(FULL[j])}}
  if((m=token.match(/^o-(.+)$/))){const j=SIDE.findIndex(p=>p.id===m[1]);if(j>-1)return{kind:"side",group:UIG,i:UIG.indexOf(token),p:SIDE[j],title:SIDE[j].name,meta:metaLine(SIDE[j])}}
- if((m=token.match(/^c(\d+)$/))){const i=+m[1]-1;if(CONTENT[i])return{kind:"side",group:CONTENT.map(c=>c.id),i,c:CONTENT[i],title:CONTENT[i].title,meta:CONTENT[i].type}}
+ if((m=token.match(/^c(\d+)$/))){const i=CONTENT.findIndex(c=>c.id===token);if(i>=0&&CONTENT[i])return{kind:"side",group:CONTENT.map(c=>c.id),i,c:CONTENT[i],title:CONTENT[i].title,meta:CONTENT[i].type}}
  if(HWG.includes(token)){const i=HWG.indexOf(token);return{kind:"side",group:HWG,i,k:HW[i],title:HW[i].card.replace(/^Case \d+\. /,""),meta:HW[i].no}}
  return null;
 }
@@ -1108,6 +1141,7 @@ const bannerSet=key=>{const skip=BANNER_SKIP[key]||[];
  return `<div class="bn-set">${BANNER_GROUPS.map(([g,rows])=>{
   const rs=rows.map(cols=>cols.map(c=>c.filter(x=>!skip.includes(x[0]))).filter(c=>c.length)).filter(cs=>cs.length); if(!rs.length)return "";
   return `<div class="bn-grp"><p class="dg-lb">${g}</p>${rs.map(cs=>`<div class="bn-row" style="grid-template-columns:repeat(${cs.length},minmax(0,1fr))">${cs.map(c=>`<div class="bn-col">${c.map(x=>item(x,g)).join("")}</div>`).join("")}</div>`).join("")}</div>`}).join("")}</div>`};
+document.addEventListener("click",e=>{const b=e.target.closest("[data-cmp]");if(!b)return;const c=b.closest(".cmp");c.dataset.show=b.dataset.cmp;c.querySelectorAll("[data-cmp]").forEach(x=>x.setAttribute("aria-selected",x===b))});
 const DIAGRAMS={
  /* Energy D1 · Requirements → Information Architecture */
  energyIA:()=>{
@@ -1166,14 +1200,19 @@ const DIAGRAMS={
    ${opt(video,"영상 콘텐츠 버전","탭으로 콘텐츠를 구분하고 그에 맞는 영상 노출")}
    ${opt(text,"텍스트 콘텐츠 버전","영상이 없는 경우 텍스트로만 구성된 UI 구성")}
   </div>`},
- /* Event & Banner · 이벤트 페이지 공통 구조 */
- eventStructure:()=>{
-  const S=[["키비주얼","이벤트 주제와 기간",88,1],["혜택","받을 수 있는 혜택",56],["참여 방법","단계별 참여 안내",56],["CTA","참여 버튼",40],["유의사항","기간 · 조건 안내",48]];
-  return `<div class="dg" role="img" aria-label="이벤트 페이지 공통 구조: 키비주얼, 혜택, 참여 방법, CTA, 유의사항">
-   <p class="dg-lb on">Event Page Structure</p>
-   <div class="dg-page">
-    <div class="dg-phonebg"></div>
-    ${S.map((x,i)=>`<div class="dg-blk${x[3]?" on":""}" style="grid-row:${i+1};min-height:${x[2]}px"></div><div class="dg-sec${x[3]?" on":""}" style="grid-row:${i+1}"><b>0${i+1}</b><div class="dg-note"><h5${x[3]?' class="on"':""}>${x[0]}</h5><p>${x[1]}</p></div></div>`).join("")}
+ /* Energy D2 · Wireframe ↔ Design 비교 (이미지 2장 + viewport 선만, 위치는 이미지 높이 대비 %)
+    이미지는 상태바~HEVA LOGO를 잘라냄(둘 다 위 약 93pt) → viewport = (844pt − 93pt) 지점 */
+ energyCompare:()=>{
+  const col=(key,lb,img,w,h,vp)=>`<figure class="cmp-col" data-col="${key}"><figcaption class="dg-lb${key==="design"?" on":""}">${lb}</figcaption>
+   <div class="cmp-shot" style="aspect-ratio:${w}/${h}"><div class="cmp-img"><img src="img/${img}.jpg" width="${w}" height="${h}" alt="${lb} 화면" loading="lazy" decoding="async"></div>
+    <div class="cmp-vp" style="top:${vp}%"><span>Viewport</span></div>
+   </div></figure>`;
+  return `<div class="dg cmp" data-show="wire" role="group" aria-label="와이어프레임과 디자인 비교">
+   <div class="cmp-tabs" role="tablist"><button type="button" role="tab" data-cmp="wire" aria-selected="true">Wireframe</button><button type="button" role="tab" data-cmp="design" aria-selected="false">Design</button></div>
+   <div class="cmp-cols">
+    <svg class="cmp-arrow" viewBox="0 0 72 16" fill="none" aria-hidden="true"><path d="M2 8H69M62 2L69 8L62 14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    ${col("wire","Wireframe","energy-d2-wire",525,2451,41.26)}
+    ${col("design","Design","energy-d2-design",455,2468,35.52)}
    </div>
   </div>`}
 };
@@ -1187,17 +1226,15 @@ const SECS=[["s-overview","Overview"],["s-problem","Problem"],["s-decisions","De
 /* 모달 히어로: 제목 · 한 줄 소개 · 대표 이미지 · 정보 */
 const hero=(title,lead,imgId,propsHTML)=>`<div class="mh">
   <div class="mh-title"><h2>${esc(title)}</h2>${lead?`<p>${esc(lead)}</p>`:""}</div>
-  ${imgId?`<div class="fig"><img src="img/${imgId}.jpg" alt="${esc(title)} 대표 화면"></div>`:""}
+  ${imgId?`<div class="fig tl-hero" role="img" aria-label="${esc(title)} 대표 화면">${THUMB(imgId,"hero")}</div>`:""}
   ${propsHTML?`<div class="props-box">${propsHTML}</div>`:""}
  </div>`;
 /* Side 프로젝트 정보 (meta 문자열을 항목으로 나눔) */
 const SIDE_INFO={
  cme:[["Client","interMD"],["Platform","Mobile App"],["Period","2022.09 (4주)"],["Role","앱 UI 100%"],["Status","개발 완료, 오픈 보류"]],
- events:[["Client","interMD"],["Platform","Web / App"],["Period","2022–2023"],["Role","이벤트 페이지 · 배너 디자인"]],
- bookgwedo:[["Client","Personal Project"],["Platform","Mobile App"],["Period","2025 (2주)"]],
+ bookorbit:[["Client","Personal Project"],["Platform","Mobile App"],["Period","2025 (2주)"]],
  edi:[["Client","한국장애인고용공단"],["Platform","Responsive / Adaptive Web"],["Period","2020.05–12"],["Role","메인 시안 30%, 서브 페이지 전체, 배너 · 운영"]],
- botami:[["Client","World Vertex"],["Platform","Responsive Web"],["Period","2021"],["Role","전 페이지 디자인(캐릭터 제외) · 운영"]],
- goodcare:[["Client","World Vertex"],["Platform","Admin Web"],["Period","2021.01–04"],["Role","팀 프로젝트"]]
+ botami:[["Client","World Vertex"],["Platform","Responsive Web"],["Period","2021"],["Role","전 페이지 디자인(캐릭터 제외) · 운영"]]
 };
 function fullHTML(p){
  const decs=p.decisions.map(d=>d.length===1?`<p class="ci-part">${esc(d[0].slice(1))}</p>`:media(d)).join("");
@@ -1343,10 +1380,10 @@ function setupSliders(root){
  });
 }
 function skel(root){
- root.querySelectorAll(".thumb>img,.fig>img,.sl-phone>img,.sl-shot>img,.sl-free>img,.bn-item>img").forEach(img=>{
-  const box=img.parentElement;
+ root.querySelectorAll(".thumb>img,.thumb>picture>img,.fig>img,.fig>picture>img,.sl-phone>img,.sl-shot>img,.sl-free>img,.bn-item>img").forEach(img=>{
+  const box=img.closest(".thumb,.fig.tl-hero")||img.parentElement;
   if(img.complete&&img.naturalWidth) return;
-  box.classList.add("sk"); if(box.classList.contains("fig")&&!img.getAttribute("width")) box.classList.add("noratio");
+  box.classList.add("sk"); if(box.classList.contains("fig")&&!box.classList.contains("tl-hero")&&!img.getAttribute("width")) box.classList.add("noratio");
   img.addEventListener("load",()=>{(img.decode?img.decode():Promise.resolve()).catch(()=>{}).then(()=>box.classList.remove("sk","noratio"))},{once:true});
   img.addEventListener("error",()=>{box.classList.remove("sk");box.classList.add("sk-err")},{once:true});
  });
