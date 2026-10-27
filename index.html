@@ -222,7 +222,16 @@ body.contact-open nav.menu [data-go]{display:none}
  .modal.side .mh-title:not(:last-child){margin-bottom:-16px}}
 
 /* ===== 배너 세트 (Mobile · PC · In-Event, 원본 그대로) ===== */
-.bn-set{display:flex;flex-direction:column;gap:28px;padding:20px;border-radius:16px;background:var(--bg-elevated);border:1px solid var(--border-default)}
+/* ===== contents tab (컴포넌트): 이미지 · 콘텐츠 안에서 보기를 바꾸는 탭 — Energy D2 Wireframe/Design, Thursday Market 배너 variation 등 =====
+   알약형 바 bg-surface + border, 안쪽 4 · 버튼 높이 36(터치 44) · 좌우 16 · Archivo 600 14 · 선택 = bg-placeholder + text-primary */
+.ctab{display:inline-flex;gap:4px;padding:4px;border-radius:999px;background:var(--bg-surface);border:1px solid var(--border-default);align-self:flex-start}
+.ctab button{min-width:40px;height:36px;padding:0 16px;font-variant-numeric:tabular-nums;border:0;border-radius:999px;background:none;font:600 14px/1 var(--f-en);color:var(--text-tertiary);cursor:pointer;transition:background .2s,color .2s}
+.ctab button:hover{color:var(--text-primary)}
+.ctab button[aria-selected="true"],.ctab button[aria-pressed="true"]{background:var(--bg-placeholder);color:var(--text-primary)}
+@media (pointer:coarse){.ctab button{height:44px}}
+@media (prefers-reduced-motion:reduce){.ctab button{transition:none}}
+.bn-vars{margin-bottom:-8px}
+.bn-set{display:flex;flex-direction:column;gap:28px;padding:20px;border-radius:16px;background:var(--bg-elevated)}
 .bn-grp{display:flex;flex-direction:column;gap:12px}
 .bn-row{display:grid;align-items:start;gap:12px}
 .bn-col{display:flex;flex-direction:column;gap:12px;min-width:0}
@@ -231,11 +240,78 @@ body.contact-open nav.menu [data-go]{display:none}
 .bn-set .bn-item .ph{width:100%;height:100%;border-radius:6px}   /* .sl-free .ph(16)보다 우선 */
 @media (max-width:767px){.bn-set{padding:16px;gap:24px}.bn-row,.bn-col{gap:8px}}
 /* ===== 다이어그램 (코드로 그림 · 사이트 토큰) ===== */
+/* 이미지 클릭 영역 (c5 노선 바로가기) */
+.fig.hot{position:relative}
+.hot-spot{position:absolute;aspect-ratio:1;border:0;border-radius:50%;background:transparent;cursor:pointer;transition:box-shadow .2s}
+.hot-spot:hover,.hot-spot:focus-visible{box-shadow:0 0 0 3px var(--accent),0 0 0 8px rgba(79,209,192,.25);outline:none}
+.hot-back{position:sticky;bottom:20px;float:right;margin:-44px 12px 0 0;display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;border:1px solid var(--border-default);border-radius:999px;background:var(--bg-elevated);color:var(--text-primary);font:600 14px/1 var(--f-kr);cursor:pointer;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .2s,transform .2s,background .2s;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.hot-back:hover{background:var(--bg-placeholder)}
+.fig.hot.show-back .hot-back{opacity:1;pointer-events:auto;transform:none}
+.hot-back svg{width:16px;height:16px}
+@media (prefers-reduced-motion:reduce){.hot-back,.hot-spot{transition:none}}
+/* 기기 3종 나란히 (Energy D3) — 높이를 맞추고 폭은 원본 비율, 좁으면 contents tab */
+.devs{gap:16px}
+.devs-tabs{display:none}
+.devs-row{display:flex;gap:16px;align-items:flex-start}
+.devs-col{margin:0;flex-basis:0;min-width:0;display:flex;flex-direction:column;gap:10px}
+.devs-shot{border-radius:10px;overflow:hidden;border:1px solid var(--border-default);background:#fff}
+.devs-shot{aspect-ratio:var(--ar)}
+.devs-shot>img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+@container (max-width:719.98px){
+ .devs-tabs{display:inline-flex}
+ .devs-col figcaption{display:none}
+ .devs-col{flex:1 1 auto!important}
+ .devs-shot{aspect-ratio:auto}
+ .devs-shot>img{height:auto}
+ .devs[data-show="0"] .devs-col:not([data-i="0"]),.devs[data-show="1"] .devs-col:not([data-i="1"]),.devs[data-show="2"] .devs-col:not([data-i="2"]){display:none}
+ .devs[data-show="0"] .devs-col{max-width:390px;margin-inline:auto}
+ .devs[data-show="1"] .devs-col{max-width:834px;margin-inline:auto}
+}
+/* Wireframe 섹션 (집사랑): PC 4열 · 모바일 2열(moHide 숨김) */
+.wf{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:20px;border-radius:16px;background:var(--bg-elevated)}
+.wf-shot{margin:0}
+.wf .wf-shot>img{display:block;width:100%;height:auto;border-radius:8px}   /* .fig img(16)보다 우선 */
+@media (max-width:767px){.wf{grid-template-columns:repeat(2,minmax(0,1fr));padding:16px}.wf .mo-hide{display:none}}
+/* devs.fit — 고정 비율 슬라이드(16:10) 안: 항상 나란히, 프레임 높이에 맞춰 위쪽부터 (PayAppCafe D1 반응형) */
+.sl-slide .fig.diag:has(.devs.fit){width:100%;height:100%}
+.devs.fit{width:100%;height:100%;padding:16px;gap:0}
+.devs.fit .devs-tabs{display:none!important}
+.devs.fit .devs-row{height:100%;align-items:stretch;gap:12px}
+.devs.fit .devs-col{display:flex!important;flex:1 1 0!important;max-width:none!important;margin:0!important}
+.devs.fit .devs-col[data-i="1"]{flex-grow:2.2!important}   /* 폭 비율 Mobile 1 : PC 2.2 */
+.devs.fit .devs-col figcaption{display:block!important}
+.devs.fit .devs-shot{aspect-ratio:auto!important;flex:1 1 0;min-height:0}
+.devs.fit .devs-shot>img{height:100%!important}
+@media (max-width:767px){.devs.fit{padding:10px}.devs.fit .devs-row{gap:8px}.devs.fit .devs-col{gap:6px}}
+/* 텍스트 media 안 리스트 (Energy D4) */
+.m-list{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px 32px}
+.m-list li{display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid var(--border-default);min-width:0}
+.m-list-hd{margin:0;display:flex;flex-direction:column;gap:4px}
+.m-list-hd b{font-family:var(--f-en);font-weight:700;font-size:16px;line-height:1.3;color:var(--text-primary)}
+.m-list-hd span{font-family:var(--f-en);font-weight:600;font-size:13px;line-height:1.3;color:var(--accent)}
+.m-list li>p:last-child{margin:0;font-size:15px;line-height:1.65;color:var(--text-secondary)}
+@media (max-width:767px){.m-list{grid-template-columns:1fr;gap:20px}}
+/* 기기별 화면 묶음 (Final Screens) — 디자인 시스템 규칙: 타이틀 없이 이미지만, contents tab은 패널 안 위쪽 · 탭 아래 이미지 */
+.dev{display:flex;flex-direction:column;gap:16px;padding:20px;border-radius:16px;background:var(--bg-elevated)}
+.dev-shot{width:100%;margin:0 auto}
+.dev-shot>img{border-radius:10px}
+.dev-shot[hidden]{display:none}
+@media (max-width:767px){.dev{padding:16px}}
+/* Box 규칙 (2026-10-27): 박스는 border 없이 면만. 1단계 패널(페이지 위) bg-elevated · 라운드 16 · 안쪽 20(모바일 16) / 2단계 카드(패널 안) bg-placeholder · 라운드 12 / 페이지 위 단독 카드 bg-elevated. 버튼 · 태그 · contents tab · 이미지 테두리는 박스가 아님 */
+/* grp: 같은 영역의 여러 장 — 넓으면 나란히, 한 장이 200px 미만이 되면 contents tab · .tabs = 항상 탭 */
+.gset{container-type:inline-size;display:flex;flex-direction:column;gap:16px;padding:20px;border-radius:16px;background:var(--bg-elevated)}
+.gset-row{display:flex;gap:12px;align-items:flex-start;justify-content:center}
+.gset-shot{flex:1 1 0;min-width:0;margin:0}
+.gset-shot>img{display:block;width:100%;height:auto;border-radius:10px}
+.gset>.ctab{display:none}
+.gset.tabs>.ctab{display:inline-flex}
+.gset.tabs .gset-shot:not(.on){display:none}
+@container (max-width:411px){.gset.n2>.ctab{display:inline-flex}.gset.n2 .gset-shot:not(.on){display:none}}
+@container (max-width:623px){.gset.n3>.ctab{display:inline-flex}.gset.n3 .gset-shot:not(.on){display:none}}   /* 나란히 둘 때 한 장 최소 200px — 미만이면 탭 */
+@media (max-width:767px){.gset{padding:16px}}
 /* Wireframe ↔ Design 비교 (Energy D2) */
 .cmp{gap:20px}
-.cmp-tabs{display:none;gap:4px;padding:4px;border-radius:999px;background:var(--bg-surface);border:1px solid var(--border-default);align-self:flex-start}
-.cmp-tabs button{height:36px;padding:0 16px;border:0;border-radius:999px;background:none;font:600 14px/1 var(--f-en);color:var(--text-tertiary);cursor:pointer}
-.cmp-tabs button[aria-selected="true"]{background:var(--bg-placeholder);color:var(--text-primary)}
+.cmp-tabs{display:none}   /* contents tab — 좁을 때만 */
 .cmp-cols{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;container-type:inline-size}
 /* PC: 가운데 화살표 (이름 줄 높이) · viewport는 한 줄로 두 화면을 가로질러, 태그는 왼쪽 하나만 */
 .cmp-arrow{position:absolute;left:50%;top:0;width:72px;height:16px;transform:translateX(-50%);color:var(--text-tertiary)}
@@ -256,7 +332,7 @@ body.contact-open nav.menu [data-go]{display:none}
  .cmp-col figcaption,.cmp-arrow{display:none}
  [data-col] .cmp-vp{display:block;left:-6px;right:-6px}.cmp-vp span{left:auto;right:6px;top:4px;transform:none}
 }
-.fig.diag{padding:20px;border-radius:16px;background:var(--bg-elevated);border:1px solid var(--border-default);container-type:inline-size}
+.fig.diag{padding:20px;border-radius:16px;background:var(--bg-elevated);container-type:inline-size}
 .dg{display:flex;flex-direction:column;gap:12px}
 .dg-hd{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .dg-lb{margin:0;font-family:var(--f-en);font-weight:700;font-size:13px;line-height:1.3;letter-spacing:.02em;color:var(--text-tertiary)}
@@ -265,8 +341,8 @@ body.contact-open nav.menu [data-go]{display:none}
 .dg-legend span{display:inline-flex;align-items:center;gap:6px}
 .dg-legend i{width:12px;height:12px;border-radius:3px;background:var(--bg-placeholder);border:1px solid var(--border-default)}
 .dg-legend i.dash{background:none;border:1px dashed var(--border-dashed)}
-.dg-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;border-radius:12px;border:1px solid var(--border-default);background:var(--bg-surface)}
-.dg-tile{display:flex;flex-direction:column;justify-content:center;gap:6px;height:44px;padding:0 12px;border-radius:8px;background:var(--bg-placeholder);border:1px solid var(--border-default)}
+.dg-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.dg-tile{display:flex;flex-direction:column;justify-content:center;gap:6px;height:44px;padding:0 12px;border-radius:8px;background:var(--bg-placeholder)}
 .dg-tile.dash{background:none;border:1px dashed var(--border-dashed)}
 .dg-tile b,.dg-tile i{display:block;height:5px;border-radius:3px;background:var(--border-dashed)}
 .dg-tile b{width:56%}.dg-tile i{width:34%;opacity:.6}
@@ -296,13 +372,13 @@ body.contact-open nav.menu [data-go]{display:none}
 /* PayAppCafe UI 유형 4종 */
 .dg-types{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .dg-type{display:flex;flex-direction:column;gap:12px;min-width:0}
-.dg-type .dg-vis{height:120px;padding:14px;align-items:stretch;justify-content:stretch;background:var(--bg-surface);border:1px solid var(--border-default);border-radius:12px}
+.dg-type .dg-vis{height:120px;padding:14px;align-items:stretch;justify-content:stretch;background:var(--bg-placeholder);border-radius:12px}
 .dg-type .dg-vis svg{height:100%}
 .dg-type .act{margin:0;font-size:13px;line-height:1.4;color:var(--text-tertiary)}
 @container (max-width:719.98px){.dg-types{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:20px}}   /* 2×2일 때 위아래 줄 간격 +8 */
 /* Event & Banner 이벤트 페이지 공통 구조 */
 /* 한 줄(행)마다 왼쪽 블록 + 오른쪽 설명 → 설명이 길어져도 블록과 높이가 함께 맞춰짐 */
-.dg-card{display:flex;flex-direction:column;gap:10px;min-width:0;padding:10px;border-radius:12px;background:var(--bg-surface);border:1px solid var(--border-default)}
+.dg-card{display:flex;flex-direction:column;gap:10px;min-width:0;padding:10px;border-radius:12px;background:var(--bg-placeholder)}
 .dg-card.on{border-color:var(--accent)}
 .dg-vis{height:72px;border-radius:8px;background:var(--bg-placeholder);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .dg-card.on .dg-vis{background:rgba(79,209,192,.12)}
@@ -554,15 +630,20 @@ td.role{font-weight:700;white-space:nowrap}
 .ci.grp{gap:16px}                                                        /* 라벨 + list · table · media · 이미지 묶음 */
 .ci-body{margin:0;font-size:16px;line-height:1.6;color:var(--text-primary)}
 .ci-stack{display:flex;flex-direction:column;gap:40px}
-.ci-part{margin:16px 0 0;font-size:14px;font-weight:600;color:var(--text-tertiary)}
+.ci-part{align-self:flex-start;margin:16px 0 -28px;padding:4px 10px;border:1px solid var(--border-default);border-radius:8px;font-size:14px;font-weight:600;color:var(--text-tertiary)}   /* Part 박스: 라운드 8 · 선만 / 아래 카피까지 12(40-28) · 앞 항목과 56(40+16) */
+.ci-stack>.ci-part:first-child{margin-top:0}   /* Design Decisions 라벨 → Part 1: 16 */
 .media{display:flex;align-items:flex-start;gap:40px}
 .media .copy{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:8px}
 .media .copy h4{margin:0;font-size:22px;font-weight:800;line-height:1.4;letter-spacing:-.03em;color:var(--text-primary)}
 .media .copy p{margin:0;font-size:16px;line-height:1.65;color:var(--text-secondary)}
 @media(max-width:767px){.media .copy p{font-size:15px}.media .copy h4{font-size:20px}}
 .media .fig{flex:0 0 560px;max-width:100%}
+.media>.gset,.media>.gstack{flex:0 0 560px;max-width:100%}
+.gstack{display:flex;flex-direction:column;gap:16px}
+.gwrap{display:flex;flex-direction:column;gap:4px}   /* 묶음 라벨은 패널 밖 위, 패널과 4 */   /* 이미지 자리에 묶음 여러 개 (Counselling D2) */   /* 이미지 자리에 묶음(gset) — 집사랑 D3 */
+.media .gset .gset-shot{flex:1 1 0;width:auto}   /* .media .fig 규칙(560 고정)이 묶음 안 이미지에 걸리지 않게 */
 /* 단계 슬라이더 (Design Decisions 이미지 자리): 1:1 패널 안에서 앱 화면을 한 장씩 · 아래 단계 라벨 + 화살표 · 모바일은 스와이프 */
-.slider{display:flex;flex-direction:column;gap:12px}
+.slider{display:flex;flex-direction:column-reverse;gap:12px}   /* 단계 탭 · 좌우 버튼은 항상 이미지 위 (2026-10-27 디자인 시스템) */
 .sl-view{position:relative;aspect-ratio:1/1;max-height:560px;border-radius:16px;background:var(--bg-elevated);overflow:hidden}
 .sl-track{display:flex;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-x:contain;scrollbar-width:none}
 .sl-track::-webkit-scrollbar{display:none}
@@ -576,7 +657,7 @@ td.role{font-weight:700;white-space:nowrap}
 .sl-dg{width:100%;height:100%;padding:24px;display:flex;align-items:center;justify-content:center;container-type:inline-size}
 .dgo{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}   /* 좌우 2열: 카드 위 · 설명 아래 */
 .dgo-row{display:flex;flex-direction:column;gap:14px;min-width:0}
-.dgo-card{position:relative;aspect-ratio:16/10;border-radius:12px;background:var(--bg-surface);border:1px solid var(--border-default)}
+.dgo-card{position:relative;aspect-ratio:16/10;border-radius:12px;background:var(--bg-placeholder)}
 .dgo-card svg{position:absolute;inset:14% 12%;width:76%;height:72%;display:block}
 .dgo .dg-note h5{font-size:15px}.dgo .dg-note p{font-size:14px;word-break:keep-all}   /* 한 글자만 다음 줄로 넘어가지 않게 */
 @media (max-width:767px){.sl-dg{padding:16px}}
@@ -591,10 +672,11 @@ td.role{font-weight:700;white-space:nowrap}
 .slider[data-frame="free"] .sl-view{aspect-ratio:auto;max-height:none;background:none;transition:height .3s var(--ease)}
 .slider[data-frame="free"] .sl-track{align-items:flex-start}
 .slider[data-frame="free"] .sl-slide{height:auto;align-items:flex-start}
+.sl-free>img{max-width:750px;margin-inline:auto}   /* 이벤트 페이지 등 원본(1x 750 기준)보다 크게 늘리지 않음 */
 .sl-free{width:100%}
 .sl-free>img{display:block;width:auto;max-width:100%;height:auto;margin-inline:auto;border-radius:16px}   /* 원본 폭보다 늘리지 않음 (Content 원본은 1배 크기) */
 .sl-free .ph{width:100%;border-radius:16px}
-.slider[data-frame="free"]{flex-direction:column-reverse}   /* 세로로 긴 원본: 단계 탭을 이미지 위에 */
+/* 슬라이드 단계 탭 · 좌우 버튼은 형태(phone · wide · free)와 관계없이 항상 이미지 위 — .slider 참고 */
 @media (prefers-reduced-motion:reduce){.slider[data-frame="free"] .sl-view{transition:none}}
 .sl-phone{position:relative;height:88%;aspect-ratio:1170/2532;border-radius:20px;overflow:hidden;background:var(--bg-placeholder)}   /* 앱 화면 캡처 원본 비율 (iPhone 1170×2532) */
 .sl-phone>img{display:block;width:100%;height:100%;object-fit:cover}
@@ -638,6 +720,20 @@ td.role{font-weight:700;white-space:nowrap}
  .sl-arrows .icon-btn .ico{width:24px;height:24px}
 }   /* 모바일: 폰 화면이 너무 작아지지 않게 세로로 긴 패널 */
 .fig img{display:block;width:100%;height:auto;border-radius:16px}       /* 폭만 맞추고 원본 비율 */
+/* Lesson 365 As-is → To-be 다이어그램 */
+.l3v{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:16px;align-items:center}
+.l3v-col{display:flex;flex-direction:column;gap:10px;min-width:0}
+.l3v svg{display:block;width:100%;height:auto}
+.l3v svg text{font-family:var(--f-en)}
+.l3v-arw{width:24px!important;color:var(--text-tertiary)}
+@container (max-width:599px){.l3v{grid-template-columns:1fr}.l3v-arw{transform:rotate(90deg);justify-self:center}}
+/* Counselling D7 화면 목록: PC 5열(패널 안) · 모바일 슬라이드 */
+.cs-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.fig .cs-list img{border-radius:8px}
+.cs-list-sl{display:none}
+@media (max-width:767px){.cs-list{display:none}.cs-list-sl{display:block}.fig.diag:has(.cs-list-sl){padding:0;background:none}}
+/* 묶음 탭 하나에 여러 장 (Counselling D2) */
+.gset-shot.multi{display:flex;flex-direction:column;gap:12px}
 /* 이미지 스켈레톤: 받는 동안 bg-elevated ↔ bg-placeholder로 은은하게 깜빡임 → 준비되면 효과 없이 한 번에 표시 */
 @keyframes skPulse{0%,100%{background-color:var(--bg-elevated)}50%{background-color:var(--bg-placeholder)}}
 .sk,.sk-err{background-color:var(--bg-elevated)}
@@ -690,6 +786,9 @@ td.role{font-weight:700;white-space:nowrap}
 .kv-i{display:flex;flex-direction:column;gap:4px}   /* 항목 사이는 선 없이 간격 20 */
 .kv-i b{font-size:16px;font-weight:700;line-height:1.5;color:var(--text-primary)}
 .kv-i p{margin:0;font-size:15px;line-height:1.65;color:var(--text-secondary)}
+.kv-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 32px}
+.kv-cap{margin-top:-2px;font-size:14px;font-weight:400;line-height:1.6;color:var(--text-tertiary)}   /* 타이틀 아래 캡션 = 한글 보조 라벨 스타일 */
+@media (max-width:767px){.kv-2{grid-template-columns:1fr}}
 .kv em,.lane em{font-style:normal}   /* 본문 텍스트 강조는 accent 없이 */
 .lane{display:flex;flex-direction:column;padding:20px;border-radius:12px;background:var(--bg-elevated)}
 .lane-h,.lane-r{display:grid;grid-template-columns:1fr 1px 1fr;column-gap:16px}
@@ -699,7 +798,7 @@ td.role{font-weight:700;white-space:nowrap}
 .lane-r i{background:var(--border-default)}
 .lane-r>div{padding:8px 0;display:flex}
 .lane-r>div:first-child{justify-content:flex-end}
-.lane-c{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid var(--border-default);background:var(--bg-surface);font-size:15px;font-weight:600;line-height:1.5;color:var(--text-primary)}
+.lane-c{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--bg-elevated);font-size:15px;font-weight:600;line-height:1.5;color:var(--text-primary)}
 .lane-c.on{border-color:var(--accent);color:var(--accent)}
 .pipe{display:flex;flex-direction:column;align-items:center;gap:20px;padding:4px 0}
 .pipe>.lane-c{position:relative}
@@ -708,7 +807,7 @@ td.role{font-weight:700;white-space:nowrap}
 @container (min-width:480px){.hw-cards{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .hw-card{display:flex;flex-direction:column;align-items:center;gap:12px}
 .hw-card span{font-size:15px;color:var(--text-secondary)}
-.hw-ico{width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;border-radius:12px;border:1px solid var(--border-default);background:var(--bg-elevated);color:var(--accent)}
+.hw-ico{width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;border-radius:12px;background:var(--bg-elevated);color:var(--accent)}
 .hw-ico.dash{border-style:dashed;border-color:var(--border-dashed)}
 .hw-ico svg{width:36px;height:36px}
 .hw-card .hw-aa{font-family:var(--f-en);font-weight:700;font-size:22px;color:var(--accent)}
@@ -727,7 +826,7 @@ td.role{font-weight:700;white-space:nowrap}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 /* Case 모달 안 표 라벨도 Case 01 단계 라벨과 같은 굵기 */
 .hwm .ttable th,.hwm .ttable td::before{font-weight:400}
-.split>div{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:14px;border:1px solid var(--border-default);border-radius:12px}
+.split>div{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:14px;border-radius:12px;background:var(--bg-elevated)}
 @media (max-width:767px){.lane{padding:16px 12px}.lane-h,.lane-r{column-gap:10px}.lane-c{padding:8px 12px;font-size:14px}.ba-b,.ba-a{padding:16px}}
 /* side menu */
 .sidemenu{display:none}
@@ -780,13 +879,15 @@ td.role{font-weight:700;white-space:nowrap}
 @container (max-width:879.98px){
  .media{flex-direction:column;gap:16px}
  .media .fig{flex-basis:auto;width:100%}
+ .media>.gset,.media>.gstack{flex-basis:auto;width:100%}
 }
 @container (max-width:640px){
- .ttable thead{display:none}
- .ttable,.ttable tbody,.ttable tr,.ttable td{display:block;width:100%}
- .ttable tr{padding:12px 0;border-bottom:1px solid var(--border-default)}
- .ttable td{display:grid;grid-template-columns:72px 1fr;gap:12px;padding:6px 0;border:0}
- .ttable td::before{content:attr(data-th);font-weight:600;font-size:14px;line-height:1.6;color:var(--text-tertiary)}
+ .ttable:not(.keep) thead{display:none}
+ .ttable:not(.keep),.ttable:not(.keep) tbody,.ttable:not(.keep) tr,.ttable:not(.keep) td{display:block;width:100%}
+ .ttable:not(.keep) tr{padding:12px 0;border-bottom:1px solid var(--border-default)}
+ .ttable:not(.keep) td{display:grid;grid-template-columns:72px 1fr;gap:12px;padding:6px 0;border:0}
+ .ttable.keep{font-size:14px}.ttable.keep th,.ttable.keep td{padding:10px 8px}   /* Problem 표: 좁아도 표 유지 */
+ .ttable:not(.keep) td::before{content:attr(data-th);font-weight:600;font-size:14px;line-height:1.6;color:var(--text-tertiary)}
 }
 </style>
 </head>
@@ -839,28 +940,33 @@ const FULL = [
  decisions:[
   ["모든 정보를 같은 중요도로 보여주지 않는다","KPI는 첫 화면 히어로 영역에, 주요 데이터는 단독 섹션에, 보조 정보는 탭으로 묶었습니다. 전체 스크롤은 줄이고 필요한 정보에는 계속 접근할 수 있게 했습니다.",{diag:"energyIA"}],
   ["정보와 상태를 나눠, 첫 화면에 핵심을","발전소 정보와 실시간 상태를 나누고 핵심 지표를 상단에 올려, 첫 화면에서 수익과 발전량을 바로 확인하게 했습니다. 수익은 3개월 추이를, 보고서와 캘린더는 한 카드로 묶었습니다.",{diag:"energyCompare"}],
-  ["반복되는 데이터는 하나의 카드 규칙으로","Data Level 1(핵심 지표) · Level 2(주요 지표) · Level 3(상세 데이터)로 카드 모듈을 정의해, 데이터가 늘어나도 같은 규칙으로 대응하게 했습니다.","카드 컴포넌트"],
-  ["화면 크기마다 배치를 다르게","넓은 화면에서는 주요 정보를 병렬로 배치하고, 정보량이 적은 페이지는 읽기 폭을 제한했습니다. 공통 시각 기준은 Figma 베리어블(Primitive → Semantic Token)로 관리했습니다.","반응형 비교 + 베리어블 구조",SL("wide",[["반응형 비교","","반응형"],["베리어블 Primitive","","Primitive"],["베리어블 Semantic","","Semantic"]])]],
- screens:["메인 대시보드 (Desktop)","메인 대시보드 (Mobile)","수익 상세"],
- result:"첫 화면에서 핵심 지표를 바로 확인하는 구조를 만들고, 반복 데이터의 표현 기준을 하나로 통일했습니다. 화면을 그리기 전에 '사용자가 무엇을 가장 먼저 판단해야 하는가'를 정하는 것이 대시보드 설계의 출발점이라는 것을 다시 확인한 프로젝트입니다."},
+  ["화면 크기마다 배치를 다르게","넓은 화면에서는 주요 정보를 병렬로 배치하고, 보고서처럼 정보량이 적은 페이지는 읽기 폭을 제한했습니다. 모바일과 태블릿에서는 같은 정보를 한 열로 재배치했습니다.",{diag:"energyDevices"}],
+  ["반복되는 데이터는 하나의 카드 규칙으로","",{list:[
+   ["Variable","Primitive → Semantic Token","색상 · 간격 · 라운드 · 글자 크기를 Figma 베리어블로 정의하고, 원시 값과 의미 토큰 두 단계로 나눠 화면에는 의미 토큰만 적용했습니다. 기준을 바꾸면 모든 화면에 한 번에 반영됩니다."],
+   ["Component","Data → Card Module","수치 · 단위 · 라벨 · 증감 같은 작은 Data 컴포넌트를 먼저 만들고, 이를 조합해 KPI · 수익 · 정보 카드 모듈을 정의했습니다. 데이터가 늘어나도 같은 규칙으로 카드를 확장합니다."]]}]],
+ screens:[{devices:"대시보드",items:[["Mobile","energy-f-dash-mo",780,4324,390],["Tablet","energy-f-dash-tb",1668,2742,834],["PC","energy-f-dash-pc",1760,1667,1440]]},
+  {devices:"발전량",items:[["Mobile","energy-f-power-mo",780,5362,390],["Tablet","energy-f-power-tb",1668,4616,834],["PC","energy-f-power-pc",1760,1748,1440]]}],
+ result:"첫 화면에서 핵심 지표를 바로 판단하는 대시보드 구조와, 반복 데이터를 하나의 카드 규칙으로 표현하는 기준(Primitive → Semantic 토큰, Data → Card 모듈)을 남겼습니다. 화면마다 따로 그리던 데이터 표현이 하나의 규칙으로 정리되어, 데이터 항목이 늘어도 같은 카드로 확장하고 PC · 태블릿 · 모바일에 같은 기준을 적용할 수 있게 되었습니다. 화면을 그리기 전에 '사용자가 무엇을 가장 먼저 판단해야 하는가'를 정하는 것이 대시보드 설계의 출발점이라는 것을 다시 확인한 프로젝트입니다."},
 {id:"counselling", name:"Counselling Service", desc:"B2B 화상 상담에서 B2C 심리상담 앱까지", cat:"Healthcare", year:"2022–2023", type:"Web · App",
  thumb:"대표 이미지 — B2B 상담사 화면 ↔ B2C 영상 화면",
  lead:"운영된 B2B 상담 서비스를 바탕으로, B2C 심리상담 앱을 다시 설계하다",
  stages:[
   ["reil (B2B)",[["기간","2022.04 · 8주"],["플랫폼","PC Web · 화상 상담(PC/Mobile)"],["역할","웹 서브 페이지, 화상 상담 화면 UI (기여도 80%)"],["팀","기획·개발 협업"],["툴","Adobe XD"],["상태","운영"]]],
   ["Good Listener (B2C)",[["기간","2023.02–03 · 2주"],["플랫폼","Mobile App · 상담사 Web"],["역할","User Flow, Mobile UI, 화상 상담 UI (기여도 100%)"],["팀","기획 2 · 프론트엔드 1 · UI 1"],["툴","Adobe XD"],["상태","컨셉 제안"]]]],
- overview:"의사 커뮤니티 플랫폼 안에서 운영된 정신건강 상담 서비스 reil과, 이를 일반 사용자 대상으로 확장한 Good Listener의 UI를 설계했습니다. 계정 권한에 따라 상담사와 내담자의 화면이 다르고, 상담 신청부터 실제 화상 상담까지 이어지는 서비스입니다.",
+ overview:"의사 커뮤니티 플랫폼 안에서 운영된 정신건강 상담 서비스 reil과, 이를 일반 사용자 대상의 독립 서비스로 분리한 Good Listener의 UI를 설계했습니다. reil은 하나의 웹 안에서 상담사와 내담자의 화면을 나눴고, Good Listener는 상담사에게는 web을, 내담자에게는 app을 제공하는 구조로 다시 설계했습니다.",
  problem:"한 서비스 안에 상담사와 내담자, 실시간 상담과 쪽지 상담, 영상·음성·채팅이라는 서로 다른 조건이 겹쳐 있었습니다. 같은 기능이라도 누가, 어떤 상담 방식으로 쓰는지에 따라 필요한 정보가 달랐습니다.",
  decisions:[
   ["@Part 1. reil (B2B)"],
-  ["상담 유형마다 신청 흐름을 다르게","실시간 상담과 쪽지 상담을 유형별로 다르게 신청하도록 하고, 상담 동의 → 사전 질문 → 예약 완료로 단계를 나눴습니다. 상담사마다 다른 질문지에 맞춰 질문별 답변 서식(예/아니요, 추가 설명 입력, 필수 항목 오류 표시)을 정의했습니다.","신청 단계 화면",SL("wide",[["상담 동의","","동의"],["사전 질문","","질문"],["예약 완료","","완료"]])],
-  ["상담사는 '오늘 무엇을 해야 하는지'부터","상담사 첫 화면은 내담자별 항목을 가장 가까운 예약순으로 정렬하고, 상담일이 오늘이면 '오늘' 태그를 붙였습니다. 주력인 실시간 상담과 보조인 쪽지 상담은 비대칭으로 나눠 비중을 구분했습니다.","상담사 메인 리스트"],
-  ["예외 상황을 먼저 화면으로","예약 없음·완료 없음·전체 없음의 빈 상태, 카메라 off, 프로필 이미지 없음, 상담 시간 임박, 상담사 대기 화면을 각각 설계했습니다. 알림은 상황의 무게에 따라 Alert · Layer · Toast로 나눠 PC와 모바일에 공통 적용했습니다.","상태별 화면 그리드",SL("wide",[["빈 상태","","빈 상태"],["카메라 off","","카메라"],["시간 임박","","임박"],["상담사 대기","","대기"]])],
+  ["상담 유형마다 신청 흐름을 다르게","실시간 상담과 쪽지 상담을 유형별로 다르게 신청하도록 하고, 상담 동의 → 문진 작성 → 예약 완료로 단계를 나눴습니다. 상담사마다 다른 문진에 맞춰 질문별 답변 서식(예/아니요, 추가 설명 입력, 필수 항목 오류 표시)을 정의했습니다.","신청 단계 화면",SL("free",[["상담 동의","counselling-d1-1","동의"],["문진 작성","counselling-d1-2","문진"],["예약 완료","counselling-d1-3","완료"]])],
+  ["같은 상담, 사용자에 따라 다른 화면","상담 관리와 화상 상담 화면을 계정 권한에 따라 다르게 구성했습니다. 내담자에게는 예약한 상담과 영상 · 채팅만 보여 주고, 상담사에게는 내담자 노트 · 상담 일지 · 상담 내용 기록 · 채팅을 한 화면에 모아 상담하면서 바로 기록할 수 있게 했습니다.",{groups:[{group:"상담 관리",label:"상담 관리",tabs:1,items:[["내담자","counselling-d2-client",1680,2604],["상담사","counselling-d2-counselor",1680,2153]]},{group:"화상 상담",label:"화상 상담",tabs:1,items:[["내담자","counselling-d2-client-call",1920,1049],["상담사","counselling-d2-counselor-call",1920,1077]]}]}],
+  ["상담 방식마다 가장 중요한 것을 크게","화상 상담 화면은 상담 방식에 따라 중심 요소를 바꿨습니다. 영상 상담은 상대 영상을 가장 크게, 음성 상담은 영상 영역을 줄이고 말하는 사람에게 포커스를, 채팅 상담은 채팅 영역을 가장 크게 두었습니다. 전체 화면에서는 영상만 남깁니다.","상담 방식별 화면",SL("wide",[["영상","counselling-d3-video","영상"],["음성","counselling-d3-voice","음성"],["채팅","counselling-d3-chat","채팅"],["전체 화면","counselling-d3-full","전체"]])],   /* 영상 · 음성 · 채팅은 강조 영역 밖을 어둡게(스포트라이트, 이미지에 합성) · 전체 화면은 원본 */
+  ["예외 상황을 먼저 화면으로","모바일 화상 상담에서 생길 수 있는 상황 — 양쪽 카메라 off, 마이크 · 카메라 off, 채팅 수신, 상담사 대기 — 을 각각 화면으로 정의해, 어떤 상태에서도 지금 무슨 일이 일어나는지 알 수 있게 했습니다.","모바일 예외 화면",SL("phone",[["카메라 off","counselling-d4-camoff","카메라"],["마이크 · 카메라 off","counselling-d4-micoff","마이크"],["채팅","counselling-d4-chat","채팅"],["대기","counselling-d4-wait","대기"]])],
   ["@Part 2. Good Listener (B2C)"],
-  ["사용자의 역할이 바뀌었는데, 필요한 기능도 같을까?","B2B 상담사 화면은 내담자 노트, 상담 일지, 상담 내용 기록, 채팅이 한 화면에 모인 복합 화면이었습니다. B2C 내담자에게 필요한 것은 오직 상담이라고 판단해, 영상 중심의 단일 화면으로 바꾸고 채팅 알림은 필요한 것만 가볍게, 컨트롤은 필수 기능만 하단에 두고 기본은 숨겼습니다.","B2B 상담사 화면 ↔ B2C 영상 화면"],
-  ["감성으로 선택하고, 결정은 이성적으로","상담사 목록에서는 실제 프로필 사진, 이력 대신 마음을 여는 소개 한마디, 최소한의 평점만 보여주고, 상세 화면에서 경력·자격과 이용자 후기로 판단 근거를 제공했습니다.","목록 → 프로필 상세"]],
- screens:["reil 상담사 메인 (PC)","reil 화상 상담 (Mobile)","Good Listener 홈 · 상담사 프로필"],
- result:"reil은 실제 서비스에 적용되어 운영되었고, Good Listener는 컨셉 단계에서 메인 시안 2종과 대표 페이지 3종의 hi-fi 디자인, 디자인 가이드까지 제안했습니다. 같은 경험을 다른 사용자에게 옮길 때, 기능을 그대로 가져오기보다 역할에 맞게 다시 고르는 과정이 필요하다는 것을 배웠습니다."},
+  ["상담사에게는 넓은 web 화면","상담사는 여러 내담자의 예약과 기록을 동시에 다루기 때문에 web으로 제공했습니다. 예약 관리는 일정 · 채팅 · 상담 내역을 3단으로 나란히 두고, 화상 통화방에서는 내담자의 사전 질문 답변을 옆에 띄운 채 상담하도록 했습니다.","상담사 web",SL("wide",[["와이어프레임","counselling-d5-wire","와이어"],["예약 관리","counselling-d5-reserve","예약"],["화상 통화방","counselling-d5-call","통화"]])],
+  ["내담자에게는 상담에만 집중하는 화상 화면","내담자 app의 화상 화면은 상대 영상으로 화면 전체를 채우고, 컨트롤은 화면을 누를 때만 하단에 보이게 했습니다. 새 메시지는 화면을 가리지 않는 토스트로만 알립니다.",{group:"내담자 app 화상",items:[["진행 중","counselling-d6-call",780,1601,390],["전체 화면","counselling-d6-full",780,1601,390]]}],
+  ["가볍게 둘러보고, 고르는 근거는 충분히","온보딩부터 메인 · 상담사 프로필 · 상담 일정 · 쪽지 상담까지 내담자 app의 주요 화면을 설계했습니다. 메인에서는 추천 상담사를 사진과 소개 한마디, 최소한의 평점으로 가볍게 보여 주고, 프로필에서 경력 · 자격으로 판단 근거를 제공했습니다. 실시간 상담이 부담스러운 사용자는 메인에서 바로 쪽지 상담을 시작할 수 있습니다.",{diag:"csAppList"}]],
+ screens:null,   /* D 섹션에 화면이 모두 있어 Final Screens 없음 */
+ result:"reil은 실제 서비스에 적용되어 운영되었고, Good Listener는 컨셉 단계에서 메인 시안 2종, 대표 페이지 3종의 hi-fi 디자인, 디자인 가이드까지 제안했습니다. 같은 경험을 다른 사용자에게 옮길 때, 기능을 그대로 가져오기보다 역할에 맞게 다시 고르는 과정이 필요했습니다. 상담사에게는 기록과 관리가, 내담자에게는 상담 자체가 중심이라는 판단이 최종 UI 화면에 반영된 프로젝트입니다."},
 {id:"groupbuying", name:"Group Buying", desc:"주문부터 취소·반품까지 설계한 공동구매 커머스", cat:"Commerce", year:"2022", type:"Web",
  thumb:"대표 이미지 — 상품 상세 + 주문/결제 레이어",
  lead:"의사 회원이 포인트로 생활용품을 구매하는 공동구매, 주문 이후까지 설계하다",
@@ -868,25 +974,26 @@ const FULL = [
  overview:"의사 커뮤니티 플랫폼에 새로 도입된 결제 기능, 공동구매의 PC 화면을 설계했습니다. 생활용품·가전·상품권을 회원 포인트와 함께 구매하는 서비스로, 상품 목록부터 주문·결제, 마이페이지의 주문 관리와 알림 메일까지가 범위였습니다.",
  problem:"결제가 처음 도입되는 서비스라, 결제 완료 이후에 생기는 상황 — 배송 중, 배송 완료, 배송지 변경, 취소·교환·반품 — 을 사용자가 스스로 처리할 수 있는 화면이 함께 필요했습니다.",
  decisions:[
-  ["구매 흐름을 끊지 않게","상품 상세 위에서 주문·결제를 레이어로 진행하고, 결제 완료 후 바로 확인 알림을 띄웠습니다. 문의가 필요할 때는 1:1 문의에 해당 상품 정보가 자동으로 붙도록 했습니다.","상세 → 주문/결제 → 완료",SL("wide",[["상품 상세","","상세"],["주문/결제","","결제"],["결제 완료","","완료"]])],
-  ["결제 이후의 상태를 모두 화면으로","주문 내역은 결제 완료·배송 중·배송 완료·취소/교환/반품 완료의 4가지 상태로 나누고, 상태에 따라 버튼과 안내를 바꿨습니다. 취소·교환·반품 요청 창은 기본 / 내역 없음 / 최대 높이(스크롤) / 처리 완료 후 입력 불가의 4가지 경우를 설계했습니다.","상태별 화면",SL("wide",[["결제 완료","","결제"],["배송 중","","배송"],["배송 완료","","완료"],["취소/반품 요청","","요청"]])],
-  ["선택 전과 후, 길어질 때까지","옵션을 고르기 전에는 구매 버튼을 비활성화하고, 옵션을 여러 개 담거나 상품명이 두 줄을 넘는 경우의 줄바꿈 규칙을 화면에 주석으로 남겨 개발에 전달했습니다. 종료된 공동구매는 목록에서 별도 상태로 구분했습니다.","주석이 포함된 상세 화면"],
-  ["출시 이후의 운영까지","공동구매를 알리는 'Thursday Market' 타임딜 이벤트를 회차마다 디자인했습니다. 로고타입과 페이지 구조는 고정하고 회차별 테마만 바꿔, 매번 새롭지만 같은 서비스로 보이게 했습니다.","Thursday Market 대표 회차",null,["c10","Thursday Market 전체 회차 보기"]]],
- screens:["공동구매 목록","주문 내역 (상태 4종)",SL("free",[["주문 내역 메일","","주문","3/4"],["발송 메일","","발송","3/4"],["취소 완료 메일","","취소","3/4"]])],
- result:"공동구매는 실제 서비스에 적용되어 운영되었고, 신규 결제 프로세스의 UI 기준을 만들었습니다. 결제가 들어간 서비스에서는 메인 화면만큼 예외 상태의 화면이 중요하다는 것을 배웠습니다."},
+  ["구매 흐름을 끊지 않게","상품 상세에서 바로 주문 · 결제 레이어를 열어 페이지 이동 없이 결제하고, 결제한 주문은 마이페이지의 주문 상세에서 결제 금액과 배송 정보까지 한 번에 확인하게 했습니다.","상세 → 주문/결제 → 마이페이지",SL("wide",[["상품 상세","groupbuying-d1-detail","상세"],["주문 · 결제","groupbuying-d1-pay","결제"],["마이페이지","groupbuying-d1-mypage","마이"]])],
+  ["선택 전과 후, 길어질 때까지","옵션을 고르기 전에는 구매 버튼을 비활성화하고, 옵션을 여러 개 담거나 상품명이 두 줄을 넘는 경우의 줄바꿈 규칙을 정해 개발에 전달했습니다.","옵션 선택 전 · 후",SL("wide",[["선택 전","groupbuying-d2-before","전"],["선택 후","groupbuying-d2-after","후"]])],
+  ["예외 상태까지 화면으로","결제 이후 취소 · 교환 · 반품 요청 창은 기본, 요청 내역 없음, 내용이 많을 때 최대 높이(스크롤) 상태를 각각 설계해, 어떤 경우에도 레이아웃이 깨지지 않게 했습니다.","요청 창 상태별 화면",SL("wide",[["기본","groupbuying-d3-default","기본"],["내역 없음","groupbuying-d3-empty","없음"],["최대 높이","groupbuying-d3-max","최대"]])],
+  ["주문 이후의 소식은 메일로","주문 접수 · 상품 발송 · 취소 완료 시점마다 같은 구조의 알림 메일을 보내, 주문 번호와 상품 · 배송 정보를 메일에서 바로 확인하게 했습니다.","Push 이메일",SL("free",[["주문 내역","groupbuying-d4-order","주문"],["상품 발송","groupbuying-d4-ship","발송"],["취소 완료","groupbuying-d4-cancel","취소"]])],
+  ["출시 이후의 운영까지","공동구매를 알리는 'Thursday Market' 타임딜 이벤트를 회차마다 디자인했습니다. 로고타입과 페이지 구조는 고정하고 회차별 테마만 바꿔, 매번 새롭지만 같은 서비스로 보이게 했습니다.",{src:"groupbuying-d5",w:1760,h:1100,alt:"Thursday Market 대표 회차"},null,["c10","Thursday Market 전체 회차 보기"]]],
+ screens:null,   /* D 섹션에 화면이 모두 있어 Final Screens 없음 */
+ result:"공동구매는 실제 서비스에 적용되어 운영되었고, 플랫폼에 처음 도입된 결제 프로세스의 UI 기준을 남겼습니다. 주문 · 결제 레이어, 요청 창의 상태별 화면, 같은 구조의 알림 메일까지 정의했습니다. 결제가 들어간 서비스인 만큼 메인 화면 외에도 예외 상태의 화면을 중요하게 다룬 프로젝트입니다."},
 {id:"lesson365", name:"Lesson 365", desc:"강의 중에도 길을 잃지 않도록 개선한 화상교육 플랫폼", cat:"Education", year:"2021", type:"Web",
  thumb:"대표 이미지 — 발표형 강의 화면 (To-be)",
  lead:"기존 화상교육 서비스를 분석해, 강의 중에도 길을 잃지 않는 화면으로 개선하다",
  info:[["기간","2021.05–07"],["플랫폼","PC Web"],["역할","기존 서비스 분석, 레퍼런스 수집, UX/UI 개선, 화면 디자인 (기여도 70%)"],["팀","사내 연구과제 팀"],["툴","Adobe XD · Illustrator"],["상태","디자인 전달 후 개발 진행"]],
  overview:"비대면 강의를 위한 웹 기반 화상교육·회의 플랫폼의 2.0 개선 작업입니다. 서비스의 톤앤매너는 유지하면서, 기능 구성과 화면 전반을 다시 설계했습니다.",
  problem:"영역이 흩어져 있고 메뉴 그룹 기준이 모호했습니다. 토글과 호버 뒤에 숨겨진 메뉴가 많아 사용성이 떨어졌고, 아이콘도 직관적이지 않았습니다. 화상 화면은 인원이 늘 때마다 그리드가 실시간으로 분할·재배치되어 레이아웃을 정할 수 없었고, 강사·발표자·학습자의 구분도 불분명했습니다.",
- decisions:[
-  ["시선 흐름대로 메뉴를 고정","헤더와 하단 메뉴를 없애고, 기능과 비중이 비슷한 메뉴끼리 묶어 고정했습니다. 사용자의 시선이 움직이는 순서(상단 → 좌측 → 우측)에 따라 상단에는 전체 메뉴·타이틀·설정, 좌측에는 화면 공유·화이트보드 같은 화면 기능, 우측에는 채팅·참석자 같은 부가 기능을 두었습니다.","초기 화면 As-is ↔ To-be",SL("wide",[["As-is",""],["To-be",""]])],
-  ["그리드는 사용자가 정하게","접속 인원에 따라 바뀌던 그리드 대신 그리드 우선 지정 방식을 제안해 렌더링 부담을 줄이고, 학습·회의·토의 상황에 맞게 격자형과 발표형 중 고를 수 있게 했습니다. 권한에 따라 아이콘을 구분해 혼란을 줄였습니다.","그리드 As-is ↔ To-be",SL("wide",[["As-is",""],["To-be",""]])],
-  ["권한과 사생활을 함께 고려","관리자가 참석자의 카메라·마이크를 요청할 때는 동의 팝업을 거치게 해 권한을 주더라도 사생활 침해가 생기지 않게 했습니다. 채팅 알림은 레이어 팝업으로 바꿔 강의 화면을 벗어나지 않고 확인하게 했습니다.","우측 메뉴 As-is ↔ To-be",SL("wide",[["As-is",""],["To-be",""]])],
-  ["새 창 없이, 지금 화면에서","브레이크아웃룸을 '그룹토의'로 바꾸고, 새 창을 열지 않고 현재 화면에서 그룹을 만들고 참여하게 했습니다. 화이트보드는 여러 개를 만들 수 있게 하되 생성 권한은 지정된 사용자에게만 주고, 변경 내용은 썸네일에 실시간으로 반영했습니다.","그룹토의 · 화이트보드",SL("wide",[["그룹토의",""],["화이트보드",""]])]],
- screens:["대기 화면 — 세션 유형 선택","그룹토의 진행","컴포넌트 가이드"],
- result:"초기 화면, 좌측·우측·하단 메뉴, 화이트보드, 그룹토의, 설문까지 개선안과 화면 디자인, 컴포넌트 가이드를 개발팀에 전달했습니다. 공통 레이어 팝업은 크기를 S·M 두 가지로 고정해 개발 이슈를 줄였습니다. 기존 서비스를 고칠 때는 새 기능보다 '왜 지금 불편한지'를 먼저 적는 것이 설득의 시작이라는 것을 배웠습니다."},
+ problemList:[["Scattered Layout","분산된 영역","영역이 흩어져 있고 메뉴를 묶는 기준이 모호했습니다."],["Hidden Menu","숨겨진 메뉴 · 아이콘","토글 · 호버 뒤에 숨은 메뉴가 많고, 아이콘이 직관적이지 않았습니다."],["Auto Grid","재배치되는 그리드","인원이 늘 때마다 그리드가 실시간으로 분할 · 재배치되어 레이아웃을 정할 수 없었습니다."],["Unclear Role","불분명한 역할","강사 · 발표자 · 학습자의 구분이 화면에서 잘 드러나지 않았습니다."]],   /* Problem 진단 리스트 (.m-list) — 있으면 problem 문단 대신 */
+ decisions:[   /* As-is 화면은 내부 문서라 쓰지 않음 → 다이어그램으로만 표현, 최종 UI는 Final Screens */
+  ["시선 흐름대로 메뉴를 고정","헤더와 하단 메뉴를 없애고, 기능과 비중이 비슷한 메뉴끼리 묶어 고정했습니다. 사용자의 시선이 움직이는 순서(상단 → 우측)에 따라 상단에는 타이틀과 마이크 · 카메라 같은 주요 컨트롤, 화면 분할 · 참석자 · 채팅을 두고, 우측에는 화면 공유 · 화이트보드 · 자료실 같은 기능 메뉴를 세로로 고정했습니다.",{diag:"l365Layout"}],
+  ["그리드는 사용자가 정하게","접속 인원에 따라 바뀌던 그리드 대신 그리드 우선 지정 방식을 제안해 렌더링 부담을 줄이고, 학습 · 회의 · 토의 상황에 맞게 격자형과 발표형 중 고를 수 있게 했습니다. 권한에 따라 아이콘을 구분해 혼란을 줄였습니다.",{diag:"l365Grid"}],
+  ["화이트보드는 여러 개, 생성은 정해진 사람만","한 개만 만들 수 있던 화이트보드를 여러 개 만들 수 있게 하고, 실시간 화면을 썸네일로 반영해 목록에서 바로 고를 수 있게 했습니다. 모두에게 생성 권한을 주면 혼란이 생길 수 있어 지정된 사용자에게만 권한을 주고, 비활성화된 도구는 불투명도로 구분했습니다. 파일을 올리면 화이트보드에 추가되고, 여러 파일을 함께 올릴 수 있습니다.",{diag:"l365Board"}]],
+ screens:[{src:"lesson365-f-join",w:1760,h:990,alt:"세션 유형 선택"},{src:"lesson365-f-waiting",w:1760,h:990,alt:"대기실 — 장치 확인"},{src:"lesson365-f-setting",w:1760,h:990,alt:"환경설정"},{src:"lesson365-f-video",w:1760,h:990,alt:"비디오 화면 — 카메라 off"},{src:"lesson365-f-whiteboard",w:1760,h:990,alt:"화이트보드"}],
+ result:"기존에 운영중이던 화상채팅 서비스를 레퍼런스 분석, As-is와 To-be 정의를 거쳐 UI 화면까지 진행했습니다. 새로운 기능을 추가하기보다 기존의 것이 '왜 불편한지'를 정리하는데 초점을 두고 개선 사항을 정리했습니다. 모든 개선안을 As-is와 To-be 형식으로 정리해, 디자인 결정의 근거로 삼았습니다. 시안뿐만 아니라 문서까지 더해 이해관계자들을 설득한 프로젝트입니다."},
 {id:"payappcafe", name:"PayAppCafe", desc:"B2B 결제 서비스의 가입·계약을 안내하는 반응형 웹", cat:"Fintech", year:"2023", type:"Responsive",
  thumb:"대표 이미지 — PC · Mobile 목업",
  lead:"B2B 결제 서비스의 가입·계약 정보를 안내하는 반응형 웹",
@@ -894,23 +1001,25 @@ const FULL = [
  overview:"결제 대행 서비스 PayAppCafe의 가입과 계약 관련 정보를 안내하는 반응형 웹을 디자인했습니다.",
  problem:"설명할 내용이 많은 웹인데, 디자인 시점에 일부 콘텐츠(영상 등)가 확정되지 않은 상태였습니다.",
  decisions:[
-  ["실제 운영 상황을 고려한 화면 설계","디자인 시점에 영상 등 일부 콘텐츠가 확정되지 않아, 콘텐츠 확정 여부에 따라 고를 수 있는 두 가지 옵션을 함께 제공했습니다. 영상이 있을 때는 탭으로 콘텐츠를 구분하고 그에 맞는 영상을 노출하고, 영상이 없을 때는 텍스트로만 구성된 UI로 대응합니다. 페이지는 PC와 모바일에서 레이아웃이 달라지는 반응형 구조로 설계했습니다.","콘텐츠 옵션 · 반응형",SL("wide",[["콘텐츠 미확정 옵션",{diag:"contentOptions"},"옵션"],["반응형 구조","","반응형"]])],
+  ["실제 운영 상황을 고려한 화면 설계","디자인 시점에 결제 앱의 개발 일정이 확정되지 않아, 준비 상황에 따라 고를 수 있는 두 가지 버전을 함께 설계했습니다. 가상으로 체험할 수 있는 프로토타입이 준비되면 가맹점 앱과 결제 앱을 나란히 두고 직접 테스트하게 하고, 앱이 개발되지 않은 경우에는 결제 수단별 영상으로 흐름을 보여 줍니다. 페이지는 PC와 모바일에서 레이아웃이 달라지는 반응형 구조로 설계했습니다.","체험 방식 옵션 · 반응형",SL("wide",[["체험 방식 옵션",{diag:"contentOptions"},"옵션"],["반응형 구조",{diag:"payDevices"},"반응형"]])],
   ["읽는 방식에 맞춰 UI를 고른다","보고 따라 해야 하는 내용은 이미지와 텍스트, 순서대로 읽어야 하는 정보는 단계형 리스트, 비교가 필요한 데이터는 테이블, 찾는 내용이 분명한 사용자에게는 아코디언을 적용했습니다.",{diag:"uiTypes"}],
   ["영향이 큰 항목부터 검수","디자인 전달 → 구현 확인 → 우선순위 검수 순으로 QA를 진행했습니다. 픽셀이나 간격보다 정보 구조와 공통 UI 기준(패턴 불일치, 컴포넌트 variant 미적용)에 영향을 주는 오류를 먼저 고쳤습니다.",null]],   /* D3: 이미지 없이 텍스트만 (사용자 결정 2026-10-23) */
- screens:["메인 (PC)","서비스 흐름","FAQ · Q&A (Mobile)"],
- result:"2023년에 서비스가 런칭되었습니다. 운영 상황이 바뀔 수 있다는 전제로 화면을 준비하는 것도 설계의 일부라는 것을 배웠습니다."},
+ screens:[{src:"payappcafe-home",w:1760,h:3444,alt:"메인 (PC)"},{src:"payappcafe-pg",w:1760,h:2995,alt:"PG 계약 절차 (PC)"},{src:"payappcafe-faq",w:1760,h:1898,alt:"FAQ (PC)"},{src:"payappcafe-qna",w:1760,h:2338,alt:"Q&A (PC)"},
+  {group:"모바일 UI 가이드",items:[["서브","payappcafe-mo-sub",780,3786,390],["리스트","payappcafe-mo-list",780,2553,390],["컴포넌트","payappcafe-mo-comp",780,3362,390]]}],
+ result:"2023년에 서비스가 런칭되었습니다. 결제 앱 준비 상황에 따라 고를 수 있는 프로토타입 · 영상 두 버전을 함께 설계해, 개발 일정이 바뀌어도 화면을 다시 만들지 않고 대응할 수 있게 했습니다. 정보 성격에 따라 UI 유형을 선택하였으며, 추후 확장을 고려하여 모바일은 최소한의 반응형과 가이드를 전달했습니다. 개발 반영 이후, 디자인 QA를 진행해서 사용상의 불편한 수정사항을 클라이언트에게 전달했습니다."},
 {id:"jibsarang", name:"Jibsarang", desc:"가구 구성원과 함께 관리하는 집안일 앱", cat:"Lifestyle", year:"2026", type:"App",
  thumb:"대표 이미지 — 라이트 · 다크 앱 화면",
  lead:"반복되는 집안일을 가구 단위로 정리하고 함께 관리하는 앱",
  info:[["기간","2026"],["플랫폼","iOS Mobile App"],["역할","IA, User Flow, 컨셉, UI 디자인, 디자인 시스템"],["팀","개인 프로젝트"],["툴","Figma"],["상태","진행 중"]],
  overview:"놓치기 쉬운 집안일을 할 일 목록으로 정리하고, 가구 구성원과 함께 관리하는 생활 서비스 앱입니다.",
  hyp:[["\"오늘 뭘 해야 하는지부터 생각하면 막막해요\"","매일 해야 하는 일을 먼저 알려주면 어떨까?","No Thinking — 오늘 할 일을 먼저 제안"],["\"못 한 일이 쌓이면 죄책감이 들고 초조해요\"","어쩔 수 없는 사정으로 못 한 것이라면?","No Guilt · No Pressure — 조용한 UX, 알림 최소화"],["\"집안일을 끝내도 성취감은 없고 남은 일만 보여요\"","작더라도 성취감을 느낄 수 있다면?","Just Enough — 작은 완료에도 즉시 피드백"]],
+ wire:{items:[["Today","jibsarang-wf-today"],["집안일 추가","jibsarang-wf-add"],["요약","jibsarang-wf-report"],["가구","jibsarang-wf-household"]],w:780,h:1598,moHide:[2,3]},   /* Problem과 Decisions 사이 · PC 4장 한 줄, 모바일 2열 2장(Today · 집안일 추가) · 같은 높이(Today 한 화면)로 위쪽부터 */
  decisions:[
-  ["추천부터 완료까지, 하나의 흐름에서","집안일 추가 → 추천받기 또는 직접 입력 → 반복 주기 → 알림 설정까지 한 흐름에서 끝나게 했습니다. 반복 주기는 수시 · 매일 · 주기 · 정기 4가지로 정의했습니다.","Add Task Flow",[["집안일 추가","","추가"],["추천 또는 입력","","입력"],["주기와 알림 설정","","설정"]]],
-  ["혼자 살아도, 함께 살아도","가구 구성에 맞춰 담당자를 지정·변경하고, 못 한 집안일은 다른 구성원에게 요청할 수 있게 했습니다. 완료된 일은 별도 채팅 없이 피드로 확인합니다.","가구 설정 · 요청 · 피드",SL("phone",[["가구 설정","","가구"],["담당 요청","","요청"],["완료 피드","","피드"]])],
-  ["낮에도 밤에도","기기 설정에 맞춰 라이트·다크 테마가 전환되도록 디자인 시스템을 구성했습니다.","라이트 ↔ 다크"]],
- screens:["홈 — 오늘 할 일","집안일 추가","가구 피드"],
- result:"현재 진행 중인 프로젝트로, 기획부터 디자인 시스템까지 혼자 설계하며 '사용자가 생각하지 않게 하는 것'을 화면 단위로 검증하고 있습니다."}
+  ["맞춤 설정부터 요약까지, 끊기지 않는 흐름","처음 시작할 때 집안일 유형을 고르면 그에 맞는 할 일을 추천합니다. 집안일은 이름 · 반복 주기(수시 · 매일 · 주기 · 정기) · 알림을 한 화면에서 추가하고, 목록은 날짜별 · 주기별로 확인합니다. 한 주 동안 한 일은 요약 탭의 캘린더와 그래프로 돌아볼 수 있습니다.","User Flow",SL("phone",[["맞춤 설정","jibsarang-d1-1","설정"],["집안일 추가","jibsarang-d1-2","추가"],["집안일 목록","jibsarang-d1-3","목록"],["요약","jibsarang-d1-4","요약"]])],
+  ["혼자 살아도, 함께 살아도","가구를 새로 만들거나 이미 있는 가구에 참여해 구성원과 집안일을 나눕니다. 가구 탭에서는 받은 요청을 바로 수락하거나 거절하고, 구성원이 완료한 일은 별도 채팅 없이 피드로 확인합니다. 요청처럼 꼭 필요한 일만 알림으로 알려 놓치지 않게 했습니다.","가구 설정 · 피드 · 알림",SL("phone",[["가구 설정","jibsarang-d2-1","가구"],["가구 피드 · 요청","jibsarang-d2-2","피드"],["요청 알림","jibsarang-d2-3","알림"]])],
+  ["낮에도 밤에도","기기 설정에 맞춰 라이트·다크 테마가 전환되도록 디자인 시스템을 구성했습니다.","다크 테마",SL("phone",[["오늘","jibsarang-d3-today","오늘"],["집안일 추가","jibsarang-d3-add","추가"],["요약","jibsarang-d3-report","요약"]])]],
+ screens:null,   /* D 섹션에 화면이 모두 있어 Final Screens 없음 */
+ result:"현재 진행 중인 프로젝트로, No Thinking · No Guilt · Just Enough 세 원칙을 기준으로 와이어프레임부터 라이트 · 다크 디자인 시스템까지 혼자 설계했습니다. 맞춤 설정 → 집안일 추가 → 목록 → 요약으로 이어지는 핵심 흐름과 가구 단위로 함께 쓰는 화면을 hi-fi로 정리했습니다."}
 ];
 
 const SIDE = [
@@ -918,29 +1027,35 @@ const SIDE = [
  lead:"강좌 신청부터 시청·퀴즈까지, 한 화면에서 이어지는 강좌 교육 서비스",
  body:"의사 회원에게 온라인 최신지견 강좌를 무료로 제공하는 서비스입니다. 강좌 신청부터 시청까지 페이지 이탈 없이 한 화면에서 진행되도록 설계했습니다.",
  points:["등록 가능 · 등록 예정 · 등록 마감 상태를 태그로 구분하고, 등록 가능한 강좌 카드를 가장 크게 강조했습니다.","시청 가능 · 시청 전 · 시청 불가 · 재시청 가능의 버튼 상태와, 퀴즈의 정답 · 오답 · 다시 풀기 흐름을 정의했습니다.","PC와 모바일의 이미지 규격을 정리한 이미지 가이드를 만들어 협업 부서에 배포했습니다."],
- imgs:["강좌 카탈로그","강의 퀴즈 — 정답 / 오답","이미지 가이드"]},
+ imgs:[{group:"강좌 카탈로그 · 강좌 개요",items:[["강좌 카탈로그","cme-catalog",780,4075,390],["강좌 개요","cme-outline",780,2967,390]]},
+  {group:"강의 목록 · 강의 동영상 · 시청 완료",items:[["강의 목록","cme-list",780,2484,390],["강의 동영상","cme-video",750,1536,390],["시청 완료","cme-done",750,1536,390]]}]},
 {id:"bookorbit", name:"Book Orbit", cat:"Lifestyle", year:"2025", type:"App", meta:"Personal · Mobile App · 2025 (2주)",
  lead:"독서의 목적에 따라 기록의 깊이를 고르는 독서 기록 앱",
  body:"독서 '수준'이 아니라 독서의 목적과 태도에 따라 서로 다른 기록 경험을 제공하는 독서 기록 앱입니다.",
  points:["독서 자체의 진입 장벽 → 진행률과 캘린더 썸네일로 시각적 성취감을 주었습니다.","수동 입력의 부담 → 간단한 검색과 선택만으로 기록이 남게 했습니다.","목적이 다른 사용자에게 같은 UI → 독서 요약과 독서 노트를 분리해 기록의 깊이를 고를 수 있게 했습니다."],
- imgs:["내 서재 · 캘린더","독서 기록","다크 테마"]},
+ imgs:[{group:"내 서재",items:[["갤러리","bookorbit-lib-gallery",780,1594,390],["캘린더","bookorbit-lib-cal",780,1594,390],["테이블","bookorbit-lib-table",780,1594,390]]},
+  {group:"독서 기록 · 독서 노트",items:[["독서 기록","bookorbit-record",780,1688,390],["독서 노트","bookorbit-note",780,1688,390]]},
+  {group:"다크 테마",tabs:1,items:[["도서 추가","bookorbit-add-dk",780,1594,390],["마이","bookorbit-my-dk",780,3312,390]]}]},
 {id:"edi", name:"EDI Cyber Academy", cat:"Public", year:"2020", type:"Responsive", meta:"한국장애인고용공단 · Responsive/Adaptive Web · 2020.05–12 · 메인 시안 30%, 서브 페이지 전체, 배너 · 운영",
  lead:"웹 환경이 익숙하지 않은 사용자도 망설임 없이 쓰도록 재구축한 장애인 사이버연수원",
  body:"장애인 고용 사업주와 근로자가 이용하는 공공기관 온라인 교육 사이트 재구축 프로젝트입니다.",
- points:["시력과 인터넷 사용 환경을 고려해 글자와 구성 요소를 키우고, 단락마다 배경색을 달리해 구분을 분명히 했습니다.","터치 오류가 잦은 사용자를 위해 메인 등 일부 페이지는 적응형으로 설계하고, 모바일에서는 로그인을 우선 배치했습니다.","컬러·타이포, 탭·테이블·버튼, 레이아웃을 사전에 정의한 사용자·관리자 가이드를 배포해, 이전 프로젝트 대비 디자인 이슈를 1,000여 건에서 150여 건으로 줄였습니다."],
- imgs:[SL("wide",[["메인 A 타입","","A"],["메인 B 타입","","B"],["메인 C 타입","","C"]]),"교육 신청 · 집합교육 목록",SL("wide",[["사용자 가이드","","사용자"],["관리자 가이드","","관리자"]])]},
+ points:["시력과 인터넷 사용 환경을 고려해 글자와 구성 요소를 키우고, 단락마다 배경 이미지를 달리해 구분을 분명히 했습니다.","터치 오류가 잦은 사용자를 위해 메인 등 일부 페이지는 적응형으로 설계하고, 모바일에서는 로그인을 우선 배치했습니다.","컬러·타이포, 탭·테이블·버튼, 레이아웃을 사전에 정의한 사용자·관리자 가이드를 배포해, 이전 프로젝트 대비 디자인 이슈를 1,000여 건에서 150여 건으로 줄였습니다."],
+ imgs:[{group:"열린교육방 · 공지사항",tabs:1,items:[["Contents","edi-contents",1200,1431],["List","edi-list",1200,1316]]},
+  {group:"모바일 — 홈 · 서브",items:[["Home","edi-m-home",750,4138,390],["Sub","edi-m-sub",375,1906,390]]},
+  {group:"디자인 가이드",tabs:1,items:[["Foundation","edi-guide-color",1200,1825],["Component","edi-guide-ui",1200,2097],["Layout","edi-guide-layout",1200,2543]]}]},
 {id:"botami", name:"BotAmi Scan", cat:"Product Site", year:"2021", type:"Responsive", meta:"SI · SM · Agency · Responsive Web · 2021 · 전 페이지 디자인(캐릭터 제외) · 운영",
  lead:"스캔 앱의 데모와 결제를 소개하는 랜딩페이지형 사이트",
  body:"스캔 앱 BotAmi Scan을 소개하고 SDK 데모·결제를 신청하는 대표 웹사이트입니다. 해외 개발자를 대상으로 영문 기준으로 제작했습니다.",
  points:["종이가 디지털 이미지로 바뀌는 서비스 특징을 메인 비주얼과 스크롤 인터랙션으로 표현했습니다.","PC의 마우스 호버 인터랙션은 모바일에서 터치 인터랙션으로 대체했습니다.","결제 단계에서는 선택한 플랜 정보를 좌측에 고정해, 결제하는 동안에도 확인할 수 있게 했습니다."],
- imgs:["Home","SDK Pricing · Payment","Mobile"]}
+ imgs:[{src:"botami-home",w:1200,h:2103,alt:"Home"},{src:"botami-features",w:1200,h:2600,alt:"Features"},
+  {src:"botami-pricing",w:1200,h:1475,alt:"SDK Pricing"},{src:"botami-payment",w:1200,h:947,alt:"Payment"}]}
 ];
 
 /* Content Design: 유형을 제목처럼(굵게), 프로젝트명을 보조로 */
 const CONTENT = [["Event Page","4월 서프라이즈 이벤트"],["Event Page","의대생 Q&A 오픈 이벤트"],["Event Page","의대생 친구 초대 이벤트"],["Recruitment Page","Poll 패널 1기 모집"],["Content Page","명절 시즌 콘텐츠"],["Card News","잠복결핵감염"],["Infographic","국립환경과학원 인포그래픽"],["Poster","국립환경과학원 정보시스템"],["Infographic","학점은행제 정보공시"]].map((c,i)=>({id:"c"+(i+1),type:c[0],title:c[1],cap:c[1]}));
 /* Content 썸네일 규칙: 썸네일 파일(c<번호>-thumb, 1200×1600)이 기본 → 없으면 원본 첫 이미지(슬라이드 1장째)의 맨 위를 3:4로 잘라 씀
    썸네일 파일을 img/에 넣으면 아래 목록에 번호만 추가 */
-const CONTENT_THUMBS=new Set(["c6","c7","c8","c9"]);   /* c6: 카드뉴스 첫 장 + 파란 여백(위 60 · 좌우 100, 남는 아래 여백에 카드 제목) · c8: 대기환경 포스터 — 텍스트 왼쪽 위, 일러스트 오른쪽에 붙여 확대(오른쪽 정렬, 잘린 면이 카드 끝과 맞음) · c7: 천리안위성 상단(완성도 기준 선택) · c9: 정보공시 첫 섹션(목적 칸)까지, 위 여백 24 + 아래 면색 확장(카드 제목과 안 겹치게) */   /* 예: new Set(["c6"]) */
+const CONTENT_THUMBS=new Set(["c5","c6","c7","c8","c9","c10","c11","c12"]);   /* c11: v1 상단(남색) · c12: 상단 — 히어로까지 쓰고 아래는 면색으로 채움 */   /* c6: 카드뉴스 첫 장 + 파란 여백(위 60 · 좌우 100, 남는 아래 여백에 카드 제목) · c8: 대기환경 포스터 — 텍스트 왼쪽 위, 일러스트 오른쪽에 붙여 확대(오른쪽 정렬, 잘린 면이 카드 끝과 맞음) · c10: 6th(크리스마스) 상단 · c7: 천리안위성 상단(완성도 기준 선택) · c9: 정보공시 첫 섹션(목적 칸)까지, 위 여백 24 + 아래 면색 확장(카드 제목과 안 겹치게) */   /* 예: new Set(["c6"]) */
 const contentThumb=c=>CONTENT_THUMBS.has(c.id)?c.id+"-thumb":((c.slides&&c.slides.items[0][1])||c.id);
 /* Content 슬라이드: 카드뉴스 · 연재 인포그래픽 · 포스터 시리즈 (장 수는 원본에 맞춰 조정) */
 /* c1~c5: 페이지 + 배너 변주 콜라주 (키비주얼 하나 → 페이지 · 노출 위치별 배너) */
@@ -948,9 +1063,21 @@ const contentThumb=c=>CONTENT_THUMBS.has(c.id)?c.id+"-thumb":((c.slides&&c.slide
 CONTENT[5].slides=SL("free",Array.from({length:10},(_,i)=>["","c6-"+(i+1)]));   /* 카드뉴스 10장 (750×900) */
 CONTENT[6].slides=SL("free",[["천리안위성","c7-3"],["미세플라스틱","c7-1"],["수생태계","c7-2"],["연구시설","c7-4"]]);   /* 인포그래픽 4종 (제목은 가안) */
 CONTENT[7].slides=SL("free",[["대기환경","c8-1"],["물환경","c8-2"],["환경보건","c8-3"]]);   /* 정보시스템 A2 포스터 3종 */
+CONTENT[4].slides=null; CONTENT[4].img={src:"c5-1",w:750,h:14970,alt:"명절 시즌 콘텐츠 — 귀성길 고속도로 휴게소 음식"};   /* c5: 배너 없음 → 페이지 한 장 (회사명 블러) · 썸네일은 블러 줄 아래부터(위에 붙임, 아래 짙은 초록 #255C46) */
+/* c5 노선 바로가기: 원본(750×14970, 출처 아래 크롭 · 위아래 여백 맞춤) 좌표. 원[중심x, 중심y, 반지름] → 노선 섹션 맨 위 y로 스크롤. back = 노선 선택 영역 y */
+CONTENT[4].hot={w:750,h:14970,back:2290,show:3560,items:[
+ ["경부선",193,2645,145,3947],["중앙선 · 중부내륙선",555,2645,145,6066],
+ ["수도권제1순환선 · 영동선 · 평택제천선",193,3004,145,7868],["당진영덕선 · 서해안선 · 통영대전선",555,3004,145,9774],
+ ["호남선 · 순천완주선 · 남해선",193,3364,145,11280],["새만금포항선 · 동해선 · 부산외곽순환선",555,3364,145,13349]]};
 CONTENT[8].slides=SL("free",[["수시 공시","c9-1","수시"],["2월 공시","c9-2","2월"],["3월 공시","c9-3","3월"],["6·8월 공시","c9-4","6·8월"],["9월 공시","c9-5","9월"]]);   /* 학점은행제 정보공시 5종 */
 /* Thursday Market (공동구매 타임딜 이벤트 시리즈) — 예전 Works의 Event & Banner를 Content로 옮김. id는 c10(기존 번호 유지), 순서는 이벤트 페이지들 뒤 */
-CONTENT.splice(3,0,{id:"c10",type:"Event Page",title:"Thursday Market",cap:"Thursday Market",slides:SL("free",[["3rd","","","3/4"],["4th","","","3/4"],["6th","","","3/4"]])});
+CONTENT.splice(3,0,{id:"c10",type:"Event Page",title:"Thursday Market",cap:"Thursday Market",slides:SL("free",[["2nd","c10-1"],["3rd","c10-2"],["4th","c10-3"],["6th","c10-4"],["2nd 배너",{banners:"c10-2nd"},"2nd B"],["6th 배너",{banners:"c10-6th"},"6th B"]])});   /* 회차 4종(하단 유의사항 크롭) + 회차별 배너(variation 칩) */
+/* 삭제한 항목 (2026-10-27): c2 의대생 Q&A · c3 의대생 친구 초대 · c4 Poll 패널 — id는 그대로 두고 목록에서만 뺌 */
+["c1","c2","c3","c4"].forEach(id=>{const i=CONTENT.findIndex(c=>c.id===id); if(i>=0) CONTENT.splice(i,1)});   /* c1 4월 서프라이즈도 삭제 (2026-10-27) */
+/* 이벤트 페이지 추가 (2026-10-27): Thursday Market 바로 뒤 · 페이지는 정사이즈(최대 750)로 표시 */
+CONTENT.splice(CONTENT.findIndex(c=>c.id==="c10")+1,0,
+ {id:"c11",type:"Event Page",title:"이용후기 이벤트",cap:"이용후기 이벤트",slides:SL("free",[["v1","c11-1"],["v2","c11-2"],["배너",{banners:"c11"}]])},   /* v-Detailing 이용 후기 이벤트 v1(오픈 이벤트 3탄) · v2(3월 리뉴얼) + 배너 세트(v1 · v2 탭) */
+ {id:"c12",type:"Event Page",title:"12월 시즌 이벤트",cap:"12월 시즌 이벤트",slides:SL("free",[["이벤트 페이지","c12-1","페이지"],["배너",{banners:"c12"}]])});   /* 12월 체험미션 이벤트 + 배너 세트(중간 배너 포함) */
 
 /* ---------- HELPERS ---------- */
 const $=s=>document.querySelector(s);
@@ -989,7 +1116,8 @@ const BG_OF=id=>{if(!BG_MAP){BG_MAP={};let prev=0;ORDER.forEach(([,k])=>{let v=B
 const tlBg=id=>`<img class="tl-bg" src="img/thumb-bg-v${BG_OF(id)}.webp" alt="" loading="lazy" decoding="async">`;
 const tlUi=(id,sq)=>{const ui=UI_LAYER.has(id)?`<img class="tl-ui" src="img/${id}-ui.webp" alt="" loading="lazy" decoding="async">`:"";
  return sq&&UI_SQ.has(id)?`<picture class="tl-ui-p"><source media="(min-width:768px)" srcset="img/${id}-ui-sq.webp">${ui||`<img class="tl-ui" src="img/${id}-ui-sq.webp" alt="" loading="lazy" decoding="async">`}</picture>`:ui};
-const THUMB=(id,ctx)=>(ctx==="home"||ctx==="hero")&&HOME_MAIN.has(id)?`<img class="tl-main" src="img/${id}-main.webp" alt="" loading="lazy" decoding="async">`:tlBg(id)+tlUi(id,ctx==="sq");   /* ctx: home · work · sq(Works 작은 카드) · hero */
+const HERO_UI=new Set(["lesson365"]);   /* 모달 히어로만 다른 UI 레이어: img/<id>-hero-ui.webp (Works 카드는 기존 -ui 유지) */
+const THUMB=(id,ctx)=>ctx==="hero"&&HERO_UI.has(id)?tlBg(id)+`<img class="tl-ui" src="img/${id}-hero-ui.webp" alt="" loading="lazy" decoding="async">`:(ctx==="home"||ctx==="hero")&&HOME_MAIN.has(id)?`<img class="tl-main" src="img/${id}-main.webp" alt="" loading="lazy" decoding="async">`:tlBg(id)+tlUi(id,ctx==="sq");   /* ctx: home · work · sq(Works 작은 카드) · hero */
 const metaLine=p=>`${p.cat} · ${p.year} · ${p.type}`;  /* 모달 정보용 (연도 포함) */
 const cardMeta=p=>`${p.cat} · ${p.type}`;               /* 썸네일용 (연도 없음) */
 /* Works 그리드 순서 = 모달 이전/다음 순서. big = 큰 카드 */
@@ -1133,7 +1261,7 @@ const slider=(title,data)=>{const f=Array.isArray(data)?"phone":data.frame, slid
   <div class="sl-ctl"><span class="sl-count" aria-hidden="true"><b>1</b> / ${n}</span><div class="sl-steps">${slides.map((s,i)=>`<button class="sl-step${s[0]?"":" num"}" data-sl="${i}"${i?"":' aria-current="step"'} aria-label="${i+1}${s[0]?". "+esc(s[0]):"번째"}"><b>${i+1}</b>${s[0]?`<span class="fl">${esc(s[0])}</span><span class="sh">${esc(s[2]||s[0])}</span>`:""}</button>`).join("")}</div>
    <div class="sl-arrows"><button class="icon-btn" data-sl-move="-1" aria-label="이전" disabled>${ICON.left}</button><button class="icon-btn" data-sl-move="1" aria-label="다음">${ICON.right}</button></div></div>
  </div>`};
-const mediaCopy=d=>`<div class="copy"><h4>${esc(d[0])}</h4><p>${esc(d[1])}</p>${d[4]?`<button class="btn-ghost" data-swap="${d[4][0]}"><span>${esc(d[4][1])}</span>${ICON.narrow}</button>`:""}</div>`;   /* d[4] = [모달 토큰, 문구] → 다른 모달로 이동 */
+const mediaCopy=d=>`<div class="copy"><h4>${esc(d[0])}</h4>${d[1]?`<p>${esc(d[1])}</p>`:""}${d[4]?`<button class="btn-ghost" data-swap="${d[4][0]}"><span>${esc(d[4][1])}</span>${ICON.narrow}</button>`:""}</div>`;   /* d[4] = [모달 토큰, 문구] → 다른 모달로 이동 */
 /* ===== 다이어그램: decisions 3번째 항목에 {diag:"이름"} → 이미지 대신 코드로 그린 다이어그램 ===== */
 /* ===== 배너 세트 템플릿: 원본 파일을 그대로 받아 한 화면에 배치 (Mobile · PC · In-Event) =====
    그룹 안에서는 실제 크기 비율 유지(그룹마다 기준 폭이 100%). 위치 이름은 표시하지 않음.
@@ -1142,14 +1270,21 @@ const BANNER_GROUPS=[   /* [그룹, 줄들] · 줄 = 열들 · 열 = [[자리, �
  ["Mobile",[[[["mo-home",1500,640],["mo-mypage",1500,320],["mo-list",1500,230]]]]],
  ["PC",[[[["pc-list",1480,172]]],[[["pc-side",636,890]],[["pc-profile",636,590]]]]],   /* 목록 전체 폭 → 아래 2열: 왼쪽 우측 배너 · 오른쪽 프로필 하단 */
  ["In-Event",[[[["mid",750,310]]]]]];
-const BANNER_FILES=new Set([]);   /* 예: new Set(["c1-b-mo-home","c1-b-mid"]) */
-const BANNER_SKIP={};             /* 예: {c4:["mid"]} → c4는 중간 배너 자리 숨김 (그룹이 비면 그룹째 숨김) */
-const bannerSet=key=>{const skip=BANNER_SKIP[key]||[];
+const BANNER_FILES=new Set(["mo-home","mo-mypage","mo-list","pc-list","pc-side","pc-profile","mid"].map(x=>"c12-b-"+x));   /* 예: new Set(["c1-b-mo-home","c1-b-mid"]) */
+const BANNER_SKIP={"c10-2nd":["mid"],"c10-6th":["mid"],"c11":["mid"]};   /* 예: {c4:["mid"]} → c4는 중간 배너 자리 숨김 (그룹이 비면 그룹째 숨김) */
+/* variation이 있는 배너 세트: {키: 개수} → 파일 <키>-b-<자리>-v<번호>.webp, 위쪽 숫자 칩으로 전환 (Thursday Market 회차별) */
+const BANNER_VARS={"c10-2nd":4,"c10-6th":2,"c11":2};
+const BANNER_VAR_PREFIX={"c11":"v"};   /* 칩 표기: c11은 v1 · v2 */
+const bannerSet=key=>{const skip=BANNER_SKIP[key]||[], nv=BANNER_VARS[key]||0;
  const item=([sl,w,h],g)=>{const f=`${key}-b-${sl}`;
-  return `<div class="bn-item" style="aspect-ratio:${w}/${h}">${BANNER_FILES.has(f)?`<img src="img/${SRC(f)}" width="${w}" height="${h}" alt="${g} 배너" loading="lazy" decoding="async">`:`<div class="ph"><span>${w}×${h}</span></div>`}</div>`};
- return `<div class="bn-set">${BANNER_GROUPS.map(([g,rows])=>{
+  return `<div class="bn-item" style="aspect-ratio:${w}/${h}">${nv?`<img src="img/${f}-v1.webp" data-bn-src="img/${f}" width="${w}" height="${h}" alt="${g} 배너" loading="lazy" decoding="async">`:BANNER_FILES.has(f)?`<img src="img/${SRC(f)}" width="${w}" height="${h}" alt="${g} 배너" loading="lazy" decoding="async">`:`<div class="ph"><span>${w}×${h}</span></div>`}</div>`};
+ const chips=nv?`<div class="ctab bn-vars" role="group" aria-label="배너 변형">${Array.from({length:nv},(_,i)=>`<button type="button" data-bn-v="${i+1}" aria-pressed="${!i}">${BANNER_VAR_PREFIX[key]||""}${i+1}</button>`).join("")}</div>`:"";
+ return `<div class="bn-set">${chips}${BANNER_GROUPS.map(([g,rows])=>{
   const rs=rows.map(cols=>cols.map(c=>c.filter(x=>!skip.includes(x[0]))).filter(c=>c.length)).filter(cs=>cs.length); if(!rs.length)return "";
   return `<div class="bn-grp"><p class="dg-lb">${g}</p>${rs.map(cs=>`<div class="bn-row" style="grid-template-columns:repeat(${cs.length},minmax(0,1fr))">${cs.map(c=>`<div class="bn-col">${c.map(x=>item(x,g)).join("")}</div>`).join("")}</div>`).join("")}</div>`}).join("")}</div>`};
+document.addEventListener("click",e=>{const b=e.target.closest("[data-bn-v]");if(!b)return;const set=b.closest(".bn-set"),v=b.dataset.bnV;
+ set.querySelectorAll("[data-bn-v]").forEach(x=>x.setAttribute("aria-pressed",x===b)); set.querySelectorAll("img[data-bn-src]").forEach(im=>{im.src=`${im.dataset.bnSrc}-v${v}.webp`})});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-devs]");if(!b)return;const c=b.closest(".devs");c.dataset.show=b.dataset.devs;c.querySelectorAll("[data-devs]").forEach(x=>x.setAttribute("aria-selected",x===b))});
 document.addEventListener("click",e=>{const b=e.target.closest("[data-cmp]");if(!b)return;const c=b.closest(".cmp");c.dataset.show=b.dataset.cmp;c.querySelectorAll("[data-cmp]").forEach(x=>x.setAttribute("aria-selected",x===b))});
 const DIAGRAMS={
  /* Energy D1 · Requirements → Information Architecture */
@@ -1199,15 +1334,79 @@ const DIAGRAMS={
    </div>
   </div>`},
  /* PayAppCafe D1 슬라이드 1 · 콘텐츠 미확정 옵션 (영상 / 텍스트 버전) */
- contentOptions:()=>{
-  const A="#4FD1C0", M="#C9CDD3", L="#3A3E45";
+ contentOptions:()=>{   /* PayAppCafe D1 — 체험 방식 옵션: 프로토타입 버전(탭 2 + 휴대폰 2) · 영상 버전(영상 + 탭 4). 시안 A(도형만) */
+  const A="#4FD1C0", L="#3A3E45", D="#111214";
   const sv=(inner)=>`<svg viewBox="0 0 200 124" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${inner}</svg>`;
-  const video=sv(`<rect x="0" y="0" width="38" height="13" rx="6.5" fill="${A}"/><rect x="44.5" y=".5" width="37" height="12" rx="6" fill="none" stroke="${L}"/><rect x="88.5" y=".5" width="37" height="12" rx="6" fill="none" stroke="${L}"/><rect x="0" y="22" width="200" height="88" rx="10" fill="#111214"/><path d="M93 56L111 66L93 76Z" fill="${A}"/><rect x="0" y="118" width="64" height="4" rx="2" fill="${L}"/>`);
-  const text=sv(`<rect x="0" y="4" width="84" height="7" rx="3.5" fill="${M}"/>${[22,34,46].map((y,i)=>`<rect x="0" y="${y}" width="${[200,200,132][i]}" height="4" rx="2" fill="${L}"/>`).join("")}<rect x="0" y="70" width="60" height="7" rx="3.5" fill="${M}"/>${[88,100].map((y,i)=>`<rect x="0" y="${y}" width="${[200,110][i]}" height="4" rx="2" fill="${L}"/>`).join("")}`);
+  const bars=x=>`<rect x="${x+11}" y="72" width="24" height="4" rx="2" fill="${L}"/><rect x="${x+15}" y="80" width="16" height="4" rx="2" fill="${L}"/>`;
+  const ph=x=>`<rect x="${x}.5" y="26.5" width="45" height="96" rx="7" fill="${D}" stroke="${L}"/><rect x="${x+17}" y="30" width="12" height="2.5" rx="1.25" fill="${L}"/>${bars(x)}`;
+  const proto=sv(`<rect x="50.5" y=".5" width="99" height="14" rx="7" fill="none" stroke="${L}"/><rect x="50" y="0" width="50" height="15" rx="7.5" fill="${A}"/><path d="M71.5 15L75 19L78.5 15Z" fill="${A}"/>${ph(50)}${ph(105)}`);
+  const video=sv(`<rect x="0" y="0" width="200" height="94" rx="9" fill="${D}"/><path d="M93 37L111 47L93 57Z" fill="${A}"/><rect x=".5" y="104.5" width="199" height="17" rx="8.5" fill="none" stroke="${L}"/><rect x="0" y="104" width="50" height="18" rx="9" fill="${A}"/><path d="M21.5 104L25 100L28.5 104Z" fill="${A}"/>${[75,125,175].map(x=>`<rect x="${x-12}" y="111" width="24" height="4" rx="2" fill="${L}"/>`).join("")}`);
   const opt=(vis,t,d)=>`<div class="dgo-row"><div class="dgo-card">${vis}</div><div class="dg-note"><h5>${t}</h5><p>${d}</p></div></div>`;
-  return `<div class="dg dgo" role="img" aria-label="콘텐츠 확정 여부에 따른 두 가지 옵션: 영상 콘텐츠 버전, 텍스트 콘텐츠 버전">
-   ${opt(video,"영상 콘텐츠 버전","탭으로 콘텐츠를 구분하고 그에 맞는 영상 노출")}
-   ${opt(text,"텍스트 콘텐츠 버전","영상이 없는 경우 텍스트로만 구성된 UI 구성")}
+  return `<div class="dg dgo" role="img" aria-label="결제 앱 준비 상황에 따른 두 가지 버전: 프로토타입 버전, 영상 버전">
+   ${opt(proto,"프로토타입 버전","가맹점 앱과 결제 앱을 나란히 두고 결제 수단별로 직접 테스트")}
+   ${opt(video,"영상 버전","앱이 준비되지 않은 경우 결제 수단별 영상으로 흐름 안내")}
+  </div>`},
+ /* PayAppCafe D1 · 반응형 — 서비스 소개 페이지(히어로 ~ 결제 앱 무료 제공 섹션) Mobile · PC, 16:10 슬라이드 안에 항상 나란히(폭 1 : 2.2), 위쪽부터 */
+ /* Lesson 365 · As-is → To-be 다이어그램 (실제 As-is 화면 대신 영역 도형) */
+ l365Layout:()=>l3v("AS-IS","TO-BE",`<svg viewBox="0 0 320 190" role="img" aria-label="As-is: header, top-menu, left, contents, 토글 썸네일, 호버 하단 메뉴">
+   <rect x="0" y="0" width="320" height="22" rx="5" fill="#1E2024"/><text x="10" y="15" font-size="10" fill="#9AA0AA">header</text>
+   <rect x="0" y="28" width="320" height="18" rx="5" fill="#1E2024"/><text x="10" y="40" font-size="10" fill="#9AA0AA">title / top-menu</text>
+   <rect x="0" y="52" width="46" height="108" rx="6" fill="#1E2024"/><text x="8" y="68" font-size="9" fill="#9AA0AA">left</text>
+   <rect x="52" y="52" width="196" height="108" rx="6" fill="#17181B"/><text x="128" y="110" font-size="10" fill="#6E747E">contents</text>
+   <rect x="254.5" y="52.5" width="65" height="107" rx="6" fill="none" stroke="#3A3E45" stroke-dasharray="4 3"/><text x="262" y="68" font-size="9" fill="#6E747E">thumbnail</text><text x="262" y="80" font-size="9" fill="#6E747E">(toggle)</text>
+   <rect x="80.5" y="166.5" width="160" height="22" rx="6" fill="none" stroke="#3A3E45" stroke-dasharray="4 3"/><text x="102" y="181" font-size="9" fill="#6E747E">button-menu (hover)</text></svg>`,
+  `<svg viewBox="0 0 320 190" role="img" aria-label="To-be: 상단 바와 우측 세로 메뉴 고정">
+   <rect x=".5" y=".5" width="281" height="21" rx="5" fill="rgba(79,209,192,.12)" stroke="#4FD1C0"/><text x="8" y="15" font-size="9" fill="#4FD1C0">title</text>
+   <g fill="#4FD1C0"><circle cx="118" cy="11" r="5"/><circle cx="132" cy="11" r="5"/><circle cx="146" cy="11" r="5"/><circle cx="160" cy="11" r="5"/></g>
+   <g fill="#4FD1C0" opacity=".55"><rect x="196" y="8" width="14" height="6" rx="3"/><rect x="214" y="8" width="14" height="6" rx="3"/><rect x="232" y="8" width="14" height="6" rx="3"/><rect x="250" y="8" width="14" height="6" rx="3"/><rect x="268" y="8" width="10" height="6" rx="3"/></g>
+   <rect x="0" y="28" width="282" height="162" rx="6" fill="#17181B"/><text x="118" y="112" font-size="10" fill="#6E747E">contents</text>
+   <rect x="288.5" y=".5" width="31" height="189" rx="6" fill="rgba(79,209,192,.12)" stroke="#4FD1C0"/>
+   <g fill="#4FD1C0" opacity=".7">${[10,28,46,64,82,100,118].map(y=>`<rect x="297" y="${y}" width="14" height="10" rx="2"/>`).join("")}</g>
+   <rect x="297" y="152" width="14" height="10" rx="2" fill="#9AA0AA"/><rect x="290" y="170" width="28" height="18" rx="4" fill="#4FD1C0" opacity=".85"/></svg>`),
+ l365Grid:()=>l3v("AS-IS · 인원에 따라 자동 재배치","TO-BE · 사용자가 선택",`<svg viewBox="0 0 320 96" role="img" aria-label="인원에 따라 1, 2, 4, 9칸으로 바뀌는 그리드">
+   <rect x="0" y="12" width="64" height="40" rx="4" fill="#1E2024"/><text x="22" y="72" font-size="10" fill="#9AA0AA">1명</text>
+   <g fill="#1E2024"><rect x="84" y="12" width="31" height="40" rx="4"/><rect x="117" y="12" width="31" height="40" rx="4"/></g><text x="106" y="72" font-size="10" fill="#9AA0AA">2명</text>
+   <g fill="#1E2024"><rect x="168" y="12" width="31" height="19" rx="3"/><rect x="201" y="12" width="31" height="19" rx="3"/><rect x="168" y="33" width="31" height="19" rx="3"/><rect x="201" y="33" width="31" height="19" rx="3"/></g><text x="190" y="72" font-size="10" fill="#9AA0AA">4명</text>
+   <g fill="#1E2024">${[12,26,40].map(y=>[252,274,296].map(x=>`<rect x="${x}" y="${y}" width="21" height="12" rx="2"/>`).join("")).join("")}</g><text x="274" y="72" font-size="10" fill="#9AA0AA">9명</text>
+   <path d="M68 32h12M152 32h12M236 32h12" stroke="#6E747E" stroke-width="1.2" stroke-dasharray="2 2"/></svg>`,
+  `<svg viewBox="0 0 320 96" role="img" aria-label="격자형과 발표형 중 선택">
+   <g fill="rgba(79,209,192,.12)" stroke="#4FD1C0">${[6.5,36.5].map(y=>[.5,49.5,98.5].map(x=>`<rect x="${x}" y="${y}" width="45" height="26" rx="3"/>`).join("")).join("")}</g>
+   <text x="42" y="84" font-size="10" fill="#4FD1C0">격자형 · 회의</text><text x="158" y="40" font-size="11" fill="#6E747E">or</text>
+   <g fill="#1E2024">${[180,209,238,267,296].map(x=>`<rect x="${x}" y="6" width="${x===296?24:26}" height="11" rx="2"/>`).join("")}</g>
+   <rect x="180.5" y="20.5" width="139" height="42" rx="4" fill="rgba(79,209,192,.12)" stroke="#4FD1C0"/><text x="218" y="84" font-size="10" fill="#4FD1C0">발표형 · 강의</text></svg>`),
+ l365Board:()=>l3v("AS-IS · 화이트보드 1개","TO-BE · 여러 개 + 썸네일 목록",`<svg viewBox="0 0 320 190" role="img" aria-label="As-is: 화이트보드 1개, 파일은 캔버스로 바뀌고 슬라이드 버튼으로 넘김">
+   <rect x="0" y="0" width="320" height="190" rx="6" fill="#17181B"/><rect x="20" y="16" width="280" height="140" rx="4" fill="#1E2024"/>
+   <text x="28" y="32" font-size="9" fill="#6E747E">canvas (file → canvas)</text>
+   <path d="M60 110c20-40 40 10 60-20s30 30 50 0 40 20 60-10" fill="none" stroke="#6E747E" stroke-width="1.4"/>
+   <rect x="200" y="40" width="64" height="16" rx="8" fill="#17181B"/><text x="210" y="52" font-size="9" fill="#9AA0AA">name tag</text>
+   <g fill="#6E747E"><path d="M128 171l-6 5 6 5z"/><path d="M192 171l6 5-6 5z"/></g><text x="146" y="179" font-size="9" fill="#9AA0AA">1 / 5</text></svg>`,
+  `<svg viewBox="0 0 320 190" role="img" aria-label="To-be: 썸네일 목록, 새로 만들기, 비활성 도구는 흐리게">
+   <rect x="0" y="0" width="320" height="190" rx="6" fill="#17181B"/><rect x="8" y="8" width="58" height="174" rx="5" fill="#1E2024"/>
+   <rect x="16.5" y="16.5" width="41" height="12" rx="3" fill="none" stroke="#4FD1C0" stroke-dasharray="3 2"/><text x="24" y="25" font-size="8" fill="#4FD1C0">+ new</text>
+   <rect x="16.5" y="36.5" width="41" height="28" rx="3" fill="rgba(79,209,192,.12)" stroke="#4FD1C0"/><path d="M22 56c6-8 10 2 16-4s8 4 14-2" fill="none" stroke="#4FD1C0"/>
+   <g fill="#17181B"><rect x="16" y="70" width="42" height="28" rx="3"/><rect x="16" y="104" width="42" height="28" rx="3"/><rect x="16" y="138" width="42" height="28" rx="3"/></g>
+   <rect x="74" y="8" width="210" height="174" rx="5" fill="#2A2C31"/><path d="M100 120c20-40 40 10 60-20s30 30 50 0 30 20 50-10" fill="none" stroke="#C9CDD3" stroke-width="1.4"/>
+   <rect x="170" y="30" width="56" height="15" rx="7.5" fill="#1E2024"/><text x="179" y="41" font-size="8" fill="#C9CDD3">name tag</text>
+   <rect x="290" y="8" width="24" height="120" rx="5" fill="#1E2024"/>
+   <g fill="#4FD1C0"><rect x="296" y="16" width="12" height="10" rx="2"/><rect x="296" y="32" width="12" height="10" rx="2"/><rect x="296" y="48" width="12" height="10" rx="2"/></g>
+   <g fill="#9AA0AA" opacity=".35"><rect x="296" y="64" width="12" height="10" rx="2"/><rect x="296" y="80" width="12" height="10" rx="2"/><rect x="296" y="96" width="12" height="10" rx="2"/></g></svg>`),
+ /* Counselling D7 · 내담자 app 화면 목록 — PC는 패널 안 5장 한 줄(목록), 모바일은 phone 슬라이드 */
+ csAppList:()=>{
+  const L=[["온보딩","counselling-d7-onboarding","온보딩"],["메인","counselling-d7-main","메인"],["상담사 프로필","counselling-d7-profile","프로필"],["상담 일정","counselling-d7-schedule","일정"],["쪽지 상담","counselling-d7-note","쪽지"]];
+  return `<div class="cs-list" role="list" aria-label="내담자 app 화면 목록">${L.map(x=>`<div class="cs-list-i" role="listitem"><img src="img/${SRC(x[1])}" width="780" height="1601" alt="${esc(x[0])}" loading="lazy" decoding="async"></div>`).join("")}</div>
+   <div class="cs-list-sl">${slider("내담자 app 화면",SL("phone",L))}</div>`},
+ payDevices:()=>{
+  const D=[["Mobile","payappcafe-d1-mo",780,2558],["PC","payappcafe-d1-pc",1760,1969]];
+  return `<div class="dg devs fit" role="group" aria-label="서비스 소개 페이지 반응형 비교">
+   <div class="devs-row">${D.map((d,i)=>`<figure class="devs-col" data-i="${i}"><figcaption class="dg-lb">${d[0]}</figcaption><div class="devs-shot"><img src="img/${SRC(d[1])}" width="${d[2]}" height="${d[3]}" alt="서비스 소개 — ${d[0]}" loading="lazy" decoding="async"></div></figure>`).join("")}</div>
+  </div>`},
+ /* Energy D3 · 반응형 — 같은 화면(월간 보고서)을 기기 3종 나란히, 높이를 맞춰 폭 차이를 보여줌. 좁으면 contents tab */
+ energyDevices:()=>{
+  const D=[["Mobile","energy-d3-mo",780,2012],["Tablet","energy-d3-tb",1668,2132],["PC","energy-d3-pc",1440,1274]];
+  const G=[1,1.3,1.6],H=G[2]*D[2][3]/D[2][2];
+  return `<div class="dg devs" data-show="0" role="group" aria-label="기기별 반응형 화면 비교">
+   <div class="ctab devs-tabs" role="tablist">${D.map((d,i)=>`<button type="button" role="tab" data-devs="${i}" aria-selected="${!i}">${d[0]}</button>`).join("")}</div>
+   <div class="devs-row">${D.map((d,i)=>`<figure class="devs-col" data-i="${i}" style="flex-grow:${G[i]}"><figcaption class="dg-lb">${d[0]}</figcaption><div class="devs-shot" style="--ar:${(G[i]/H).toFixed(4)}"><img src="img/${SRC(d[1])}" width="${d[2]}" height="${d[3]}" alt="월간 보고서 — ${d[0]}" loading="lazy" decoding="async"></div></figure>`).join("")}</div>
   </div>`},
  /* Energy D2 · Wireframe ↔ Design 비교 (이미지 2장 + viewport 선만, 위치는 이미지 높이 대비 %)
     이미지는 상태바~HEVA LOGO를 잘라냄(둘 다 위 약 93pt) → viewport = (844pt − 93pt) 지점 */
@@ -1217,20 +1416,49 @@ const DIAGRAMS={
     <div class="cmp-vp" style="top:${vp}%"><span>Viewport</span></div>
    </div></figure>`;
   return `<div class="dg cmp" data-show="wire" role="group" aria-label="와이어프레임과 디자인 비교">
-   <div class="cmp-tabs" role="tablist"><button type="button" role="tab" data-cmp="wire" aria-selected="true">Wireframe</button><button type="button" role="tab" data-cmp="design" aria-selected="false">Design</button></div>
+   <div class="ctab cmp-tabs" role="tablist"><button type="button" role="tab" data-cmp="wire" aria-selected="true">Wireframe</button><button type="button" role="tab" data-cmp="design" aria-selected="false">Design</button></div>
    <div class="cmp-cols">
     <svg class="cmp-arrow" viewBox="0 0 72 16" fill="none" aria-hidden="true"><path d="M2 8H69M62 2L69 8L62 14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    ${col("wire","Wireframe","energy-d2-wire",525,2451,41.26)}
-    ${col("design","Design","energy-d2-design",455,2468,35.52)}
+    ${col("wire","Wireframe","energy-d2-wire",780,3644,41.22)}
+    ${col("design","Design","energy-d2-design",780,4232,35.54)}
    </div>
   </div>`}
 };
+/* 이미지 위 클릭 영역(노선 바로가기) — 좌표는 원본 대비 %, 클릭 시 모달 안에서 해당 섹션으로 스크롤 */
+const hotFig=(x,h)=>`<div class="fig hot" data-hot-h="${h.h}" data-hot-show="${h.show}"><img src="img/${SRC(x.src)}" width="${x.w}" height="${x.h}" alt="${esc(x.alt||"")}" loading="lazy" decoding="async">
+ ${h.items.map(([nm,cx,cy,r,ty])=>`<button type="button" class="hot-spot" data-hot-y="${ty}" aria-label="${esc(nm)} 바로가기" style="left:${((cx-r)/h.w*100).toFixed(3)}%;top:${((cy-r)/h.h*100).toFixed(4)}%;width:${(2*r/h.w*100).toFixed(3)}%"></button>`).join("")}
+ <button type="button" class="hot-back" data-hot-y="${h.back}"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 13V3M3.5 7.5L8 3l4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>노선 선택</span></button></div>`;
+const hotGo=(fig,y)=>{const sc=$("#mBody"), img=fig.querySelector("img"), k=img.getBoundingClientRect().height/(+fig.dataset.hotH);
+ const top=img.getBoundingClientRect().top-sc.getBoundingClientRect().top+sc.scrollTop+y*k-12; sc.scrollTo({top,behavior:RM()?"auto":"smooth"})};
+document.addEventListener("click",e=>{const b=e.target.closest("[data-hot-y]"); if(!b) return; hotGo(b.closest(".fig.hot"),+b.dataset.hotY)});
+/* 노선 선택 버튼: 노선 영역을 지나 내려갔을 때만 */
+document.addEventListener("scroll",e=>{const sc=e.target; if(!sc||sc.id!=="mBody") return; const f=sc.querySelector(".fig.hot"); if(!f) return;
+ const img=f.querySelector("img"), k=img.getBoundingClientRect().height/(+f.dataset.hotH), past=sc.getBoundingClientRect().top-img.getBoundingClientRect().top;
+ f.classList.toggle("show-back",past>(+f.dataset.hotShow)*k)},true);
 const figOrDiag=x=>x&&typeof x==="object"&&x.diag?`<div class="fig diag">${DIAGRAMS[x.diag]()}</div>`:fig(x);
-const mediaDefault=d=>`<div class="media media-default${d[2]&&d[2].diag?" media-diag":""}">${mediaCopy(d)}${figOrDiag(d[2])}</div>`;   /* 다이어그램은 글 아래 본문 전체 폭 */
+const mediaDefault=d=>`<div class="media media-default${d[2]&&d[2].diag?" media-diag":""}">${mediaCopy(d)}${d[2]&&d[2].groups?`<div class="gstack">${d[2].groups.map(grpBlock).join("")}</div>`:d[2]&&d[2].group?grpBlock(d[2]):figOrDiag(d[2])}</div>`;   /* 다이어그램은 글 아래 본문 전체 폭 */
 const mediaSlide=(slides,d)=>d?`<div class="media media-slide">${mediaCopy(d)}${slider(d[0],slides)}</div>`:`<div class="media-slide">${slider("",slides)}</div>`;
-const media=d=>d[3]?mediaSlide(d[3],d):d[2]===null?`<div class="media media-text">${mediaCopy(d)}</div>`:mediaDefault(d);   /* 3번째가 null이면 텍스트만 */
-const screen=x=>typeof x==="string"||x.src?mediaImgonly(x):x.diag?figOrDiag(x):x.banners?bannerSet(x.banners):mediaSlide(x);   /* screens · imgs: 문자열 = imgonly, 배열 = slide(텍스트 없음) */
-const table=(head,rows)=>`<table class="ttable"><thead><tr>${head.map(h=>`<th scope="col">${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td data-th="${esc(head[i])}">${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+const kvList=l=>`<div class="kv kv-2">${l.map(([t,cap,desc])=>`<div class="kv-i"><b>${esc(t)}</b><span class="kv-cap">${esc(cap)}</span><p>${esc(desc)}</p></div>`).join("")}</div>`;   /* 항목형 .kv(How I Work) 2열 + 캡션(한글 보조 라벨 스타일) — Lesson 365 Problem */
+const mediaList=l=>`<ul class="m-list">${l.map(([t,sub,desc])=>`<li><p class="m-list-hd"><b>${esc(t)}</b><span>${esc(sub)}</span></p><p>${esc(desc)}</p></li>`).join("")}</ul>`;   /* 텍스트 media 안 리스트: [라벨, 보조 라벨, 설명] */
+const media=d=>d[3]?mediaSlide(d[3],d):d[2]===null?`<div class="media media-text">${mediaCopy(d)}</div>`:d[2]&&d[2].list?`<div class="media media-text">${mediaCopy(d).replace(/<\/div>$/,mediaList(d[2].list)+"</div>")}</div>`:mediaDefault(d);   /* 3번째가 null이면 텍스트만 */
+/* 기기별 화면 묶음: 화면 하나를 Mobile · Tablet · PC contents tab으로 전환. 처음 탭 = 보는 기기. items: [기기, 파일, 폭, 높이, 최대 표시 폭(pt)] */
+const devBlock=x=>{const mob=matchMedia("(max-width:767px)").matches, pick=n=>Math.max(0,x.items.findIndex(it=>it[0]===n)), def=mob?pick("Mobile"):pick("PC");   /* 탭 순서 Mobile → Tablet → PC, 처음 탭 = 보는 기기 */
+ return `<div class="dev" data-dev role="group" aria-label="${esc(x.devices)}">
+  <div class="ctab" role="tablist">${x.items.map((it,i)=>`<button type="button" role="tab" data-dev-i="${i}" aria-selected="${i===def}">${it[0]}</button>`).join("")}</div>
+  ${x.items.map((it,i)=>`<div class="fig dev-shot"${i===def?"":" hidden"} style="max-width:${it[4]}px"><img src="img/${SRC(it[1])}" width="${it[2]}" height="${it[3]}" alt="${esc(x.devices)} — ${it[0]}" loading="lazy" decoding="async"></div>`).join("")}
+ </div>`};
+document.addEventListener("click",e=>{const b=e.target.closest("[data-dev-i]");if(!b)return;const d=b.closest("[data-dev]");
+ d.querySelectorAll("[data-dev-i]").forEach(x=>x.setAttribute("aria-selected",x===b)); d.querySelectorAll(".dev-shot").forEach((f,i)=>f.hidden=i!==+b.dataset.devI)});
+const l3v=(a,b,sa,sb)=>`<div class="l3v"><div class="l3v-col"><p class="dg-lb">${a}</p>${sa}</div><svg class="l3v-arw" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg><div class="l3v-col"><p class="dg-lb on">${b}</p>${sb}</div></div>`;   /* As-is → To-be 2단 다이어그램 (Lesson 365) */
+const grpBlock=x=>`${x.label?`<div class="gwrap"><p class="dg-lb">${esc(x.label)}</p>`:""}<div class="gset n${x.items.length}${x.tabs?" tabs":""}" data-gset role="group" aria-label="${esc(x.group)}">
+  <div class="ctab" role="tablist">${x.items.map((it,i)=>`<button type="button" role="tab" data-gset-i="${i}" aria-selected="${!i}">${it[0]}</button>`).join("")}</div>
+  <div class="gset-row">${x.items.map((it,i)=>`<div class="fig gset-shot${Array.isArray(it[1])?" multi":""}${i?"":" on"}"${it[4]?` style="max-width:${it[4]}px"`:""}>${(Array.isArray(it[1])?it[1]:[[it[1],it[2],it[3]]]).map(m=>`<img src="img/${SRC(m[0])}" width="${m[1]}" height="${m[2]}" alt="${esc(x.group)} — ${esc(it[0])}" loading="lazy" decoding="async">`).join("")}</div>`).join("")}</div>
+ </div>${x.label?"</div>":""}`;   /* {group, items:[[탭, 파일, w, h, 최대폭]], tabs:1(항상 탭)} · 탭 하나에 여러 장: 파일 자리에 [[파일, w, h], ...] */
+document.addEventListener("click",e=>{const b=e.target.closest("[data-gset-i]");if(!b)return;const g=b.closest("[data-gset]");
+ g.querySelectorAll("[data-gset-i]").forEach(x=>x.setAttribute("aria-selected",x===b)); g.querySelectorAll(".gset-shot").forEach((f,i)=>f.classList.toggle("on",i===+b.dataset.gsetI))});
+const screen=x=>x.group?grpBlock(x):x.devices?devBlock(x):typeof x==="string"||x.src?mediaImgonly(x):x.diag?figOrDiag(x):x.banners?bannerSet(x.banners):mediaSlide(x);   /* screens · imgs: 문자열 = imgonly, 배열 = slide(텍스트 없음) */
+const table=(head,rows,keep)=>`<table class="ttable${keep?" keep":""}"><thead><tr>${head.map(h=>`<th scope="col">${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td data-th="${esc(head[i])}">${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+const wireHTML=w=>`<div class="wf">${w.items.map((it,i)=>`<div class="fig wf-shot${(w.moHide||[]).includes(i)?" mo-hide":""}"><img src="img/${SRC(it[1])}" width="${w.w}" height="${w.h}" alt="와이어프레임 — ${esc(it[0])}" loading="lazy" decoding="async"></div>`).join("")}</div>`;   /* Wireframe 섹션: 라벨 없이 이미지만 */
 const SECS=[["s-overview","Overview"],["s-problem","Problem"],["s-decisions","Decisions"],["s-screens","Screens"],["s-result","Result"]];
 /* 모달 히어로: 제목 · 한 줄 소개 · 대표 이미지 · 정보 */
 const hero=(title,lead,imgId,propsHTML)=>`<div class="mh">
@@ -1248,19 +1476,20 @@ const SIDE_INFO={
 function fullHTML(p){
  const decs=p.decisions.map(d=>d.length===1?`<p class="ci-part">${esc(d[0].slice(1))}</p>`:media(d)).join("");
  const info=p.stages?`<div class="stages">${p.stages.map(st=>`<div><p class="stage-name">${esc(st[0])}</p>${props(st[1])}</div>`).join("")}</div>`:props(p.info);
- const prob=p.hyp?ci("s-problem","Problem → Hypothesis → Principle",table(["상황","가설","원칙"],p.hyp),1)
-  :ci("s-problem",`Problem${p.id==="lesson365"?" (As-is)":""}`,body(p.problem));
+ const prob=p.hyp?ci("s-problem","Problem → Hypothesis → Principle",table(["상황","가설","원칙"],p.hyp,1),1)
+  :ci("s-problem","Problem",p.problemList?kvList(p.problemList):body(p.problem));
  return `<div class="mv">
   <div class="note">Full Modal: 히어로(제목·한 줄 소개·대표 이미지·정보) → 구분선 → 목차 240 + 본문 880.</div>
   ${hero(p.name,p.lead,p.id,info)}
   <hr class="mv-line">
   <div class="mc">
-   <nav class="sidemenu" aria-label="케이스 목차">${SECS.map((x,i)=>`<a href="#" class="sm-item${i?"":" on"}" data-jump="${x[0]}">${x[1]}</a>`).join("")}</nav>
+   <nav class="sidemenu" aria-label="케이스 목차">${SECS.filter(x=>x[0]!=="s-screens"||p.screens).flatMap(x=>x[0]==="s-problem"&&p.wire?[x,["s-wire","Wireframe"]]:[x]).map((x,i)=>`<a href="#" class="sm-item${i?"":" on"}" data-jump="${x[0]}">${x[1]}</a>`).join("")}</nav>
    <div class="mc-body">
     ${ci("s-overview","Overview",body(p.overview))}
     ${prob}
-    ${ci("s-decisions",`Design Decisions${p.id==="lesson365"?" (As-is → To-be)":""}`,`<div class="ci-stack">${decs}</div>`,1)}
-    ${ci("s-screens","Final Screens",`<div class="imgs">${p.screens.map(screen).join("")}</div>`,1)}
+    ${p.wire?ci("s-wire","Wireframe",wireHTML(p.wire),1):""}
+    ${ci("s-decisions","Design Decisions",`<div class="ci-stack">${decs}</div>`,1)}
+    ${p.screens?ci("s-screens","Final Screens",`<div class="imgs">${p.screens.map(screen).join("")}</div>`,1):""}
     ${ci("s-result","Result &amp; Retrospective",body(p.result))}
    </div>
   </div></div>`;
@@ -1343,7 +1572,7 @@ function contentHTML(c){
  return `<div class="mv sd ct">
   <div class="note">Content Side Modal: 유형(타이틀) · 프로젝트명(캡션) + 원본 이미지 세로 스크롤.</div>
   ${hero(c.type,c.title,"","")}
-  ${c.slides?mediaSlide(c.slides):`<div class="fig">${ph("원본 이미지 (세로로 긴 이벤트 페이지)","tall")}</div>`}
+  ${c.slides?mediaSlide(c.slides):c.img?(c.hot?hotFig(c.img,c.hot):fig(c.img)):`<div class="fig">${ph("원본 이미지 (세로로 긴 이벤트 페이지)","tall")}</div>`}
  </div>`;
 }
 /* side menu: 본문 스크롤에 따라 현재 섹션 표시 */
