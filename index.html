@@ -284,8 +284,9 @@ body.contact-open nav.menu [data-go]{display:none}
 .devs.fit .devs-shot>img{height:100%!important}
 @media (max-width:767px){.devs.fit{padding:10px}.devs.fit .devs-row{gap:8px}.devs.fit .devs-col{gap:6px}}
 /* 텍스트 media 안 리스트 (Energy D4) */
-.m-list{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px 32px}
-.m-list li{display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid var(--border-default);min-width:0}
+.m-list{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px 0}   /* 열 간격 0 → 항목 위 선이 영역 끝까지 이어짐 */
+.m-list li{display:flex;flex-direction:column;gap:8px;padding:16px 32px 0 0;border-top:1px solid var(--border-default);min-width:0}   /* 열 사이 여백은 오른쪽 안쪽 여백 32로 */
+.m-list li:last-child:nth-child(odd){grid-column:1/-1}   /* 마지막 줄에 혼자 남은 항목도 선이 끝까지 */
 .m-list-hd{margin:0;display:flex;flex-direction:column;gap:4px}
 .m-list-hd b{font-family:var(--f-en);font-weight:700;font-size:16px;line-height:1.3;color:var(--text-primary)}
 .m-list-hd span{font-family:var(--f-en);font-weight:600;font-size:13px;line-height:1.3;color:var(--accent)}
@@ -634,6 +635,7 @@ td.role{font-weight:700;white-space:nowrap}
 .ci-stack>.ci-part:first-child{margin-top:0}   /* Design Decisions 라벨 → Part 1: 16 */
 .media{display:flex;align-items:flex-start;gap:40px}
 .media .copy{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:8px}
+.media-text>.copy{align-self:stretch;width:100%}   /* 텍스트만(리스트 포함) 항목은 세로로 쌓여도 콘텐츠 영역 끝까지 → .m-list 선이 끝까지 */
 .media .copy h4{margin:0;font-size:22px;font-weight:800;line-height:1.4;letter-spacing:-.03em;color:var(--text-primary)}
 .media .copy p{margin:0;font-size:16px;line-height:1.65;color:var(--text-secondary)}
 @media(max-width:767px){.media .copy p{font-size:15px}.media .copy h4{font-size:20px}}
@@ -1003,7 +1005,7 @@ const FULL = [
  decisions:[
   ["실제 운영 상황을 고려한 화면 설계","디자인 시점에 결제 앱의 개발 일정이 확정되지 않아, 준비 상황에 따라 고를 수 있는 두 가지 버전을 함께 설계했습니다. 가상으로 체험할 수 있는 프로토타입이 준비되면 가맹점 앱과 결제 앱을 나란히 두고 직접 테스트하게 하고, 앱이 개발되지 않은 경우에는 결제 수단별 영상으로 흐름을 보여 줍니다. 페이지는 PC와 모바일에서 레이아웃이 달라지는 반응형 구조로 설계했습니다.","체험 방식 옵션 · 반응형",SL("wide",[["체험 방식 옵션",{diag:"contentOptions"},"옵션"],["반응형 구조",{diag:"payDevices"},"반응형"]])],
   ["읽는 방식에 맞춰 UI를 고른다","보고 따라 해야 하는 내용은 이미지와 텍스트, 순서대로 읽어야 하는 정보는 단계형 리스트, 비교가 필요한 데이터는 테이블, 찾는 내용이 분명한 사용자에게는 아코디언을 적용했습니다.",{diag:"uiTypes"}],
-  ["영향이 큰 항목부터 검수","디자인 전달 → 구현 확인 → 우선순위 검수 순으로 QA를 진행했습니다. 픽셀이나 간격보다 정보 구조와 공통 UI 기준(패턴 불일치, 컴포넌트 variant 미적용)에 영향을 주는 오류를 먼저 고쳤습니다.",null]],   /* D3: 이미지 없이 텍스트만 (사용자 결정 2026-10-23) */
+  ["영향이 큰 항목부터 검수","",{list:[["Handoff","디자인 전달","화면 디자인과 공통 UI 기준을 함께 개발팀에 전달했습니다."],["Review","구현 확인","개발이 반영된 화면을 시안과 비교해 차이를 정리했습니다."],["Priority QA","우선순위 검수","정보 구조와 공통 UI 기준에 영향을 주는 오류를 먼저 고쳤습니다."]]}]],   /* D3: 이미지 없이 .m-list (Energy D4와 같은 유형, 2026-10-27) */
  screens:[{src:"payappcafe-home",w:1760,h:3444,alt:"메인 (PC)"},{src:"payappcafe-pg",w:1760,h:2995,alt:"PG 계약 절차 (PC)"},{src:"payappcafe-faq",w:1760,h:1898,alt:"FAQ (PC)"},{src:"payappcafe-qna",w:1760,h:2338,alt:"Q&A (PC)"},
   {group:"모바일 UI 가이드",items:[["서브","payappcafe-mo-sub",780,3786,390],["리스트","payappcafe-mo-list",780,2553,390],["컴포넌트","payappcafe-mo-comp",780,3362,390]]}],
  result:"2023년에 서비스가 런칭되었습니다. 결제 앱 준비 상황에 따라 고를 수 있는 프로토타입 · 영상 두 버전을 함께 설계해, 개발 일정이 바뀌어도 화면을 다시 만들지 않고 대응할 수 있게 했습니다. 정보 성격에 따라 UI 유형을 선택하였으며, 추후 확장을 고려하여 모바일은 최소한의 반응형과 가이드를 전달했습니다. 개발 반영 이후, 디자인 QA를 진행해서 사용상의 불편한 수정사항을 클라이언트에게 전달했습니다."},
