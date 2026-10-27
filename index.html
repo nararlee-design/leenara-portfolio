@@ -5,8 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Lee Nara — UI Designer Portfolio</title>
 <meta name="description" content="반응형 웹, 관리자 UI, 모바일 서비스, 대시보드를 설계해 온 UI 디자이너 이나라의 포트폴리오입니다.">
-<meta name="robots" content="noindex, nofollow"><!-- 공개 전까지 검색 노출 차단 · 공개 시 삭제 -->
 <meta name="theme-color" content="#111214">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://naralee-portfolio.netlify.app/">
+<meta property="og:title" content="Lee Nara — UI Designer Portfolio">
+<meta property="og:description" content="반응형 웹, 관리자 UI, 모바일 서비스, 대시보드를 설계해 온 UI 디자이너 이나라의 포트폴리오입니다.">
+<meta property="og:image" content="https://naralee-portfolio.netlify.app/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://naralee-portfolio.netlify.app/img/og.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800;900&display=swap">
@@ -31,7 +43,7 @@
   /* 와이어프레임 화면용 별칭 (화면 시안 반영 전까지 유지) */
   --bg:var(--bg-base); --surface:var(--bg-surface); --fg:var(--text-primary); --muted:var(--text-tertiary);
   --line:var(--border-default); --ph:var(--bg-placeholder); --ph-line:var(--border-dashed); --scrim:var(--overlay-dim);
-  --note:#fdba74; --note-bg:#3a2617; --r:4px;
+  --r:4px;
 }
 @media (max-width:767px){:root{--gutter:16px;--inset:8px;--hh:68px}}
 
@@ -386,11 +398,6 @@ body.contact-open nav.menu [data-go]{display:none}
  .dg-notes{grid-template-columns:1fr}
 }
 /* ===== 아래는 와이어프레임 화면 스타일 (화면 시안 반영 전 임시, 다크 토큰만 적용) ===== */
-.notes-toggle{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:45;font-family:var(--f-mono);font-size:12px;padding:8px 12px;border-radius:999px;border:1px solid var(--note);color:var(--note);background:var(--note-bg)}
-.note{display:none;font-family:var(--f-mono);font-size:11.5px;line-height:1.5;color:var(--note);background:var(--note-bg);border:1px dashed var(--note);border-radius:4px;padding:6px 8px;margin-block:8px}
-body.show-notes .note{display:block}
-.note-chip{display:none;position:absolute;top:10px;left:10px;z-index:2;font-family:var(--f-mono);font-size:11px;padding:3px 7px;border-radius:3px;background:var(--note-bg);color:var(--note);border:1px dashed var(--note)}
-body.show-notes .note-chip{display:inline-block}
 .ph{position:relative;background:var(--bg-placeholder);border:1px dashed var(--border-dashed);border-radius:var(--r);display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--text-disabled)}
 .ph span{font-size:13px;padding:4px 8px;max-width:85%;text-align:center}
 /* ===== Home ===== */
@@ -463,7 +470,6 @@ body.show-notes .note-chip{display:inline-block}
 @media(min-width:768px){.work-grid{grid-template-columns:repeat(2,1fr)}
  .work-grid .card.big{grid-column:1 / -1}
  .work-grid .card:not(.big) .thumb{aspect-ratio:1/1}}
-body.show-notes .work-grid .card.big .thumb::after,body.show-notes .home-grid .thumb::after{content:"안전 영역 1080×1080";position:absolute;z-index:2;top:0;bottom:0;left:21.875%;width:56.25%;border:1.5px dashed var(--note);color:var(--note);font-family:var(--f-mono);font-size:11px;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;pointer-events:none}
 .content-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding-block:48px}
 @media (max-width:767px){.work-grid,.content-grid{padding-block:24px}}
 @media(min-width:768px){.content-grid{grid-template-columns:repeat(3,1fr)}}
@@ -868,7 +874,6 @@ th{font-weight:500;color:var(--muted);font-size:13px}
   <p class="copyright">©2026 Lee Nara<br>All Rights Reserved</p>
 </div></footer>
 
-<button class="notes-toggle" id="notesBtn" aria-pressed="false">기획 주석 보기</button>
 <div id="toast" role="status" aria-live="polite"></div>
 <div class="scrim" id="scrim" hidden></div>
 <section class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" hidden>
@@ -1082,20 +1087,16 @@ function viewHome(){
   </div>
  </section>
  <section class="wrap home-works" aria-label="대표 작업">
-  <div class="note">홈 Works: 대표 4개(Energy · Counselling · PayAppCafe · Jibsarang, HOME_IDS 순서). 썸네일만 클릭 · hover 시 썸네일 확대 + "View" 커서.</div>
   <div class="home-grid">${HOME_IDS.map(id=>FULL.find(x=>x.id===id)).map(p=>`
    <div class="card-home">
-    <span class="note-chip">Full Modal</span>
     <button class="thumb" data-open="p-${p.id}" aria-label="${esc(p.name)} 자세히 보기">${THUMB(p.id,"home")}</button>
     <div class="cap"><span class="nm">${esc(p.name)}</span><span class="ds">${esc(p.desc)}</span></div>
    </div>`).join("")}</div>
   <div class="more-row pre" id="allRow"><a href="#work" class="btn-cta" data-go="work"><span class="lbl">All works</span>${ICON.narrow}</a></div>
-  <div class="note">All works: Hero가 절반 이상 가려지면 나타나 하단 가운데에 떠서 따라옴 → Works 섹션 끝(이 위치)에서 멈춤.</div>
  </section>
  <hr class="sec-line">
  <section class="wrap home-contact" id="home-contact" aria-labelledby="hcTitle">
   <div class="globe" aria-hidden="true"><svg class="globe-svg" viewBox="0 0 1070 600"></svg></div>
-  <div class="note" style="position:relative;z-index:4">지구본: 정지 SVG 자리 — 추후 Lottie로 교체 (섹션이 보일 때만 재생 · 동작 줄이기 시 첫 프레임 정지).</div>
   <div class="hc-copy"><p>포지션 제안과 포트폴리오 관련 문의는 <br>이메일로 연락 바랍니다</p></div>
   <div class="hc-list">
    <div class="hc-item"><div class="txt"><h3>Email</h3><p>버튼을 클릭하면 이메일 주소가 복사됩니다</p></div><div class="row">${mailBtns()}</div></div>
@@ -1129,14 +1130,13 @@ function viewWork(){
    <button class="tab" role="tab" aria-selected="${!ui}" data-tab="content">Content Design</button>
  </div></div>
  <section class="wrap">
-  ${ui?`<div class="note">템플릿 a(1열 16:9) · c(정방형 2열)를 번갈아 배치. 썸네일은 16:9 한 장 — c에서는 가운데 1080×1080만 보이도록 좌우 크롭. 모바일은 전부 a · 간격 4px. 썸네일 위 = 프로젝트명 + 카테고리 · 유형(연도 없음). 그리드 읽는 순서 = 모달 이전/다음 순서. 모바일은 1열 동일 크기.</div>
+  ${ui?`
   <div class="work-grid">${ORDER.map(([k,id,big])=>{const p=(k==="p"?FULL:SIDE).find(x=>x.id===id);return `
    <button class="card card-grid${big?" big":""}" data-open="${k}-${p.id}" aria-label="${esc(p.name)} 자세히 보기">
-    <span class="note-chip">${k==="p"?"Full Modal":"Side Modal"}</span>
     <div class="thumb">${THUMB(p.id,big?"work":"sq")}</div>
     <div class="cap"><span class="nm">${esc(p.name)}</span><span class="mt">${esc(cardMeta(p))}</span></div>
    </button>`}).join("")}</div>`
-  :`<div class="note">3열(모바일 2열) · 간격 4px(UX/UI와 통일). 썸네일 위 = 유형(제목처럼) + 프로젝트명(보조). 클릭 → Side Modal.</div>
+  :`
   <div class="content-grid">${CONTENT.map(c=>`
    <button class="card card-grid" data-open="${c.id}" aria-label="${esc(c.type+" — "+c.title)} 보기">
     <div class="thumb">${IMG(contentThumb(c))}</div>
@@ -1423,7 +1423,6 @@ function fullHTML(p){
  const prob=!p.hyp&&!p.problemList&&!p.problem?"":p.hyp?ci("s-problem","Problem → Hypothesis → Principle",table(["상황","가설","원칙"],p.hyp,1),1)
   :ci("s-problem","Problem",p.problemList?kvList(p.problemList):body(p.problem));
  return `<div class="mv">
-  <div class="note">Full Modal: 히어로(제목·한 줄 소개·대표 이미지·정보) → 구분선 → 목차 240 + 본문 880.</div>
   ${hero(p.name,p.lead,p.id,info)}
   <hr class="mv-line">
   <div class="mc">
@@ -1440,7 +1439,6 @@ function fullHTML(p){
 }
 function sideHTML(o){
  return `<div class="mv sd">
-  <div class="note">Side Modal: Full과 같은 컴포넌트 · 폭 640 · media는 세로로 쌓임.</div>
   ${hero(o.name,o.lead,o.id,props(SIDE_INFO[o.id]||[]))}
   <hr class="mv-line">
   <div class="mc"><div class="mc-body">
@@ -1504,7 +1502,6 @@ function caseBody(c){
 }
 function caseHTML(c){
  return `<div class="mv sd hwm">
-  <div class="note">How I Work Case: 포트폴리오 PDF 다이어그램을 세로 배치로 재구성 (이미지 아님 · HTML).</div>
   ${hero(c.no,c.title,"","")}
   <hr class="mv-line">
   <div class="mc"><div class="mc-body">${caseBody(c)}</div></div>
@@ -1512,7 +1509,6 @@ function caseHTML(c){
 }
 function contentHTML(c){
  return `<div class="mv sd ct">
-  <div class="note">Content Side Modal: 유형(타이틀) · 프로젝트명(캡션) + 원본 이미지 세로 스크롤.</div>
   ${hero(c.type,c.title,"","")}
   ${c.slides?mediaSlide(c.slides):c.img?(c.hot?hotFig(c.img,c.hot):fig(c.img)):`<div class="fig">${ph("원본 이미지 (세로로 긴 이벤트 페이지)","tall")}</div>`}
  </div>`;
@@ -1760,7 +1756,6 @@ window.addEventListener("hashchange",fromHash);
 $("#mPrev").innerHTML=ICON.left; $("#mNext").innerHTML=ICON.right; $("#mClose").innerHTML=ICON.close;
 
 /* notes */
-$("#notesBtn").onclick=function(){const on=document.body.classList.toggle("show-notes");this.setAttribute("aria-pressed",on);this.textContent=on?"기획 주석 숨기기":"기획 주석 보기"};
 
 fromHash();
 </script>
