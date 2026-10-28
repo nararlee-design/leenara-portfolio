@@ -97,6 +97,7 @@ nav.menu{display:flex;align-items:center;gap:20px}
 /* 마이크로 인터랙션: 아이콘만 움직임 (마우스 기기 hover · 키보드 focus) */
 .btn-cta .ico,.icon-btn.close .ico,.btn .mv-arw{transition:transform .2s var(--ease)}
 .btn .ico{overflow:visible}
+.btn.is-off{opacity:.5;pointer-events:none;cursor:default}   /* 비활성 버튼: 전체 50% · 클릭 막음 */
 @media (hover:hover){
  .btn-cta:hover .ico{transform:translateX(2px)}
  .icon-btn.close:hover .ico{transform:rotate(90deg)}
@@ -1108,8 +1109,11 @@ function viewHome(){
 const mailBtns=()=>`<button class="btn" data-copy="vlffkqhtm96@gmail.com"><span class="brand">${ICON.google}</span><span class="lbl">Gmail</span></button>
     <button class="btn" data-copy="vlffkqhtm@naver.com"><span class="brand">${ICON.naver}</span><span class="lbl">NaverMail</span></button>`;
 const RESUME="files/LeeNara_Resume.pdf";   /* 이력서 PDF — 파일만 교체하면 됨 */
-const resumeBtns=()=>`<a class="btn" data-resume="view" href="${RESUME}" target="_blank" rel="noopener">${ICON.ext}<span class="lbl">Web View</span></a>
-    <a class="btn" data-resume="down" href="${RESUME}" download="LeeNara_Resume.pdf">${ICON.down}<span class="lbl">Download</span></a>`;
+const RESUME_ON=false;   /* 이력서 버튼 비활성(불투명도 50% · 클릭 막음) — true로 바꾸면 다시 켜짐 */
+const resumeBtns=()=>RESUME_ON?`<a class="btn" data-resume="view" href="${RESUME}" target="_blank" rel="noopener">${ICON.ext}<span class="lbl">Web View</span></a>
+    <a class="btn" data-resume="down" href="${RESUME}" download="LeeNara_Resume.pdf">${ICON.down}<span class="lbl">Download</span></a>`
+  :`<a class="btn is-off" aria-disabled="true">${ICON.ext}<span class="lbl">Web View</span></a>
+    <a class="btn is-off" aria-disabled="true">${ICON.down}<span class="lbl">Download</span></a>`;
 /* Contact 블록: 헤더 드롭 패널과 홈 섹션이 같은 컴포넌트를 씀 */
 function contactBox(){
  return `<div class="contact-box">
